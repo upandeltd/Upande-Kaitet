@@ -1,0 +1,197 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format: PRC-{YYYY}-{item_group}-{length}",
+ "creation": "2025-02-03 10:32:04.628785",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "item_group",
+  "column_break_nczi",
+  "uom",
+  "length",
+  "section_break_lbov",
+  "price_list",
+  "customer",
+  "supplier",
+  "column_break_yowg",
+  "buying",
+  "selling",
+  "section_break_kxgy",
+  "currency",
+  "column_break_wefn",
+  "price_list_rate",
+  "section_break_lard",
+  "valid_from",
+  "column_break_jcda",
+  "valid_upto",
+  "section_break_osip",
+  "note",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "label": "Item Group",
+   "options": "Item Group",
+   "reqd": 1
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "section_break_lbov",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Link",
+   "label": "Length",
+   "options": "Stem Length",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_yowg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_nczi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "valid_from",
+   "fieldtype": "Date",
+   "label": "Valid From"
+  },
+  {
+   "fieldname": "valid_upto",
+   "fieldtype": "Date",
+   "label": "Valid Upto"
+  },
+  {
+   "fieldname": "price_list",
+   "fieldtype": "Link",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Price List",
+   "options": "Price List",
+   "reqd": 1
+  },
+  {
+   "bold": 1,
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "default": "0",
+   "fieldname": "buying",
+   "fieldtype": "Check",
+   "label": "Buying",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "selling",
+   "fieldtype": "Check",
+   "label": "Selling",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_kxgy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_wefn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "price_list_rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Rate",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_lard",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_jcda",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_osip",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Text",
+   "label": "Note"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Item Group Price",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-04-01 00:44:20.018698",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Item Group Price",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
