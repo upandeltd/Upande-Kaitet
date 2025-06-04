@@ -11,14 +11,23 @@ def create_stock_entry(stock_entry_data):
     variety = stock_entry_data.get("variety")
     quantity = stock_entry_data.get("quantity")
     grower = stock_entry_data.get("grower")
+
     location_data = stock_entry_data.get("location data")
+    
     uom = stock_entry_data.get("uom")
     harvester = stock_entry_data.get("harvester")
     greenhouse = stock_entry_data.get("greenhouse")
     block__bed_number = stock_entry_data.get("block__bed_number")
     bucket_id = stock_entry_data.get("bucket_id")
+    farm = stock_entry_data.get("farm")
+    business_unit = stock_entry_data.get("business_unit")
+    company = stock_entry_data.get("company")
+
  
-    stock_entry.stock_entry_type = stock_entry_type 
+    stock_entry.stock_entry_type = stock_entry_type
+    stock_entry.custom_farm = farm
+    stock_entry.custom_business_unit = business_unit
+    stock_entry.company = company
 
     stock_entry.custom_greenhouse = greenhouse
     stock_entry.custom_harvester = harvester

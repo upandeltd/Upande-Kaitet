@@ -309,7 +309,10 @@ fixtures = [{
             "Update Tracker (Grading Forecast)", "Forecast Entry",
             "Allow Packing Of Returned Bunches", "FPL Block New Version",
             "Lock Dates On Submit of Sales Invoice",
-            "Validate unique bucket ID"
+            "Validate unique bucket ID", "Set Bucket Status",
+            "Create delivery trip", "Request Concession", "Filtering based on Role",
+            "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
+            "End Trip Transfer", "Gps"
         ]
     ]]
 }, {
@@ -336,7 +339,14 @@ fixtures = [{
             "Ensure Items are in SO Before Manually Adding (FPL)",
             "Authorise Under Pack Button in FPL",
             "Autopopulate Sales Order ID in FPL",
-            "Amount Calc Based on IGP", "Under Pack Cancel Button"
+            "Amount Calc Based on IGP", "Under Pack Cancel Button",
+            "Combined Script", "Request Concession Button", "Request Concession 2",
+            "Employee Filtering", "Yoghurt Manufacturing Stock Entry", "Work Order",
+            "Geo", "Hide Fields in Work Order", "Loss Reason Mandatory", "Stock Entry Type Automation",
+            "Default Source and Target Warehouse", "Allow Valuation Rate", "Start Job Script",
+            "Fetch Farm and Business Unit", "Update Source Warehouse", "Trip Button",
+            "Populate WIP and Target Warehoise in Work Order", "Auto-fetch Company from BOM in Work Order",
+            "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse"
         ]
     ]]
 }, {
@@ -345,13 +355,15 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
-            "Scan Location", "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
+            "QR Code", "Packing List", "Pack List Item",
+            "Scan", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
             "Rejection Reason", "Grading Repack Tracker Item",
             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
-            "Business Unit"
+            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Item",
+            "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+            "GPS Readings", "Delivery Type", "Loss Reason"
         ]
     ]]
 }, {
