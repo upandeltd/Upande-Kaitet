@@ -548,5 +548,16 @@
   "name": "Create Delivery Note Button",
   "script": "frappe.ui.form.on('Material Request', {\n\trefresh(frm) {\n\t\tif (frm.doc.material_request_type === 'Material Transfer' && \n            frm.doc.docstatus === 1) {\n            \n            frm.add_custom_button(__('Delivery Note'), function() {\n                create_delivery_note(frm);\n            }, __('Create'));\n            \n        }\n\t}\n})\n\nfunction create_delivery_note(frm) {\n\n    frappe.model.with_doctype('Delivery Note', function() {\n        let delivery_note = frappe.model.get_new_doc('Delivery Note');\n        \n        delivery_note.company = frm.doc.company;\n        delivery_note.posting_date = frappe.datetime.get_today();\n        delivery_note.set_posting_time = 0;\n        delivery_note.material_request = frm.doc.name;\n        delivery_note.customer = frm.doc.customer || '';\n        \n        // Map items from Material Request to Delivery Note\n        frm.doc.items.forEach(function(item) {\n            let delivery_item = frappe.model.add_child(delivery_note, 'items');\n            delivery_item.item_code = item.item_code;\n            delivery_item.qty = item.qty;\n            delivery_item.uom = item.uom;\n            delivery_item.warehouse = item.warehouse;\n            delivery_item.material_request = frm.doc.name;\n            delivery_item.material_request_item = item.name;\n        });\n        \n        // Open the new Delivery Note for editing\n        frappe.set_route('Form', 'Delivery Note', delivery_note.name);\n        \n        frappe.msgprint(__(\"Delivery Note created. Please complete the remaining details and save.\"));\n    });\n}\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
+  "modified": "2025-06-08 15:16:50.674975",
+  "module": "Upande Kaitet",
+  "name": "Autopopulate Farm and Business Unit (SO)",
+  "script": "frappe.ui.form.on('Sales Order', {\n\tcustom_sales_order_type: function (frm) {\n\t\tif (frm.doc.custom_sales_order_type == \"Yoghurt\") {\n\t\t    frm.set_value(\"custom_farm\", \"Karen\");\n\t\t    frm.set_value(\"custom_business_unit\" ,\"Westwood Yoghurt\")  ;\n\t\t}\n\t\t\n\t\tif ([\"Roses\", \"Spray Roses\"].includes(frm.doc.custom_sales_order_type) ) {\n\t\t    frm.set_value(\"custom_farm\", \"Kapkolia\");\n\t\t    frm.set_value(\"custom_business_unit\" ,\"Roses\")  ;\n\t\t}\n\t\t\n\t\tfrm.refresh_field(\"items\");\n\t\t\n\t\tfrm.fields_dict.items.grid.refresh();\n\t\t\n\t\tfrm.doc.items.forEach(function(item, index) {\n\t\t\tfrm.fields_dict.items.grid.grid_rows[index].refresh();\n\t\t});\n\t}\n});",
+  "view": "Form"
  }
 ]
