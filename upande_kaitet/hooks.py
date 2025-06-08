@@ -1,8 +1,8 @@
 app_name = "upande_kaitet"
 app_title = "Upande Kaitet"
-app_publisher = "	Rodgers"
+app_publisher = "	Upande"
 app_description = "Kaitet ERP System"
-app_email = "rodgers@upande.com"
+app_email = "dev@upande.com"
 app_license = "mit"
 
 # Apps
@@ -309,10 +309,10 @@ fixtures = [{
             "Update Tracker (Grading Forecast)", "Forecast Entry",
             "Allow Packing Of Returned Bunches", "FPL Block New Version",
             "Lock Dates On Submit of Sales Invoice",
-            "Validate unique bucket ID", "Set Bucket Status",
+            "Validate unique bucket ID", "Set Bucket Id Status",
             "Create delivery trip", "Request Concession", "Filtering based on Role",
             "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
-            "End Trip Transfer", "Gps"
+            "End Trip Transfer", "Gps", "Repack"
         ]
     ]]
 }, {
@@ -346,7 +346,8 @@ fixtures = [{
             "Default Source and Target Warehouse", "Allow Valuation Rate", "Start Job Script",
             "Fetch Farm and Business Unit", "Update Source Warehouse", "Trip Button",
             "Populate WIP and Target Warehoise in Work Order", "Auto-fetch Company from BOM in Work Order",
-            "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse"
+            "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
+            "Create Delivery Note Button", 
         ]
     ]]
 }, {
@@ -361,9 +362,9 @@ fixtures = [{
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
             "Rejection Reason", "Grading Repack Tracker Item",
             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
-            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Item",
+            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
             "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
-            "GPS Readings", "Delivery Type", "Loss Reason"
+            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping"
         ]
     ]]
 }, {
