@@ -44,23 +44,22 @@ def transfer_stock_on_submit(doc):
     if not doc.pack_list_item:
         frappe.throw("No items in Farm Pack List to transfer.")
 
-    source_warehouses = [
-        "Burguret Graded Sold - TL", "Turaco Graded Sold - TL",
-        "Pendekeza Graded Sold - TL"
-    ]
-
     source_warehouse = None
     for item in doc.pack_list_item:
-        if item.source_warehouse in source_warehouses:
             source_warehouse = item.source_warehouse
             break
+    
+    wh_map = frappe.get_doc("Scan Location Mapping", f"{doc.custom_farm}-MAP")
+    wh_map_items = wh_map.items
 
-    if not source_warehouse:
-        frappe.throw(
-            "Invalid or missing source warehouse. Allowed warehouses: " +
-            ", ".join(source_warehouses))
+    fpl_submission_item = None
+    for item in wh_map_items:
+        if item.action == "FPL Submission":
+            fpl_submission_item = item
+            break
 
-    target_warehouse = "Delivery Truck - TL"
+
+    target_warehouse = fpl_submission_item.target_warehouse
 
     if not frappe.db.exists("Warehouse", source_warehouse):
         frappe.throw(f"Source Warehouse '{source_warehouse}' does not exist.")
@@ -71,6 +70,11 @@ def transfer_stock_on_submit(doc):
     stock_entry = frappe.new_doc("Stock Entry")
     stock_entry.stock_entry_type = "Material Transfer"
     stock_entry.farm_pack_list = doc.name
+    stock_entry.custom_farm = doc.custom_farm
+    stock_entry.custom_business_unit = "Roses"
+
+    farm_doc = frappe.get_doc("Farm", doc.custom_farm)
+    stock_entry.company = farm_doc.company
 
     for item in doc.pack_list_item:
         stock_entry.append(
@@ -101,12 +105,16 @@ def transfer_stock_on_cancel(doc):
     if not doc.pack_list_item:
         frappe.throw("No items in Farm Pack List to transfer.")
 
-    target_warehouses = [
-        "Burguret Graded Sold - TL", "Turaco Graded Sold - TL",
-        "Pendekeza Graded Sold - TL"
-    ]
+    wh_map = frappe.get_doc("Scan Location Mapping", f"{doc.custom_farm}-MAP")
+    wh_map_items = wh_map.items
 
-    source_warehouse = "Delivery Truck - TL"
+    fpl_submission_item = None
+    for item in wh_map_items:
+        if item.action == "FPL Submission":
+            fpl_submission_item = item
+            break
+
+    source_warehouse = fpl_submission_item.target_warehouse
 
     if not frappe.db.exists("Warehouse", source_warehouse):
         frappe.throw(f"Source Warehouse '{source_warehouse}' does not exist.")
@@ -114,19 +122,14 @@ def transfer_stock_on_cancel(doc):
     stock_entry = frappe.new_doc("Stock Entry")
     stock_entry.stock_entry_type = "Material Transfer"
     stock_entry.farm_pack_list = doc.name
+    stock_entry.custom_farm = doc.custom_farm
+    stock_entry.custom_business_unit = "Roses"
+
+    farm_doc = frappe.get_doc("Farm", doc.custom_farm)
+    stock_entry.company = farm_doc.company
 
     for item in doc.pack_list_item:
         target_warehouse = item.source_warehouse
-
-        # Validate if target warehouse is one of the allowed warehouses
-        if target_warehouse not in target_warehouses:
-            frappe.throw(
-                f"Invalid target warehouse '{target_warehouse}'. Expected: " +
-                ", ".join(target_warehouses))
-
-        if not frappe.db.exists("Warehouse", target_warehouse):
-            frappe.throw(
-                f"Target Warehouse '{target_warehouse}' does not exist.")
 
         # Add items to the Stock Entry
         stock_entry.append(

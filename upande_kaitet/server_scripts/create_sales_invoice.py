@@ -10,7 +10,7 @@ def create_sales_invoice_from_packlist(doc, method):
     - Implements error handling to prevent failures from stopping execution.
     """
 
-    sales_order_ids = list(set([item.sales_order_id for item in doc.items if item.sales_order_id]))
+    sales_order_ids = list(set([item.sales_order_id for item in doc.pack_list_item if item.sales_order_id]))
 
     if not sales_order_ids:
         frappe.throw("No Sales Order linked to this Consolidated Pack List.")
@@ -27,6 +27,9 @@ def create_sales_invoice_from_packlist(doc, method):
             sales_invoice = frappe.new_doc("Sales Invoice")
             sales_invoice.customer = sales_order.customer
             sales_invoice.currency = sales_order.currency
+            sales_invoice.company = doc.company
+            sales_invoice.custom_farm = sales_order.custom_farm
+            sales_invoice.custom_business_unit = sales_order.custom_business_unit
             sales_invoice.selling_price_list = sales_order.selling_price_list
             sales_invoice.custom_shipping_agent = sales_order.custom_shipping_agent
             sales_invoice.custom_destination = sales_order.custom_delivery_point
@@ -34,8 +37,8 @@ def create_sales_invoice_from_packlist(doc, method):
             sales_invoice.custom_comment = sales_order.custom_comment
             sales_invoice.shipping_date = sales_order.delivery_date
             sales_invoice.custom_consolidated_packlist = doc.name
-            sales_invoice.custom_so = doc.custom_sales_order_id_cpl
-            sales_invoice.set_warehouse = doc.items[0].source_warehouse if doc.items else None  
+            sales_invoice.custom_so = doc.custom_sales_order
+            sales_invoice.set_warehouse = doc.pack_list_item[0].source_warehouse if doc.pack_list_item else None  
             sales_invoice.posting_date = today()
             sales_invoice.update_stock = 1
 
@@ -47,7 +50,7 @@ def create_sales_invoice_from_packlist(doc, method):
             sales_invoice.taxes = sales_order.taxes
 
             # Process Items
-            for dispatch_item in doc.items:
+            for dispatch_item in doc.pack_list_item:
                 if dispatch_item.sales_order_id != sales_order_id:
                     continue  # Skip items not in this Sales Order
 
