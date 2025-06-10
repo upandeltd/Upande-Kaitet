@@ -660,7 +660,7 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2025-06-08 15:06:15.893920",
+   "creation": "2025-06-09 12:59:03.297422",
    "default_value": null,
    "doc_type": "Sales Order Item",
    "docstatus": 0,
@@ -668,7 +668,7 @@
    "field_name": "item_code",
    "idx": 0,
    "is_system_generated": 0,
-   "modified": "2025-06-08 15:06:15.893920",
+   "modified": "2025-06-09 12:59:03.297422",
    "modified_by": "rodgers@upande.com",
    "module": null,
    "name": "Sales Order Item-item_code-link_filters",
@@ -676,7 +676,7 @@
    "property": "link_filters",
    "property_type": "JSON",
    "row_name": null,
-   "value": "[]"
+   "value": "[[\"Item\",\"item_group\",\"not in\",[\"Products\",\"Raw Material\",\"Services\",\"Sub Assemblies\",\"Consumable\",\"Chemicals\",\"Fertilizers\",\"Stock Items\"]]]"
   },
   {
    "_assign": null,

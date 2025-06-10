@@ -366,7 +366,8 @@ fixtures = [{
             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
             "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
-            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping"
+            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
+            "SO Warehouse Mapping Item"
         ]
     ]]
 }, {

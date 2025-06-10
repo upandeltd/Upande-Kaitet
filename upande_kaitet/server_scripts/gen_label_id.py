@@ -44,8 +44,7 @@ def generate_id(no_of_labels, label_doc_name, action, variety=None,  farm=None, 
             bucket_id = f"BUCKET-{bucket_number}"
 
             qr_data = {
-                "item_code": variety,
-                "bucket_id": bucket_id
+               bucket_id : "bucket"
             }
 
             qr_data_string = json.dumps(qr_data)
