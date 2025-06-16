@@ -11,6 +11,14 @@ cd $PATH_TO_YOUR_BENCH
 bench get-app $URL_OF_THIS_REPO --branch develop
 bench install-app upande_kaitet
 ```
+or
+```cd <bench-name>
+bench get-app <app name> https://github.com/username/repo
+```
+
+Then install on your site 
+```
+bench --site <site-name> install-app upande_kaitet```
 
 ### Contributing
 
