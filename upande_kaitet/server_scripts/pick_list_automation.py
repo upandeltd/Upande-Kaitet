@@ -7,7 +7,7 @@ from upande_kaitet.server_scripts.opl_qr_code_gen import generate_qr_code
 
 @frappe.whitelist()
 def create_pick_list_for_sales_order(doc, method=None):
-    if doc.custom_sales_order_type == "Spray Roses":
+    if doc.custom_sales_order_type == "Roses":
         # Handle both document object and document name
         if isinstance(doc, str):
             sales_order = frappe.get_doc("Sales Order", doc)

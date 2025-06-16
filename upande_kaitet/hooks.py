@@ -349,7 +349,8 @@ fixtures = [{
             "Fetch Farm and Business Unit", "Update Source Warehouse", "Trip Button",
             "Populate WIP and Target Warehoise in Work Order", "Auto-fetch Company from BOM in Work Order",
             "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
-            "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)"
+            "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
+            "Fetch SO Details"
         ]
     ]]
 }, {
