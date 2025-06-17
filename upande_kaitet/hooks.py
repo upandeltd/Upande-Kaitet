@@ -314,7 +314,7 @@ fixtures = [{
             "Validate unique bucket ID", "Set Bucket Id Status",
             "Create delivery trip", "Request Concession", "Filtering based on Role",
             "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
-            "End Trip Transfer", "Gps", "Repack"
+            "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form"
         ]
     ]]
 }, {
@@ -350,7 +350,7 @@ fixtures = [{
             "Populate WIP and Target Warehoise in Work Order", "Auto-fetch Company from BOM in Work Order",
             "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
-            "Fetch SO Details"
+            "Fetch SO Details",
         ]
     ]]
 }, {

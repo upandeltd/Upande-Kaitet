@@ -473,5 +473,24 @@
   "reference_doctype": "Stock Entry",
   "script": "if doc.stock_entry_type == \"Harvesting\":\n\n    bucket_id_doc = frappe.get_doc(\"Bucket QR Code\", doc.custom_bucket_id)\n    bucket_id_doc.last_stock_entry = doc.name\n    bucket_id_doc.status = \"In Use\"\n    \n    bucket_id_doc.save()\n\n\nif doc.stock_entry_type == \"Receiving\":\n    \n    bucket_id_doc = frappe.get_doc(\"Bucket QR Code\", doc.custom_received_bucket_id)\n    bucket_id_doc.status = \"Available\"\n    \n    bucket_id_doc.save()\n",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Submit",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-06-17 06:44:43.654546",
+  "module": "Upande Kaitet",
+  "name": "Create Invoice From Dispatch Form",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Dispatch Form",
+  "script": "# Create invoice from the items in the dispatch form\ninvoice_doc = frappe.new_doc(\"Sales Invoice\")\nso_doc = frappe.get_doc(\"Sales Order\", doc.custom_sales_order)\n\ninvoice_doc.company = doc.company\ninvoice_doc.customer = doc.custom_customer\ninvoice_doc.custom_farm = doc.custom_farm\ninvoice_doc.custom_business_unit = doc.custom_business_unit\ninvoice_doc.due_date = so_doc.delivery_date\n\ndispatch_form_doc_items = doc.dispatch_form_item\n\nfor item in dispatch_form_doc_items:\n    \n    invoice_doc.append(\"items\", {\n        \"item_code\": item.item_code,\n        \"qty\": item.bunch_qty,\n        \"uom\": item.bunch_uom,\n        \n        # Fetch rate from elsewhere\n        # \"rate\": 0.0;\n    })\n    \ninvoice_doc.insert()\n\ndoc.custom_sales_invoice = invoice_doc.name\n\nfrappe.msgprint(\n    msg=f\"\"\"\n    <div style=\"text-align: center; padding: 10px;\">\n        <h4 style=\"color: #28a745; margin-bottom: 15px;\">✅ Invoice Created Successfully!</h4>\n        <p style=\"margin-bottom: 15px;\">Sales Invoice <strong>{invoice_doc.name}</strong> has been created.</p>\n        <a href=\"/app/sales-invoice/{invoice_doc.name}\" \n           target=\"_blank\" \n           class=\"btn btn-primary btn-sm\" \n           style=\"background-color: #2490ef; border-color: #2490ef; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; display: inline-block;\">\n           📄 Open Invoice\n        </a>\n    </div>\n    \"\"\",\n    title=\"Success\",\n    indicator=\"green\"\n)\n\n# frappe.db.commit()\n\n# frappe.local.response[\"type\"] = \"redirect\"\n# frappe.local.response[\"location\"] = f\"/app/invoice/{invoice_doc.name}\"\n\n\n",
+  "script_type": "DocType Event"
  }
 ]
