@@ -3,7 +3,7 @@ from frappe import _
 
 
 def handle_sales_order_approval(doc, method):
-    if doc.custom_sales_order_type == "Spray Roses":
+    if doc.custom_sales_order_type == "Roses":
         if doc.docstatus == 1:
             stock_entry = frappe.new_doc("Stock Entry")
             stock_entry.stock_entry_type = "Material Transfer"
@@ -78,7 +78,7 @@ def handle_sales_order_approval(doc, method):
 
 
 def handle_sales_order_cancellation(doc, method):
-    if doc.custom_sales_order_type == "Spray Roses": 
+    if doc.custom_sales_order_type == "Roses": 
         items_details = []
 
         if doc.docstatus == 2:
