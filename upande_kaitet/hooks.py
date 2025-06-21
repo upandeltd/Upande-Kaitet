@@ -189,13 +189,13 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"upande_kaitet.tasks.all"
-# 	],
-# 	"daily": [
-# 		"upande_kaitet.tasks.daily"
-# 	],
+scheduler_events = {
+	# "all": [
+	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
+	# ],
+	"daily": [
+		"upande_kaitet.tasks.transfer_holding_to_cold_store"
+	],
 # 	"hourly": [
 # 		"upande_kaitet.tasks.hourly"
 # 	],
@@ -217,7 +217,7 @@ doc_events = {
 #
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "upande_kaitet.event.get_events"
-# }
+}
 
 override_class = {
     "erpnext.controllers.taxes_and_totals.calculate_taxes_and_totals":
