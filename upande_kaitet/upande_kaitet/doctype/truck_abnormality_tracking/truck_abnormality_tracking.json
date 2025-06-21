@@ -1,0 +1,52 @@
+{
+ "_liked_by": "[\"Administrator\"]",
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-20 18:39:56.631947",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_6yfb",
+  "week",
+  "identified",
+  "corrected"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_6yfb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "week",
+   "fieldtype": "Data",
+   "label": "Week"
+  },
+  {
+   "default": "0",
+   "fieldname": "identified",
+   "fieldtype": "Check",
+   "label": "Abnormalities Identified"
+  },
+  {
+   "default": "0",
+   "fieldname": "corrected",
+   "fieldtype": "Check",
+   "label": "Abnormalities Corrected"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-06-21 19:45:49.031937",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Truck Abnormality Tracking",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
