@@ -1,0 +1,192 @@
+{
+ "_liked_by": "[\"Administrator\"]",
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-19 20:56:41.481888",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_umbu",
+  "inspector",
+  "frequency",
+  "truck_vehicle",
+  "inspection_date",
+  "column_break_0b3s",
+  "inspection_time",
+  "shift",
+  "amended_from",
+  "odometer_reading",
+  "fuel_level",
+  "inspection_checklist_section",
+  "inspection_items",
+  "overall_status_section",
+  "overall_status",
+  "additional_comments",
+  "column_break_cixh",
+  "attachment",
+  "next_service_due",
+  "estimated_repair_cost"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_umbu",
+   "fieldtype": "Section Break",
+   "label": "Basic Information"
+  },
+  {
+   "fieldname": "inspector",
+   "fieldtype": "Link",
+   "label": "Inspector",
+   "no_copy": 1,
+   "options": "Employee",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "frequency",
+   "fieldtype": "Select",
+   "label": "Frequency",
+   "options": "Daily\nWeekly\nMonthly\nQuarterly\nYearly",
+   "reqd": 1
+  },
+  {
+   "fieldname": "truck_vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Truck/Vehicle",
+   "options": "Asset",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "inspection_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Inspection Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_0b3s",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Now",
+   "fieldname": "inspection_time",
+   "fieldtype": "Time",
+   "label": "Time",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1,
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "shift",
+   "fieldtype": "Select",
+   "label": "Shift",
+   "options": "Morning\nAfternoon\nEvening",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Truck Inspection Checksheet",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "odometer_reading",
+   "fieldtype": "Int",
+   "label": "Odometer Reading",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fuel_level",
+   "fieldtype": "Float",
+   "label": "Fuel Level (%)",
+   "reqd": 1
+  },
+  {
+   "description": "(Tick) \u2713 if checked and has no abnormality | (Cross) \u2717 if checked and has abnormality",
+   "fieldname": "inspection_checklist_section",
+   "fieldtype": "Section Break",
+   "label": "Inspection Checklist"
+  },
+  {
+   "fieldname": "inspection_items",
+   "fieldtype": "Table",
+   "label": "Inspection Items",
+   "options": "Truck Inspection Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "overall_status_section",
+   "fieldtype": "Section Break",
+   "label": "Overall Status"
+  },
+  {
+   "fieldname": "overall_status",
+   "fieldtype": "Select",
+   "label": "Overall Status",
+   "options": "Pass\nFail\nConditional Pass",
+   "reqd": 1
+  },
+  {
+   "fieldname": "additional_comments",
+   "fieldtype": "Text Editor",
+   "label": "Additional Comments"
+  },
+  {
+   "fieldname": "column_break_cixh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "label": "Attachment (Photos/Documents)"
+  },
+  {
+   "fieldname": "next_service_due",
+   "fieldtype": "Date",
+   "label": "Next Service Due"
+  },
+  {
+   "fieldname": "estimated_repair_cost",
+   "fieldtype": "Currency",
+   "label": "Estimated Repair Cost"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-06-21 12:05:43.937254",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Truck Inspection Checksheet",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
