@@ -23,6 +23,8 @@ def add_variety_to_sticker(box_label_sticker_name, variety, uom):
         "Bunch (25)": 25
     }
 
+	# testing
+
     packrate = uom_conversion_factor.get(uom, 0) * int(quantity)
 
     box_sticker_doc.pack_rate = initPackrate + packrate
