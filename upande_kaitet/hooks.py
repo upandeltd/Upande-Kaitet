@@ -298,6 +298,26 @@ whitelisted_methods = {
 
 fixtures = [{
     "dt":
+    "DocType",
+    "filters": [[
+        "name", "in",
+        [
+            "QR Code", "Packing List", "Pack List Item",
+            "Scan", "Box Label", "Box Label Item", "Label Print",
+            "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
+            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+            "Rejection Reason", "Grading Repack Tracker Item",
+            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
+            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
+            "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
+            "SO Warehouse Mapping Item", "Temperature Reading", "Consignee",
+            "Field Reject", "Field Reject Item", "Colors", "Spec Customer Item",
+            "Specifications", "Spec Color Item"
+        ]
+    ]]
+}, {
+    "dt":
     "Server Script",
     "filters": [[
         "name", "in",
@@ -314,7 +334,8 @@ fixtures = [{
             "Validate unique bucket ID", "Set Bucket Id Status",
             "Create delivery trip", "Request Concession", "Filtering based on Role",
             "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
-            "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form"
+            "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form",
+            "Create Field Reject Entry"
         ]
     ]]
 }, {
@@ -350,25 +371,7 @@ fixtures = [{
             "Populate WIP and Target Warehoise in Work Order", "Auto-fetch Company from BOM in Work Order",
             "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
-            "Fetch SO Details", "Yoghurt Delivery Workflow",
-        ]
-    ]]
-}, {
-    "dt":
-    "DocType",
-    "filters": [[
-        "name", "in",
-        [
-            "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Box Label", "Box Label Item", "Label Print",
-            "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
-            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason", "Grading Repack Tracker Item",
-            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
-            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
-            "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
-            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
-            "SO Warehouse Mapping Item", "Temperature Reading", "Consignee"
+            "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
         ]
     ]]
 }, {
@@ -384,4 +387,4 @@ fixtures = [{
         ]
     ]]
 }]
-fixtures = ["Custom Field", "Property Setter", "DocType"]
+# fixtures = ["Custom Field", "Property Setter", "DocType"]
