@@ -1,0 +1,61 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-23 13:11:44.113977",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "variety",
+  "no_of_stems",
+  "rejection_reason",
+  "bay"
+ ],
+ "fields": [
+  {
+   "fieldname": "variety",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Variety",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "no_of_stems",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "No of Stems",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "rejection_reason",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Rejection Reason",
+   "options": "Rejection Reason",
+   "reqd": 1
+  },
+  {
+   "fieldname": "bay",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bay",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-06-23 13:49:42.412677",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Field Reject Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
