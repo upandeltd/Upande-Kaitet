@@ -389,3 +389,13 @@ fixtures = [{
     ]]
 }]
 # fixtures = ["Custom Field", "Property Setter", "DocType"]
+fixtures = [
+    "Custom Field",
+    "Client Script",
+    "Workspace",
+    "Property Setter",
+    "Role",
+    "Custom DocPerm",
+    "Dashboard Chart",
+    "Dashboard Chart Source"
+]

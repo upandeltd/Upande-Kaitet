@@ -2,6 +2,160 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Stock Entry",
+  "enabled": 1,
+  "modified": "2025-06-05 07:53:46.322893",
+  "module": "Upande Kaitet",
+  "name": "Checked Inspection Required",
+  "script": "frappe.ui.form.on('Stock Entry', {\n  onload: function(frm) {\n    enforce_inspection_required(frm);\n  },\n  stock_entry_type: function(frm) {\n    enforce_inspection_required(frm);\n  },\n  work_order: function(frm) {\n    enforce_inspection_required(frm);\n  },\n  inspection_required: function(frm) {\n    // Re-check if user tries to uncheck manually\n    enforce_inspection_required(frm);\n  }\n});\n\nfunction enforce_inspection_required(frm) {\n  if (frm.doc.stock_entry_type === \"Manufacture\" && frm.doc.work_order) {\n    frm.set_value(\"inspection_required\", 1);\n    frm.set_df_property(\"inspection_required\", \"read_only\", 1);\n  } else {\n    frm.set_df_property(\"inspection_required\", \"read_only\", 0);\n  }\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Stock Entry",
+  "enabled": 1,
+  "modified": "2025-06-05 11:14:02.443455",
+  "module": "Upande Kaitet",
+  "name": "Repack Draft Form",
+  "script": "// Custom Script for Stock Entry\n// Add this to Customization > Custom Script > Stock Entry\n// This script enhances the Repack Stock Entry created from Material Request\n\nfrappe.ui.form.on('Stock Entry', {\n    refresh: function(frm) {\n        // Show information if this Stock Entry was created from Material Request\n        if (frm.doc.material_request && frm.doc.stock_entry_type === 'Repack') {\n            frm.dashboard.add_comment(\n                __('This Stock Entry was created from Material Request: {0}', [frm.doc.material_request]),\n                'blue',\n                true\n            );\n        }\n    },\n    \n    onload: function(frm) {\n        // If this is a repack entry created from Material Request, set some helpful defaults\n        if (frm.doc.material_request && frm.doc.stock_entry_type === 'Repack' && frm.is_new()) {\n            // You can add any default logic here\n            frm.set_value('remarks', `Repack entry created from Material Request: ${frm.doc.material_request}`);\n        }\n    }\n});\n\nfrappe.ui.form.on('Stock Entry Detail', {\n    item_code: function(frm, cdt, cdn) {\n        // Auto-populate target warehouse when item is selected in repack entry\n        let row = locals[cdt][cdn];\n        if (frm.doc.stock_entry_type === 'Repack' && row.item_code && !row.t_warehouse) {\n            // You can set a default target warehouse or leave it for user to select\n            // frappe.model.set_value(cdt, cdn, 't_warehouse', 'Default Warehouse');\n        }\n    }\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Stock Entry",
+  "enabled": 1,
+  "modified": "2025-06-09 06:29:26.034989",
+  "module": "Upande Kaitet",
+  "name": "Stock Disposal Button",
+  "script": "frappe.ui.form.on('Stock Entry', {\n    refresh(frm) {\n        if (frm.doc.docstatus === 0 && frm.doc.purpose === \"Manufacture\") {\n            frappe.call({\n                method: \"frappe.client.get_list\",\n                args: {\n                    doctype: \"Quality Inspection\",\n                    filters: {\n                        reference_type: \"Stock Entry\",\n                        reference_name: frm.doc.name,\n                        status: \"Rejected\",\n                        docstatus: 1\n                    },\n                    limit_page_length: 1\n                },\n                callback: function(r) {\n                    if (r.message.length > 0) {\n                        frm.add_custom_button(\"Stock Disposal\", () => {\n                            // Step 1: Check all disposals for this original stock entry\n                            frappe.call({\n                                method: \"frappe.client.get_list\",\n                                args: {\n                                    doctype: \"Stock Entry\",\n                                    filters: {\n                                        stock_entry_type: \"Yoghurt Production Disposal\",\n                                        custom_original_stock_entry: frm.doc.name\n                                    },\n                                    fields: [\"name\", \"docstatus\"],\n                                    limit_page_length: 10\n                                },\n                                callback: function(res) {\n                                    const existing_disposals = res.message || [];\n                                    const active_disposal = existing_disposals.find(d => d.docstatus !== 2); // Not cancelled\n\n                                    if (active_disposal) {\n                                        frappe.msgprint(`A stock disposal (${active_disposal.name}) already exists and is not cancelled.`);\n                                        return;\n                                    }\n\n                                    // Step 2: Proceed with creating disposal (your existing logic)\n                                    const raw_material_items = frm.doc.items.filter(item => item.s_warehouse);\n                                    if (raw_material_items.length === 0) {\n                                        frappe.msgprint(\"No raw materials found to dispose.\");\n                                        return;\n                                    }\n\n                                    frappe.call({\n                                        method: \"frappe.client.insert\",\n                                        args: {\n                                            doc: {\n                                                doctype: \"Stock Entry\",\n                                                purpose: \"Material Transfer\",\n                                                stock_entry_type: \"Yoghurt Production Disposal\",\n                                                from_warehouse: raw_material_items[0].s_warehouse,\n                                                to_warehouse: \"Products on Hold - KR\",\n                                                custom_farm: frm.doc.custom_farm,\n                                                custom_business_unit: frm.doc.custom_business_unit,\n                                                custom_original_stock_entry: frm.doc.name,\n                                                items: raw_material_items.map(item => ({\n                                                    item_code: item.item_code,\n                                                    qty: item.qty,\n                                                    uom: item.uom,\n                                                    stock_uom: item.stock_uom,\n                                                    s_warehouse: item.s_warehouse,\n                                                    t_warehouse: \"Products on Hold - KR\"\n                                                }))\n                                            }\n                                        },\n                                        callback: function(new_entry) {\n                                            frappe.set_route(\"Form\", \"Stock Entry\", new_entry.message.name);\n                                        }\n                                    });\n                                }\n                            });\n                        });\n                    }\n                }\n            });\n        }\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Stock Entry",
+  "enabled": 1,
+  "modified": "2025-06-09 07:32:19.477175",
+  "module": "Upande Kaitet",
+  "name": "Request Concession",
+  "script": "frappe.ui.form.on('Stock Entry', {\n    refresh(frm) {\n        if (\n            frm.doc.docstatus === 1 &&\n            frm.doc.stock_entry_type === \"Yoghurt Production Disposal\"\n        ) {\n            // Check if there's already a concession request\n            frappe.call({\n                method: \"frappe.client.get_list\",\n                args: {\n                    doctype: \"Concession Request\",\n                    filters: {\n                        stock_entry: frm.doc.name\n                    },\n                    limit_page_length: 1\n                },\n                callback(r) {\n                    if (r.message.length === 0) {\n                        frm.add_custom_button(\"Request Concession\", () => {\n                            frappe.new_doc(\"Concession Request\", {\n                                stock_entry: frm.doc.name\n                            });\n                        }, __(\"Create\"));\n                    }\n                }\n            });\n        }\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Concession Request",
+  "enabled": 1,
+  "modified": "2025-06-09 07:43:05.717712",
+  "module": "Upande Kaitet",
+  "name": "Concession Request User",
+  "script": "frappe.ui.form.on('Concession Request', {\n    onload(frm) {\n        if (frm.is_new() && !frm.doc.requested_by) {\n            frm.set_value('requested_by', frappe.session.user);\n        }\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Concession Request",
+  "enabled": 1,
+  "modified": "2025-06-11 14:30:54.784942",
+  "module": "Upande Kaitet",
+  "name": "Approved Concessions Button",
+  "script": "frappe.ui.form.on('Concession Request', {\n    refresh: function(frm) {\n        if (\n            frm.doc.docstatus === 1 &&\n            frm.doc.status === \"Approved\" &&\n            frm.doc.lower_grade_bom\n        ) {\n            frm.add_custom_button(\"Create Work Order\", () => {\n                frappe.call({\n                    method: \"frappe.client.get\",\n                    args: {\n                        doctype: \"BOM\",\n                        name: frm.doc.lower_grade_bom\n                    },\n                    callback: function(r) {\n                        const bom = r.message;\n                        if (!bom || !bom.item) {\n                            frappe.msgprint(\"Could not find valid BOM.\");\n                            return;\n                        }\n\n                        // Create Work Order with pre-filled data but no source warehouse\n                        frappe.new_doc(\"Work Order\", {\n                            production_item: bom.item,\n                            bom_no: bom.name,\n                            qty: frm.doc.rejected_quantity || 1,\n                            custom_concession_request: frm.doc.name,\n                            custom_reference_stock_entry: frm.doc.stock_entry\n                        });\n                    }\n                });\n            });\n        }\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Work Order",
+  "enabled": 1,
+  "modified": "2025-06-10 15:03:11.684228",
+  "module": "Upande Kaitet",
+  "name": "Source Warehouse After Concession Approval",
+  "script": "frappe.ui.form.on('Work Order', {\n    onload: function(frm) {\n        // Delay to ensure fields are available\n        setTimeout(() => {\n            if (frm.doc.custom_concession_request) {\n                // Clear main source warehouse\n                frm.set_value('from_warehouse', '');\n\n                // Clear all item-level source warehouses\n                (frm.doc.required_items || []).forEach(row => {\n                    frappe.model.set_value(row.doctype, row.name, \"source_warehouse\", '');\n                });\n\n                frm.refresh_field(\"required_items\");\n            }\n        }, 400);\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Concession Request",
+  "enabled": 1,
+  "modified": "2025-06-11 14:46:05.686514",
+  "module": "Upande Kaitet",
+  "name": "Lower Grade BOM",
+  "script": "frappe.ui.form.on('Concession Request', {\n    onload: function(frm) {\n        frm.set_query('lower_grade_bom', () => {\n            return {\n                filters: {\n                    is_active: 1,\n                    item: frm.doc.rejected_item // Replace with your actual fieldname\n                }\n            };\n        });\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Stock Entry",
+  "enabled": 0,
+  "modified": "2025-06-12 11:46:33.204846",
+  "module": null,
+  "name": "Calculate Quantity in Stock Entry",
+  "script": "frappe.ui.form.on('Stock Entry', {\n    refresh: function(frm) {\n        // Calculate total on form refresh\n        calculate_yoghurt_vanilla_qty(frm);\n    },\n    \n    validate: function(frm) {\n        // Recalculate before saving\n        calculate_yoghurt_vanilla_qty(frm);\n    }\n});\n\nfrappe.ui.form.on('Stock Entry Detail', {\n    qty: function(frm, cdt, cdn) {\n        // Recalculate when quantity changes in any row\n        calculate_yoghurt_vanilla_qty(frm);\n    },\n    \n    items_remove: function(frm) {\n        // Recalculate when a row is removed\n        calculate_yoghurt_vanilla_qty(frm);\n    },\n    \n    items_add: function(frm) {\n        // Recalculate when a row is added\n        calculate_yoghurt_vanilla_qty(frm);\n    }\n});\n\nfunction calculate_yoghurt_vanilla_qty(frm) {\n    // Only proceed if this is a Yoghurt Packing stock entry\n    if (frm.doc.stock_entry_type !== 'Yoghurt Packing') {\n        return;\n    }\n    \n    let total_qty_pieces = 0;\n    let yoghurt_vanilla_row_idx = -1;\n    \n    // Loop through all items to calculate total and find Yoghurt Vanilla row\n    frm.doc.items.forEach(function(item, idx) {\n        if (item.item_code === 'Yoghurt Vanilla (kg)') {\n            yoghurt_vanilla_row_idx = idx;\n        } else if (item.qty && item.t_warehouse) {\n            // Only count items that have target warehouse (exclude source items)\n            total_qty_pieces += parseFloat(item.qty) || 0;\n        }\n    });\n    \n    // Convert pieces to kilograms (1 Piece = 150 grams = 0.15 kg)\n    let total_qty_kg = total_qty_pieces * 0.15;\n    \n    // Update or create Yoghurt Vanilla row\n    if (yoghurt_vanilla_row_idx >= 0) {\n        // Update existing row\n        let yoghurt_row = frm.doc.items[yoghurt_vanilla_row_idx];\n        if (yoghurt_row.qty !== total_qty_kg) {\n            frappe.model.set_value('Stock Entry Detail', \n                yoghurt_row.name, 'qty', total_qty_kg);\n        }\n    } else if (total_qty_kg > 0) {\n        // Create new row if it doesn't exist and total > 0\n        let new_row = frm.add_child('items');\n        frappe.model.set_value('Stock Entry Detail', new_row.name, {\n            'item_code': 'Yoghurt Vanilla (kg)',\n            'uom': 'kilogram',\n            'qty': total_qty_kg,\n            's_warehouse': 'Yoghurt/Lala Packing - KR'\n        });\n    }\n    \n    // Refresh the items table to show updated values\n    frm.refresh_field('items');\n}\n\n// Optional: Add a custom button to manually recalculate\nfrappe.ui.form.on('Stock Entry', {\n    refresh: function(frm) {\n        if (frm.doc.stock_entry_type === 'Yoghurt Packing' && !frm.doc.__islocal) {\n            frm.add_custom_button('Recalculate Yoghurt Qty', function() {\n                calculate_yoghurt_vanilla_qty(frm);\n                frappe.show_alert({\n                    message: 'Yoghurt Vanilla quantity recalculated',\n                    indicator: 'green'\n                });\n            });\n        }\n    }\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Harvest",
+  "enabled": 0,
+  "modified": "2025-06-23 18:37:41.832002",
+  "module": "Upande Kaitet",
+  "name": "Restrict Bay to Alphabets",
+  "script": "frappe.ui.form.on('Harvest', {\n    validate: function(frm) {\n        var field_value = frm.doc.bay;\n        if (field_value) {\n            // Convert to uppercase and set it back\n            field_value = field_value.toUpperCase();\n            frm.set_value('bay', field_value);\n            \n            // Check if it contains only alphabets and spaces\n            if (!/^[A-Z\\s]+$/.test(field_value)) {\n                frappe.msgprint(__('The field {0} can only contain alphabets.'), [frm.fields_dict.bay.label]);\n                frappe.validated = false; // Prevent saving the form\n            }\n        }\n    },\n    bay: function(frm) {\n        var field_value = frm.doc.bay;\n        if (field_value) {\n            // Convert to uppercase and remove non-alphabetic characters\n            var cleaned_value = field_value.toUpperCase().replace(/[^A-Z\\s]/g, '');\n            if (field_value !== cleaned_value) {\n                frm.set_value('bay', cleaned_value);\n                frappe.show_alert('Only uppercase alphabets are allowed in this field.');\n            }\n        }\n    }\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Delivery Note",
+  "enabled": 0,
+  "modified": "2025-06-22 21:01:55.185053",
+  "module": "Upande Kaitet",
+  "name": "Yoghurt Delivery Workflow",
+  "script": "frappe.ui.form.on('Delivery Note', {\n    refresh: function(frm) {\n        // Handle Pending Approval state\n        if (frm.doc.workflow_state === 'In Transit Awaiting Approval') {\n            // Hide default workflow buttons\n            setTimeout(() => {\n                $('.btn-workflow').hide();\n            }, 100);\n            \n            add_approval_buttons(frm);\n        }\n        \n        // Handle Approved state - show End Trip button\n        if (frm.doc.workflow_state === 'Approved') {\n            frm.add_custom_button(__('End Trip'), function() {\n                frappe.confirm(\n                    'Are you sure you want to end this trip?',\n                    () => {\n                        frappe.xcall('your_custom_app.delivery_workflow.end_trip', {\n                            docname: frm.doc.name\n                        }).then(r => {\n                            frm.reload_doc();\n                            frappe.show_alert({\n                                message: __('Trip completed successfully!'),\n                                indicator: 'green'\n                            });\n                        });\n                    }\n                );\n            }).addClass('btn-primary');\n        }\n        \n        // Show approval status dashboard\n        show_approval_status(frm);\n    }\n});\n\n\nfunction add_approval_buttons(frm) {\n    let user_roles = frappe.user_roles;\n    \n    frappe.throw(\"reached here\")\n    \n    // Kapkolia Store Approval Button\n    if (user_roles.includes('Kapkolia Store Manager')) {\n        if (!frm.doc.kapkolia_store_approved) {\n            frm.add_custom_button(__('Approve - Kapkolia Store'), function() {\n                approve_delivery(frm, 'kapkolia_store_approved', 'Kapkolia Store');\n            }).addClass('btn-success');\n        } else {\n            frm.add_custom_button(__('✓ Kapkolia Store Approved'), function() {\n                frappe.msgprint('Already approved by Kapkolia Store');\n            }).addClass('btn-default').attr('disabled', true);\n        }\n    }\n    \n    // Kapkolia Security Approval Button\n    if (user_roles.includes('Kapkolia Security Officer')) {\n        if (!frm.doc.kapkolia_security_approved) {\n            frm.add_custom_button(__('Approve - Kapkolia Security'), function() {\n                approve_delivery(frm, 'kapkolia_security_approved', 'Kapkolia Security');\n            }).addClass('btn-success');\n        } else {\n            frm.add_custom_button(__('✓ Kapkolia Security Approved'), function() {\n                frappe.msgprint('Already approved by Kapkolia Security');\n            }).addClass('btn-default').attr('disabled', true);\n        }\n    }\n    \n    // Karen Store Approval Button\n    if (user_roles.includes('Karen Store Manager')) {\n        if (!frm.doc.karen_store_approved) {\n            frm.add_custom_button(__('Approve - Karen Store'), function() {\n                approve_delivery(frm, 'karen_store_approved', 'Karen Store');\n            }).addClass('btn-success');\n        } else {\n            frm.add_custom_button(__('✓ Karen Store Approved'), function() {\n                frappe.msgprint('Already approved by Karen Store');\n            }).addClass('btn-default').attr('disabled', true);\n        }\n    }\n    \n    // Karen Security Approval Button\n    if (user_roles.includes('Karen Security Officer')) {\n        if (!frm.doc.karen_security_approved) {\n            frm.add_custom_button(__('Approve - Karen Security'), function() {\n                approve_delivery(frm, 'karen_security_approved', 'Karen Security');\n            }).addClass('btn-success');\n        } else {\n            frm.add_custom_button(__('✓ Karen Security Approved'), function() {\n                frappe.msgprint('Already approved by Karen Security');\n            }).addClass('btn-default').attr('disabled', true);\n        }\n    }\n    \n    // Reject Button (available to all approvers and System Manager)\n    if (user_roles.includes('System Manager') || \n        user_roles.includes('Kapkolia Store Manager') ||\n        user_roles.includes('Kapkolia Security Officer') ||\n        user_roles.includes('Karen Store Manager') ||\n        user_roles.includes('Karen Security Officer')) {\n        \n        frm.add_custom_button(__('Reject'), function() {\n            reject_delivery(frm);\n        }).addClass('btn-danger');\n    }\n}\n\n\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
+  "modified": "2025-06-22 19:42:34.327662",
+  "module": "Upande Kaitet",
+  "name": "Autopopulate Week Number",
+  "script": "frappe.ui.form.on('Sales Order', {\n    delivery_date: function(frm) {\n        if (frm.doc.delivery_date) {\n            let date = new Date(frm.doc.delivery_date);\n            let week_number = getWeekNumber(date);\n            frm.set_value('custom_week', week_number);\n        }\n    }\n});\n\nfunction getWeekNumber(date) {\n    // Clone the date to avoid modifying the original\n    let d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));\n    \n    // Set to nearest Thursday: current date + 4 - current day number\n    // Make Sunday's day number 7\n    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));\n    \n    // Get first day of year\n    let yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));\n    \n    // Calculate full weeks to nearest Thursday\n    let weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);\n    \n    return weekNo;\n}",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
+  "modified": "2025-06-22 20:44:01.491817",
+  "module": "Upande Kaitet",
+  "name": "Populate Available Qty Field",
+  "script": "frappe.ui.form.on('Sales Order Item', {\n    item_code: function(frm, cdt, cdn) {\n        let item = locals[cdt][cdn];\n        \n        if (frm.doc.custom_sales_order_type == \"Roses\" && item.item_code && item.custom_source_warehouse) {\n\n            let warehouse = item.custom_source_warehouse;\n            \n            \n            if (warehouse) {\n                // Fetch stock balance\n                frappe.call({\n                    method: \"erpnext.stock.utils.get_stock_balance\",\n                    args: {\n                        item_code: item.item_code,\n                        warehouse: warehouse,\n                        posting_date: frm.doc.transaction_date || frappe.datetime.get_today()\n                    },\n                    callback: function(r) {\n                        if (r.message !== undefined) {\n                            // Set the available quantity in the current row\n                            frappe.msgprint(`${item.item_code} stock balance is ${r.message} in ${item.custom_source_warehouse}`)\n                            frappe.model.set_value(cdt, cdn, 'custom_available_quantity', r.message);\n                        }\n                    }\n                });\n            } else {\n                // If no warehouse is set, clear the available quantity\n                frappe.model.set_value(cdt, cdn, 'custom_available_quantity', 0);\n            }\n        }\n    },\n    \n    // Also trigger when warehouse changes\n    custom_source_warehouse: function(frm, cdt, cdn) {\n        let item = locals[cdt][cdn];\n        \n        if (frm.doc.custom_sales_order_type == \"Roses\" && item.item_code && item.custom_source_warehouse) {\n            frappe.call({\n                method: \"erpnext.stock.utils.get_stock_balance\",\n                args: {\n                    item_code: item.item_code,\n                    warehouse: item.custom_source_warehouse,\n                    posting_date: frm.doc.transaction_date || frappe.datetime.get_today()\n                },\n                callback: function(r) {\n                    if (r.message !== undefined) {\n                        frappe.msgprint(`${item.item_code} stock balance is ${r.message} in ${item.custom_source_warehouse}`)\n                        frappe.model.set_value(cdt, cdn, 'custom_available_quantity', r.message);\n                    }\n                }\n            });\n        }\n    }\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Vehicle",
+  "enabled": 1,
+  "modified": "2025-06-24 02:13:17.265463",
+  "module": "Fleet Management",
+  "name": "Vehicle Location",
+  "script": "frappe.listview_settings['Vehicle Location'] = {\n  onload(listview) {\n    frappe.views.map_view_settings[\"Vehicle Location\"] = {\n      get_marker_popup: function (doc) {\n        return `\n          <div style=\"font-size: 13px;\">\n            <b>Plates:</b> ${doc.plates || \"N/A\"}<br>\n            <b>Lat:</b> ${doc.make || \"N/A\"}<br>\n            <a href=\"/app/vehicle-location/${doc.name}\" target=\"_blank\">View Record</a>\n          </div>\n        `;\n      }\n    };\n  }\n};\n",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Material Request",
   "enabled": 1,
   "modified": "2025-06-12 10:08:27.950719",
@@ -561,7 +715,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"Administrator\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Tractor Inspection Checksheet",
@@ -573,7 +726,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"Administrator\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "CFU Inspection Checksheet",
@@ -585,7 +737,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"Administrator\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Packhouse Equipment and Machine AM Checklist",
