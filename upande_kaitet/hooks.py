@@ -384,3 +384,8 @@ fixtures = [{
         ]
     ]]
 }]
+
+# Load JS files for custom pages
+page_js = {
+    "vehicle-map": "public/js/vehicle_map.js"
+}
