@@ -173,8 +173,8 @@ doc_events = {
         # "upande_kaitet.server_scripts.completion_percentage.validate_completion_percentage"
     },
     "Sales Invoice": {
-        "on_submit":
-        "upande_kaitet.server_scripts.sinv_approved_by.set_approved_by",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.sinv_approved_by.set_approved_by",
         "on_cancel":
         "upande_kaitet.server_scripts.events.on_sales_invoice_cancel"
     },
