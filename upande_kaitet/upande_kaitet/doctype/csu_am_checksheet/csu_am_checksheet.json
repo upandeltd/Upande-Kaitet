@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-23 09:27:08.147184",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_hyt0",
+  "amended_from",
+  "frequency",
+  "date",
+  "time",
+  "inspector",
+  "inspection_items",
+  "abnormalities_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_hyt0",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "CSU AM Checksheet",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "frequency",
+   "fieldtype": "Select",
+   "label": "Frequency",
+   "options": "Daily\nWeekly\nMonthly\nQuarterly"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Data",
+   "reqd": 1
+  },
+  {
+   "default": "Now",
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "inspector",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Inspector",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "inspection_items",
+   "fieldtype": "Table",
+   "label": "Equipment log",
+   "options": "CSU AM Inspection Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "abnormalities_log",
+   "fieldtype": "Table",
+   "label": "Abnormalities Log",
+   "options": "CSU Abnormality Log"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-06-23 17:29:40.152474",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "CSU AM Checksheet",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
