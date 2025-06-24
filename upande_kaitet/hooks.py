@@ -165,8 +165,8 @@ doc_events = {
         # "upande_kaitet.server_scripts.reserve_stock.on_sales_order_created",
     },
     "Consolidated Pack List": {
-        "on_submit":
-        "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
         "on_cancel": "upande_kaitet.server_scripts.events.on_cpl_cancel"
 
         # "before_submit":
@@ -181,8 +181,8 @@ doc_events = {
     "Farm Pack List": {
         "before_cancel":
         "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-        "on_submit":
-        "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
     }
 }
 
