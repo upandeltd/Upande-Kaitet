@@ -1,22 +1,22 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-06-23 09:27:08.147184",
+ "creation": "2025-06-23 16:41:55.137412",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_hyt0",
+  "section_break_auyh",
   "amended_from",
-  "frequency",
   "date",
   "time",
   "inspector",
+  "frequency",
   "inspection_items",
   "abnormalities_log"
  ],
  "fields": [
   {
-   "fieldname": "section_break_hyt0",
+   "fieldname": "section_break_auyh",
    "fieldtype": "Section Break"
   },
   {
@@ -24,23 +24,17 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "CSU AM Checksheet",
+   "options": "REEFER TRUCK CLIT CHECKSHEET",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "frequency",
-   "fieldtype": "Select",
-   "label": "Frequency",
-   "options": "Daily\nWeekly\nMonthly\nQuarterly"
   },
   {
    "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Data",
+   "label": "Date",
    "reqd": 1
   },
   {
@@ -60,27 +54,35 @@
    "reqd": 1
   },
   {
+   "fieldname": "frequency",
+   "fieldtype": "Select",
+   "label": "Frequency",
+   "options": "Daily\nWeekly\nMonthly\nQuarterly\nYearly",
+   "reqd": 1
+  },
+  {
    "fieldname": "inspection_items",
    "fieldtype": "Table",
-   "label": "Equipment log",
-   "options": "CSU AM Inspection Item",
+   "label": "Equipment Log",
+   "options": "Reefer Inspection Item",
    "reqd": 1
   },
   {
    "fieldname": "abnormalities_log",
    "fieldtype": "Table",
    "label": "Abnormalities Log",
-   "options": "CSU Abnormality Log"
+   "options": "Reefer Abnormality Log"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-24 20:24:59.530009",
+ "modified": "2025-06-24 20:20:23.815080",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
- "name": "CSU AM Checksheet",
+ "name": "REEFER TRUCK CLIT CHECKSHEET",
+ "naming_rule": "By script",
  "owner": "Administrator",
  "permissions": [
   {

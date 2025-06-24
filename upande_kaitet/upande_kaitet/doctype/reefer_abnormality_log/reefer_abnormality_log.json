@@ -1,38 +1,35 @@
 {
+ "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-06-23 10:14:03.832688",
+ "creation": "2025-06-24 19:20:59.451432",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "section_break_qymx",
-  "corrected",
+  "section_break_idu2",
   "week",
+  "corrected",
   "identified"
  ],
  "fields": [
   {
-   "fieldname": "section_break_qymx",
+   "fieldname": "section_break_idu2",
    "fieldtype": "Section Break"
   },
   {
-   "default": "0",
-   "description": "Options: Abnormalities Identified, Abnormalities Corrected",
-   "fieldname": "corrected",
-   "fieldtype": "Check",
-   "label": "Corrected",
-   "options": "Abnormalities Identified\nAbnormalities Corrected"
-  },
-  {
-   "description": "e.g. \"Day 12\", \"Week 28\", \"March\" \u2013 auto-filled",
    "fieldname": "week",
    "fieldtype": "Data",
-   "label": "week"
+   "label": "Week"
   },
   {
    "default": "0",
-   "description": "Ticked if an issue was found/corrected on that period",
+   "fieldname": "corrected",
+   "fieldtype": "Check",
+   "label": "Corrected"
+  },
+  {
+   "default": "0",
    "fieldname": "identified",
    "fieldtype": "Check",
    "label": "Identified"
@@ -42,10 +39,10 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-24 20:25:59.621694",
+ "modified": "2025-06-24 20:23:22.248002",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
- "name": "CSU Abnormality Log",
+ "name": "Reefer Abnormality Log",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",
