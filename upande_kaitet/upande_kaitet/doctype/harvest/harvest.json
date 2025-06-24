@@ -1,0 +1,119 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{item_code}-{block}-{#####}",
+ "creation": "2025-06-23 13:11:42.106437",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "bucket_id",
+  "farm",
+  "block",
+  "section_break_prxt",
+  "item_code",
+  "stem_length",
+  "harvester",
+  "quantity"
+ ],
+ "fields": [
+  {
+   "fieldname": "bucket_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bucket Id",
+   "length": 1000,
+   "read_only": 1
+  },
+  {
+   "fieldname": "farm",
+   "fieldtype": "Link",
+   "label": "Farm",
+   "options": "Farm"
+  },
+  {
+   "fieldname": "block",
+   "fieldtype": "Link",
+   "label": "Greenhouse",
+   "link_filters": "[[\"Warehouse\",\"warehouse_type\",\"=\",\"Greenhouse\"],[\"Warehouse\",\"custom_farm\",\"=\",\"eval:doc.farm\"]]",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "section_break_prxt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "link_filters": "[[\"Item\",\"custom_greenhouse\",\"=\",\"eval:doc.block\"]]",
+   "options": "Item"
+  },
+  {
+   "fieldname": "stem_length",
+   "fieldtype": "Link",
+   "label": "Stem Length",
+   "options": "Stem Length"
+  },
+  {
+   "fieldname": "harvester",
+   "fieldtype": "Link",
+   "label": "Harvester",
+   "link_filters": "[[\"Employee\",\"custom_greenhouse\",\"=\",\"eval:doc.block\"]]",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Int",
+   "label": "Quantity"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-06-24 18:37:30.774009",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Harvest",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Harvest User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Harvest Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
