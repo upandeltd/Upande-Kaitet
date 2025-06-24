@@ -304,7 +304,7 @@ fixtures = [{
         [
             "QR Code", "Packing List", "Pack List Item",
             "Scan", "Box Label", "Box Label Item", "Label Print",
-            "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
+            "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
             "Rejection Reason", "Grading Repack Tracker Item",
             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
