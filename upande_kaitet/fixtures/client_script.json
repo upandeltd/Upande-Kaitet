@@ -2,6 +2,39 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Harvest",
+  "enabled": 0,
+  "modified": "2025-06-23 18:37:41.832002",
+  "module": "Upande Kaitet",
+  "name": "Restrict Bay to Alphabets",
+  "script": "frappe.ui.form.on('Harvest', {\n    validate: function(frm) {\n        var field_value = frm.doc.bay;\n        if (field_value) {\n            // Convert to uppercase and set it back\n            field_value = field_value.toUpperCase();\n            frm.set_value('bay', field_value);\n            \n            // Check if it contains only alphabets and spaces\n            if (!/^[A-Z\\s]+$/.test(field_value)) {\n                frappe.msgprint(__('The field {0} can only contain alphabets.'), [frm.fields_dict.bay.label]);\n                frappe.validated = false; // Prevent saving the form\n            }\n        }\n    },\n    bay: function(frm) {\n        var field_value = frm.doc.bay;\n        if (field_value) {\n            // Convert to uppercase and remove non-alphabetic characters\n            var cleaned_value = field_value.toUpperCase().replace(/[^A-Z\\s]/g, '');\n            if (field_value !== cleaned_value) {\n                frm.set_value('bay', cleaned_value);\n                frappe.show_alert('Only uppercase alphabets are allowed in this field.');\n            }\n        }\n    }\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Delivery Note",
+  "enabled": 0,
+  "modified": "2025-06-22 21:01:55.185053",
+  "module": "Upande Kaitet",
+  "name": "Yoghurt Delivery Workflow",
+  "script": "frappe.ui.form.on('Delivery Note', {\n    refresh: function(frm) {\n        // Handle Pending Approval state\n        if (frm.doc.workflow_state === 'In Transit Awaiting Approval') {\n            // Hide default workflow buttons\n            setTimeout(() => {\n                $('.btn-workflow').hide();\n            }, 100);\n            \n            add_approval_buttons(frm);\n        }\n        \n        // Handle Approved state - show End Trip button\n        if (frm.doc.workflow_state === 'Approved') {\n            frm.add_custom_button(__('End Trip'), function() {\n                frappe.confirm(\n                    'Are you sure you want to end this trip?',\n                    () => {\n                        frappe.xcall('your_custom_app.delivery_workflow.end_trip', {\n                            docname: frm.doc.name\n                        }).then(r => {\n                            frm.reload_doc();\n                            frappe.show_alert({\n                                message: __('Trip completed successfully!'),\n                                indicator: 'green'\n                            });\n                        });\n                    }\n                );\n            }).addClass('btn-primary');\n        }\n        \n        // Show approval status dashboard\n        show_approval_status(frm);\n    }\n});\n\n\nfunction add_approval_buttons(frm) {\n    let user_roles = frappe.user_roles;\n    \n    frappe.throw(\"reached here\")\n    \n    // Kapkolia Store Approval Button\n    if (user_roles.includes('Kapkolia Store Manager')) {\n        if (!frm.doc.kapkolia_store_approved) {\n            frm.add_custom_button(__('Approve - Kapkolia Store'), function() {\n                approve_delivery(frm, 'kapkolia_store_approved', 'Kapkolia Store');\n            }).addClass('btn-success');\n        } else {\n            frm.add_custom_button(__('✓ Kapkolia Store Approved'), function() {\n                frappe.msgprint('Already approved by Kapkolia Store');\n            }).addClass('btn-default').attr('disabled', true);\n        }\n    }\n    \n    // Kapkolia Security Approval Button\n    if (user_roles.includes('Kapkolia Security Officer')) {\n        if (!frm.doc.kapkolia_security_approved) {\n            frm.add_custom_button(__('Approve - Kapkolia Security'), function() {\n                approve_delivery(frm, 'kapkolia_security_approved', 'Kapkolia Security');\n            }).addClass('btn-success');\n        } else {\n            frm.add_custom_button(__('✓ Kapkolia Security Approved'), function() {\n                frappe.msgprint('Already approved by Kapkolia Security');\n            }).addClass('btn-default').attr('disabled', true);\n        }\n    }\n    \n    // Karen Store Approval Button\n    if (user_roles.includes('Karen Store Manager')) {\n        if (!frm.doc.karen_store_approved) {\n            frm.add_custom_button(__('Approve - Karen Store'), function() {\n                approve_delivery(frm, 'karen_store_approved', 'Karen Store');\n            }).addClass('btn-success');\n        } else {\n            frm.add_custom_button(__('✓ Karen Store Approved'), function() {\n                frappe.msgprint('Already approved by Karen Store');\n            }).addClass('btn-default').attr('disabled', true);\n        }\n    }\n    \n    // Karen Security Approval Button\n    if (user_roles.includes('Karen Security Officer')) {\n        if (!frm.doc.karen_security_approved) {\n            frm.add_custom_button(__('Approve - Karen Security'), function() {\n                approve_delivery(frm, 'karen_security_approved', 'Karen Security');\n            }).addClass('btn-success');\n        } else {\n            frm.add_custom_button(__('✓ Karen Security Approved'), function() {\n                frappe.msgprint('Already approved by Karen Security');\n            }).addClass('btn-default').attr('disabled', true);\n        }\n    }\n    \n    // Reject Button (available to all approvers and System Manager)\n    if (user_roles.includes('System Manager') || \n        user_roles.includes('Kapkolia Store Manager') ||\n        user_roles.includes('Kapkolia Security Officer') ||\n        user_roles.includes('Karen Store Manager') ||\n        user_roles.includes('Karen Security Officer')) {\n        \n        frm.add_custom_button(__('Reject'), function() {\n            reject_delivery(frm);\n        }).addClass('btn-danger');\n    }\n}\n\n\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
+  "modified": "2025-06-22 19:42:34.327662",
+  "module": "Upande Kaitet",
+  "name": "Autopopulate Week Number",
+  "script": "frappe.ui.form.on('Sales Order', {\n    delivery_date: function(frm) {\n        if (frm.doc.delivery_date) {\n            let date = new Date(frm.doc.delivery_date);\n            let week_number = getWeekNumber(date);\n            frm.set_value('custom_week', week_number);\n        }\n    }\n});\n\nfunction getWeekNumber(date) {\n    // Clone the date to avoid modifying the original\n    let d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));\n    \n    // Set to nearest Thursday: current date + 4 - current day number\n    // Make Sunday's day number 7\n    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));\n    \n    // Get first day of year\n    let yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));\n    \n    // Calculate full weeks to nearest Thursday\n    let weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);\n    \n    return weekNo;\n}",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Material Request",
   "enabled": 1,
   "modified": "2025-06-12 10:08:27.950719",
@@ -561,7 +594,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"Administrator\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Tractor Inspection Checksheet",
@@ -573,7 +605,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"Administrator\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "CFU Inspection Checksheet",
@@ -585,7 +616,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"Administrator\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Packhouse Equipment and Machine AM Checklist",
