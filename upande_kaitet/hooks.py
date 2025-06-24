@@ -372,6 +372,7 @@ fixtures = [{
             "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
             "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
+            "CSU AM Checksheet" , "Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" ,"Tractor Inspection Checksheet"
         ]
     ]]
 }, {
