@@ -312,8 +312,6 @@ fixtures = [{
             "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
             "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
             "SO Warehouse Mapping Item", "Temperature Reading", "Consignee",
-            "Field Reject", "Field Reject Item", "Colors", "Spec Customer Item",
-            "Specifications", "Spec Color Item"
         ]
     ]]
 }, {
