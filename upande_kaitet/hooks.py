@@ -311,7 +311,7 @@ fixtures = [{
             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
             "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
             "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
-            "SO Warehouse Mapping Item", "Temperature Reading", "Consignee",
+            "SO Warehouse Mapping Item", "Temperature Reading", "Consignee", "Item Subclass"
         ]
     ]]
 }, {
@@ -370,7 +370,7 @@ fixtures = [{
             "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
             "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
-            "CSU AM Checksheet" , "Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" ,"Tractor Inspection Checksheet"
+            "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
         ]
     ]]
 }, {

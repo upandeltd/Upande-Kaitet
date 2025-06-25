@@ -1,21 +1,22 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-06-21 22:27:20.332836",
+ "creation": "2025-06-23 16:41:55.137412",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_elw9",
+  "section_break_auyh",
   "amended_from",
-  "frequency",
   "date",
+  "time",
   "inspector",
+  "frequency",
   "inspection_items",
   "abnormalities_log"
  ],
  "fields": [
   {
-   "fieldname": "section_break_elw9",
+   "fieldname": "section_break_auyh",
    "fieldtype": "Section Break"
   },
   {
@@ -23,17 +24,10 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "CFU Inspection Checksheet",
+   "options": "REEFER TRUCK CLIT CHECKSHEET",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "frequency",
-   "fieldtype": "Select",
-   "label": "Frequency",
-   "options": "Daily\nWeekly\nMonthly\nQuarterly",
-   "reqd": 1
   },
   {
    "default": "Today",
@@ -44,35 +38,51 @@
    "reqd": 1
   },
   {
+   "default": "Now",
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Time",
+   "reqd": 1
+  },
+  {
    "fieldname": "inspector",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Inspector",
-   "options": "User",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "frequency",
+   "fieldtype": "Select",
+   "label": "Frequency",
+   "options": "Daily\nWeekly\nMonthly\nQuarterly\nYearly",
    "reqd": 1
   },
   {
    "fieldname": "inspection_items",
    "fieldtype": "Table",
    "label": "Equipment Log",
-   "options": "CFU Inspection Item",
+   "options": "Reefer Inspection Item",
    "reqd": 1
   },
   {
    "fieldname": "abnormalities_log",
    "fieldtype": "Table",
    "label": "Abnormalities Log",
-   "options": "CFU Abnormality Log"
+   "options": "Reefer Abnormality Log"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-22 06:45:53.970837",
+ "modified": "2025-06-24 20:20:23.815080",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
- "name": "CFU Inspection Checksheet",
+ "name": "REEFER TRUCK CLIT CHECKSHEET",
+ "naming_rule": "By script",
  "owner": "Administrator",
  "permissions": [
   {
