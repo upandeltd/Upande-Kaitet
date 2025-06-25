@@ -165,37 +165,37 @@ doc_events = {
         # "upande_kaitet.server_scripts.reserve_stock.on_sales_order_created",
     },
     "Consolidated Pack List": {
-        "on_submit":
-        "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
         "on_cancel": "upande_kaitet.server_scripts.events.on_cpl_cancel"
 
         # "before_submit":
         # "upande_kaitet.server_scripts.completion_percentage.validate_completion_percentage"
     },
     "Sales Invoice": {
-        # "on_submit":
-        # "upande_kaitet.server_scripts.sinv_approved_by.set_approved_by",
+        "on_submit":
+        "upande_kaitet.server_scripts.sinv_approved_by.set_approved_by",
         "on_cancel":
         "upande_kaitet.server_scripts.events.on_sales_invoice_cancel"
     },
     "Farm Pack List": {
         "before_cancel":
         "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-        "on_submit":
-        "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
     }
 }
 
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"upande_kaitet.tasks.all"
-# 	],
-# 	"daily": [
-# 		"upande_kaitet.tasks.daily"
-# 	],
+scheduler_events = {
+	# "all": [
+	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
+	# ],
+	"daily": [
+		"upande_kaitet.tasks.transfer_holding_to_cold_store"
+	],
 # 	"hourly": [
 # 		"upande_kaitet.tasks.hourly"
 # 	],
@@ -217,7 +217,7 @@ doc_events = {
 #
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "upande_kaitet.event.get_events"
-# }
+}
 
 override_class = {
     "erpnext.controllers.taxes_and_totals.calculate_taxes_and_totals":
@@ -298,6 +298,24 @@ whitelisted_methods = {
 
 fixtures = [{
     "dt":
+    "DocType",
+    "filters": [[
+        "name", "in",
+        [
+            "QR Code", "Packing List", "Pack List Item",
+            "Scan", "Box Label", "Box Label Item", "Label Print",
+            "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
+            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+            "Rejection Reason", "Grading Repack Tracker Item",
+            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
+            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
+            "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
+            "SO Warehouse Mapping Item", "Temperature Reading", "Consignee",
+        ]
+    ]]
+}, {
+    "dt":
     "Server Script",
     "filters": [[
         "name", "in",
@@ -314,7 +332,8 @@ fixtures = [{
             "Validate unique bucket ID", "Set Bucket Id Status",
             "Create delivery trip", "Request Concession", "Filtering based on Role",
             "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
-            "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form"
+            "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form",
+            "Create Field Reject Entry"
         ]
     ]]
 }, {
@@ -350,25 +369,8 @@ fixtures = [{
             "Populate WIP and Target Warehoise in Work Order", "Auto-fetch Company from BOM in Work Order",
             "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
-            "Fetch SO Details", "Yoghurt Delivery Workflow",
-        ]
-    ]]
-}, {
-    "dt":
-    "DocType",
-    "filters": [[
-        "name", "in",
-        [
-            "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Box Label", "Box Label Item", "Label Print",
-            "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
-            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason", "Grading Repack Tracker Item",
-            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
-            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
-            "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
-            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
-            "SO Warehouse Mapping Item", "Temperature Reading", "Consignee", "Item Subclass"
+            "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
+            "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
         ]
     ]]
 }, {
