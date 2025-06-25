@@ -8,7 +8,8 @@
  "field_order": [
   "farm",
   "greenhouse",
-  "items"
+  "items",
+  "amended_from"
  ],
  "fields": [
   {
@@ -29,6 +30,16 @@
    "fieldtype": "Table",
    "label": "Items",
    "options": "Field Reject Item"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Field Reject",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
@@ -40,7 +51,7 @@
    "link_fieldname": "custom_field_reject_entry"
   }
  ],
- "modified": "2025-06-23 13:47:16.177177",
+ "modified": "2025-06-25 22:24:59.699974",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
  "name": "Field Reject",

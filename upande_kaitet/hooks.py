@@ -193,9 +193,9 @@ scheduler_events = {
 	# "all": [
 	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
 	# ],
-	"daily": [
-		"upande_kaitet.tasks.transfer_holding_to_cold_store"
-	],
+	# "daily": [
+	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
+	# ],
 # 	"hourly": [
 # 		"upande_kaitet.tasks.hourly"
 # 	],
@@ -306,7 +306,7 @@ fixtures = [{
             "Scan", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason", "Grading Repack Tracker Item",
+            "Grading Repack Tracker Item",
             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
             "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
@@ -383,6 +383,27 @@ fixtures = [{
             "Grader QR Print Format", "Bunch QR Code",
             "Trial Bunch Print Format", "Grader QR Print format 2",
             "Harvest Label 2"
+        ]
+    ]]
+}, {
+    "dt":
+    "Report",
+    "filters": [[
+        "name", "in",
+        [
+            "Harvest and Field Rejects Report", "Harvest by Item Group",
+            "Harvest Pick Report", "Harvest Received Report",
+            "Harvest Summary by Time of Day", "Harvest Totals by Variety",
+            "Available for Sale Stock Balance",
+            "Stock Sheet_Available for Sale", "Stock Sheet_Ungraded",
+            "Ungraded Stock Balance", "Field Rejects Report",
+            "Overall Discards and Rejects Report",
+            "Weekly Discards/Rejects Report", "Harvesting Stock Entries",
+            "Grading Stock Entries", "Receiving Stock Entries",
+            "Packhouse Discards or Rejects Details",
+            "Packhouse Discards or Rejects Report", "Sales Invoiced Report",
+            "Sales Invoice Details", "Sales Order Report",
+            "Sales per Variety Report (SO)", "Daily Sales Ops Summary"
         ]
     ]]
 }]

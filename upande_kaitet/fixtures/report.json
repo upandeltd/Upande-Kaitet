@@ -290,7 +290,7 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Burguret",
+    "default": "Kapkolia",
     "fieldname": "farm",
     "fieldtype": "Link",
     "label": "Farm",
@@ -305,8 +305,8 @@
   "is_standard": "No",
   "javascript": null,
   "json": null,
-  "letter_head": "Tambuzi",
-  "modified": "2025-04-10 12:29:25.053043",
+  "letter_head": "",
+  "modified": "2025-06-25 23:28:58.324269",
   "module": "Stock",
   "name": "Field Rejects Report",
   "prepared_report": 0,
@@ -340,12 +340,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
-   },
-   {
-    "parent": "Field Rejects Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Agronomist Clerk"
    },
    {
     "parent": "Field Rejects Report",
@@ -419,7 +413,7 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Burguret",
+    "default": "Kapkolia",
     "fieldname": "farm",
     "fieldtype": "Link",
     "label": "Farm",
@@ -434,8 +428,8 @@
   "is_standard": "No",
   "javascript": null,
   "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":130,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":90,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":160,\"label\":\"Ungraded Discards\",\"fieldname\":\"ungraded_discards\",\"id\":\"ungraded_discards\",\"name\":\"Ungraded Discards\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":140,\"label\":\"Graded Discards\",\"fieldname\":\"graded_discards\",\"id\":\"graded_discards\",\"name\":\"Graded Discards\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":130,\"label\":\"Graded Rejects\",\"fieldname\":\"graded_rejects\",\"id\":\"graded_rejects\",\"name\":\"Graded Rejects\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":95,\"label\":\"Total Loss\",\"fieldname\":\"total_loss\",\"id\":\"total_loss\",\"name\":\"Total Loss\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-06\",\"to_date\":\"2025-04-08\",\"farm\":\"Burguret\"}}",
-  "letter_head": "Tambuzi",
-  "modified": "2025-04-11 12:11:35.288684",
+  "letter_head": "",
+  "modified": "2025-06-25 23:30:22.187994",
   "module": "Stock",
   "name": "Packhouse Discards or Rejects Details",
   "prepared_report": 0,
@@ -469,12 +463,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
-   },
-   {
-    "parent": "Packhouse Discards or Rejects Details",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Agronomist Clerk"
    },
    {
     "parent": "Packhouse Discards or Rejects Details",
@@ -695,7 +683,7 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Burguret",
+    "default": "Kapkolia",
     "fieldname": "farm",
     "fieldtype": "Data",
     "label": "Farm",
@@ -710,8 +698,8 @@
   "is_standard": "No",
   "javascript": null,
   "json": null,
-  "letter_head": "Tambuzi",
-  "modified": "2025-04-10 12:06:13.050607",
+  "letter_head": "",
+  "modified": "2025-06-25 23:26:01.187155",
   "module": "Stock",
   "name": "Harvest by Item Group",
   "prepared_report": 0,
@@ -745,12 +733,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
-   },
-   {
-    "parent": "Harvest by Item Group",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Agronomist Clerk"
    },
    {
     "parent": "Harvest by Item Group",
@@ -1132,7 +1114,7 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Burguret",
+    "default": "Kapkolia",
     "fieldname": "farm",
     "fieldtype": "Data",
     "label": "Farm",
@@ -1147,8 +1129,8 @@
   "is_standard": "No",
   "javascript": null,
   "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":100,\"label\":\"Harvested\",\"fieldname\":\"harvested\",\"id\":\"harvested\",\"name\":\"Harvested\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":100,\"label\":\"Rejected\",\"fieldname\":\"rejected\",\"id\":\"rejected\",\"name\":\"Rejected\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-06\",\"to_date\":\"2025-04-06\",\"farm\":\"Burguret\"}}",
-  "letter_head": "Tambuzi",
-  "modified": "2025-04-07 10:41:14.472240",
+  "letter_head": "",
+  "modified": "2025-06-25 23:26:40.068214",
   "module": "Stock",
   "name": "Harvest Totals by Variety",
   "prepared_report": 0,
@@ -1182,12 +1164,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
-   },
-   {
-    "parent": "Harvest Totals by Variety",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Agronomist Clerk"
    },
    {
     "parent": "Harvest Totals by Variety",
@@ -1389,7 +1365,7 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Burguret",
+    "default": "Kapkolia",
     "fieldname": "farm",
     "fieldtype": "Link",
     "label": "Farm",
@@ -1404,8 +1380,8 @@
   "is_standard": "No",
   "javascript": null,
   "json": null,
-  "letter_head": "Tambuzi",
-  "modified": "2025-04-09 19:53:13.811217",
+  "letter_head": "",
+  "modified": "2025-06-25 23:28:10.019066",
   "module": "Stock",
   "name": "Harvest Summary by Time of Day",
   "prepared_report": 0,
@@ -1439,12 +1415,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
-   },
-   {
-    "parent": "Harvest Summary by Time of Day",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Agronomist Clerk"
    },
    {
     "parent": "Harvest Summary by Time of Day",
@@ -1653,7 +1623,7 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Burguret",
+    "default": "Kapkolia",
     "fieldname": "farm",
     "fieldtype": "Link",
     "label": "Farm",
@@ -1668,8 +1638,8 @@
   "is_standard": "No",
   "javascript": null,
   "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":70,\"label\":\"Qty\",\"fieldname\":\"qty\",\"id\":\"qty\",\"name\":\"Qty\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-01\",\"to_date\":\"2025-04-01\",\"farm\":\"Pendekeza\"}}",
-  "letter_head": "Tambuzi",
-  "modified": "2025-04-09 19:52:28.351502",
+  "letter_head": "",
+  "modified": "2025-06-25 23:22:59.736744",
   "module": "Stock",
   "name": "Harvest Pick Report",
   "prepared_report": 0,
@@ -1703,12 +1673,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
-   },
-   {
-    "parent": "Harvest Pick Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Agronomist Clerk"
    },
    {
     "parent": "Harvest Pick Report",
@@ -2361,7 +2325,7 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Burguret",
+    "default": "Kapkolia",
     "fieldname": "farm",
     "fieldtype": "Link",
     "label": "Farm",
@@ -2376,8 +2340,8 @@
   "is_standard": "No",
   "javascript": null,
   "json": "{\"columns\":[{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":95,\"label\":\"Good Pick\",\"fieldname\":\"good_pick\",\"id\":\"good_pick\",\"name\":\"Good Pick\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":90,\"label\":\"Rejected\",\"fieldname\":\"rejected\",\"id\":\"rejected\",\"name\":\"Rejected\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":90,\"label\":\"Total\",\"fieldname\":\"total\",\"id\":\"total\",\"name\":\"Total\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-16\",\"to_date\":\"2025-04-16\",\"farm\":\"Burguret\"}}",
-  "letter_head": "Tambuzi",
-  "modified": "2025-04-16 22:32:51.492054",
+  "letter_head": "",
+  "modified": "2025-06-25 23:27:10.325346",
   "module": "Stock",
   "name": "Harvest Received Report",
   "prepared_report": 0,
@@ -2411,12 +2375,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
-   },
-   {
-    "parent": "Harvest Received Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Agronomist Clerk"
    },
    {
     "parent": "Harvest Received Report",
@@ -2477,12 +2435,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Sales Manager"
-   },
-   {
-    "parent": "Harvest Received Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "CEO"
    }
   ],
   "timeout": 0
