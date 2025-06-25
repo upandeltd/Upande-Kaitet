@@ -165,8 +165,8 @@ doc_events = {
         # "upande_kaitet.server_scripts.reserve_stock.on_sales_order_created",
     },
     "Consolidated Pack List": {
-        "on_submit":
-        "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
         "on_cancel": "upande_kaitet.server_scripts.events.on_cpl_cancel"
 
         # "before_submit":
@@ -181,8 +181,8 @@ doc_events = {
     "Farm Pack List": {
         "before_cancel":
         "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-        "on_submit":
-        "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
     }
 }
 
@@ -304,7 +304,7 @@ fixtures = [{
         [
             "QR Code", "Packing List", "Pack List Item",
             "Scan", "Box Label", "Box Label Item", "Label Print",
-            "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
+            "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
             "Rejection Reason", "Grading Repack Tracker Item",
             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
@@ -312,8 +312,6 @@ fixtures = [{
             "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
             "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
             "SO Warehouse Mapping Item", "Temperature Reading", "Consignee",
-            "Field Reject", "Field Reject Item", "Colors", "Spec Customer Item",
-            "Specifications", "Spec Color Item"
         ]
     ]]
 }, {
@@ -372,7 +370,7 @@ fixtures = [{
             "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
             "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
-            "CSU AM Checksheet" , "Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" ,"Tractor Inspection Checksheet"
+            "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
         ]
     ]]
 }, {
