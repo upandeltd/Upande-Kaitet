@@ -104,7 +104,7 @@
   "doctype_event": "After Submit",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-06-17 12:48:49.840849",
+  "modified": "2025-06-12 12:23:04.757160",
   "module": "Upande Kaitet",
   "name": "Material Issue Notification",
   "rate_limit_count": 5,
@@ -503,13 +503,13 @@
   "doctype_event": "Before Submit",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-06-22 10:54:13.468214",
+  "modified": "2025-06-28 21:47:50.539061",
   "module": "Upande Kaitet",
   "name": "Create Field Reject Entry",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
-  "reference_doctype": "Field Reject",
-  "script": "entry_doc = frappe.new_doc(\"Stock Entry\")\nfarm_doc = frappe.get_doc(\"Farm\", doc.farm)\n\nentry_doc.stock_entry_type = \"Field Rejects\"\nentry_doc.company = farm_doc.company\nentry_doc.custom_farm = doc.farm\nentry_doc.custom_greenhouse = doc.greenhouse\nentry_doc.custom_field_reject_entry = doc.name\n\n# Roses because field rejects are for flowers only\nentry_doc.custom_business_unit = \"Roses\"\n\nfor item in doc.items:\n    entry_item = entry_doc.append(\"items\", {})\n    entry_item.t_warehouse = doc.greenhouse\n    entry_item.item_code = item.variety\n    entry_item.qty = item.no_of_stems\n    entry_item.custom_rejection_reason = item.rejection_reason\n    entry_item.custom_bay = item.bay\n\nentry_doc.save()\nentry_doc.submit()",
+  "reference_doctype": "Rejects",
+  "script": "if doc.action == \"Field Rejects\":\n    entry_doc = frappe.new_doc(\"Stock Entry\")\n    farm_doc = frappe.get_doc(\"Farm\", doc.farm)\n    \n    entry_doc.stock_entry_type = \"Field Rejects\"\n    entry_doc.company = farm_doc.company\n    entry_doc.custom_farm = doc.farm\n    entry_doc.custom_greenhouse = doc.greenhouse\n    entry_doc.custom_field_reject_entry = doc.name\n    \n    # Roses because field rejects are for flowers only\n    entry_doc.custom_business_unit = \"Roses\"\n    \n    for item in doc.items:\n        entry_item = entry_doc.append(\"items\", {})\n        entry_item.t_warehouse = doc.greenhouse\n        entry_item.item_code = item.variety\n        entry_item.qty = item.no_of_stems\n        entry_item.custom_rejection_reason = item.rejection_reason\n\n    entry_doc.save()\n    entry_doc.submit()\n    \nif doc.action == \"Quarantine Rejects\":\n    entry_doc = frappe.new_doc(\"Stock Entry\")\n    farm_doc = frappe.get_doc(\"Farm\", doc.farm)\n    \n    entry_doc.stock_entry_type = \"Quarantine Rejects\"\n    entry_doc.company = farm_doc.company\n    entry_doc.custom_farm = doc.farm\n    entry_doc.custom_field_reject_entry = doc.name\n    \n    # Roses because field rejects are for flowers only\n    entry_doc.custom_business_unit = \"Roses\"\n    \n    for item in doc.items:\n        entry_item = entry_doc.append(\"items\", {})\n        entry_item.s_warehouse = f'{farm} Receiving Cold Store - KR'\n        entry_item.item_code = item.variety\n        entry_item.qty = item.no_of_stems\n        entry_item.custom_rejection_reason = item.rejection_reason\n\n    entry_doc.save()\n    entry_doc.submit()\n    \nif doc.action == \"Packhouse Rejects\":\n    entry_doc = frappe.new_doc(\"Stock Entry\")\n    farm_doc = frappe.get_doc(\"Farm\", doc.farm)\n    \n    entry_doc.stock_entry_type = \"Packhouse Rejects\"\n    entry_doc.company = farm_doc.company\n    entry_doc.custom_farm = doc.farm\n    entry_doc.custom_field_reject_entry = doc.name\n    \n    # Roses because field rejects are for flowers only\n    entry_doc.custom_business_unit = \"Roses\"\n    \n    for item in doc.items:\n        entry_item = entry_doc.append(\"items\", {})\n        entry_item.s_warehouse = f'{farm} Receiving Cold Store - KR'\n        entry_item.item_code = item.variety\n        entry_item.qty = item.no_of_stems\n        entry_item.custom_rejection_reason = item.rejection_reason\n\n    entry_doc.save()\n    entry_doc.submit()\n    \n    \nif doc.action == \"Delivery Rejects\":\n    entry_doc = frappe.new_doc(\"Stock Entry\")\n    farm_doc = frappe.get_doc(\"Farm\", doc.farm)\n    \n    entry_doc.stock_entry_type = \"Delivery Rejects\"\n    entry_doc.company = farm_doc.company\n    entry_doc.custom_farm = doc.farm\n    entry_doc.custom_field_reject_entry = doc.name\n    \n    # Roses because field rejects are for flowers only\n    entry_doc.custom_business_unit = \"Roses\"\n    \n    for item in doc.items:\n        entry_item = entry_doc.append(\"items\", {})\n        entry_item.s_warehouse = f'{farm} Graded Sold - KR'\n        entry_item.t_warehouse = f'{farm} Graded Sold - KR'\n        entry_item.item_code = item.variety\n        entry_item.qty = item.no_of_stems\n        entry_item.custom_rejection_reason = item.rejection_reason\n\n    entry_doc.save()\n    entry_doc.submit()\n    \n\n\n\n\n",
   "script_type": "DocType Event"
  }
 ]

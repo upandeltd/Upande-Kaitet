@@ -296,25 +296,28 @@ whitelisted_methods = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
-fixtures = [{
-    "dt":
-    "DocType",
-    "filters": [[
-        "name", "in",
-        [
-            "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Box Label", "Box Label Item", "Label Print",
-            "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
-            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Grading Repack Tracker Item",
-            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
-            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
-            "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
-            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
-            "SO Warehouse Mapping Item", "Temperature Reading", "Consignee", "Item Subclass"
-        ]
-    ]]
-}, {
+fixtures = [
+# {
+#     "dt":
+#     "DocType",
+#     "filters": [[
+#         "name", "in",
+#         [
+#             "QR Code", "Packing List", "Pack List Item",
+#             "Scan", 
+#             "Box Label", "Box Label Item", "Label Print",
+#             "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
+#             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+#             "Grading Repack Tracker Item",
+#             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
+#             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
+#             "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+#             "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
+#             "SO Warehouse Mapping Item", "Temperature Reading", "Consignee", "Item Subclass"
+#         ]
+#     ]]
+# },
+{
     "dt":
     "Server Script",
     "filters": [[
