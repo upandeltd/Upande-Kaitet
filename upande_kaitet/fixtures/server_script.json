@@ -1,6 +1,25 @@
 [
  {
   "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Submit",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-06-22 10:54:13.468214",
+  "module": "Upande Kaitet",
+  "name": "Create Field Reject Entry",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Field Reject",
+  "script": "entry_doc = frappe.new_doc(\"Stock Entry\")\nfarm_doc = frappe.get_doc(\"Farm\", doc.farm)\n\nentry_doc.stock_entry_type = \"Field Rejects\"\nentry_doc.company = farm_doc.company\nentry_doc.custom_farm = doc.farm\nentry_doc.custom_greenhouse = doc.greenhouse\nentry_doc.custom_field_reject_entry = doc.name\n\n# Roses because field rejects are for flowers only\nentry_doc.custom_business_unit = \"Roses\"\n\nfor item in doc.items:\n    entry_item = entry_doc.append(\"items\", {})\n    entry_item.t_warehouse = doc.greenhouse\n    entry_item.item_code = item.variety\n    entry_item.qty = item.no_of_stems\n    entry_item.custom_rejection_reason = item.rejection_reason\n    entry_item.custom_bay = item.bay\n\nentry_doc.save()\nentry_doc.submit()",
+  "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
   "api_method": "create_repack_entry",
   "cron_format": null,
   "disabled": 0,
