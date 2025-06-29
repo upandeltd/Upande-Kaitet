@@ -9,7 +9,8 @@
   "action",
   "farm",
   "greenhouse",
-  "items"
+  "items",
+  "amended_from"
  ],
  "fields": [
   {
@@ -25,9 +26,11 @@
    "options": "Farm"
   },
   {
+   "depends_on": "eval:doc.action === \"Field Rejects\"",
    "fieldname": "greenhouse",
    "fieldtype": "Link",
    "label": "Greenhouse",
+   "link_filters": "[[\"Warehouse\",\"custom_farm\",\"=\",\"eval:doc.farm\"],[\"Warehouse\",\"warehouse_type\",\"=\",\"Greenhouse\"]]",
    "options": "Warehouse"
   },
   {
@@ -35,12 +38,28 @@
    "fieldtype": "Table",
    "label": "Items",
    "options": "Field Reject Item"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Rejects",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-06-28 21:10:19.093224",
+ "is_submittable": 1,
+ "links": [
+  {
+   "link_doctype": "Stock Entry",
+   "link_fieldname": "custom_field_reject_entry"
+  }
+ ],
+ "modified": "2025-06-29 09:45:04.604639",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
  "name": "Rejects",
