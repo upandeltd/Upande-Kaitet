@@ -40,8 +40,8 @@ def get_hourly_chart_data(chart):
             "name": chart_doc.chart_name,
             "values": values
         }],
-        "type": "line",              # required for custom charts
-        "colors": ["#7cd6fd"],       # optional styling
-        "yMarkers": [],              # optional
-        "yRegions": []               # optional
+        "type": "bar",            
+        "colors": ["#00f836"],      
+        "yMarkers": [],              
+        "yRegions": []               
     }
