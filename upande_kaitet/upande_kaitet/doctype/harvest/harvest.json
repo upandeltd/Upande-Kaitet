@@ -44,7 +44,7 @@
   {
    "fieldname": "item_code",
    "fieldtype": "Link",
-   "label": "Item Code",
+   "label": "Variety",
    "link_filters": "[[\"Item\",\"custom_greenhouse\",\"=\",\"eval:doc.block\"]]",
    "options": "Item"
   },
@@ -64,12 +64,12 @@
   {
    "fieldname": "quantity",
    "fieldtype": "Int",
-   "label": "Quantity"
+   "label": "Number of Stems"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-24 18:37:30.774009",
+ "modified": "2025-06-25 22:05:02.726915",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
  "name": "Harvest",
