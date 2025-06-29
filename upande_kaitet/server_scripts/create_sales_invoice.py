@@ -21,6 +21,7 @@ def create_sales_invoice_from_packlist(doc, method):
     for sales_order_id in sales_order_ids:
         try:
             
+            
             sales_order = frappe.get_doc("Sales Order", sales_order_id)
 
             # Create New Sales Invoice
