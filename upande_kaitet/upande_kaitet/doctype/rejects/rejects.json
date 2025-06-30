@@ -1,16 +1,24 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:{greenhouse}-{#####}",
- "creation": "2025-06-23 13:11:44.213275",
+ "autoname": "format:{action}-{farm}-{#####}",
+ "creation": "2025-06-28 21:04:36.794959",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "action",
   "farm",
   "greenhouse",
-  "items"
+  "items",
+  "amended_from"
  ],
  "fields": [
+  {
+   "fieldname": "action",
+   "fieldtype": "Select",
+   "label": "Action",
+   "options": "\nField Rejects\nQuarantine Rejects\nPackhouse Rejects\nDelivery Rejects"
+  },
   {
    "fieldname": "farm",
    "fieldtype": "Link",
@@ -18,6 +26,7 @@
    "options": "Farm"
   },
   {
+   "depends_on": "eval:doc.action === \"Field Rejects\"",
    "fieldname": "greenhouse",
    "fieldtype": "Link",
    "label": "Greenhouse",
@@ -29,6 +38,16 @@
    "fieldtype": "Table",
    "label": "Items",
    "options": "Field Reject Item"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Rejects",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
@@ -40,10 +59,10 @@
    "link_fieldname": "custom_field_reject_entry"
   }
  ],
- "modified": "2025-06-23 13:47:16.177177",
+ "modified": "2025-06-29 09:45:04.604639",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
- "name": "Field Reject",
+ "name": "Rejects",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
@@ -58,49 +77,10 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Harvest Manager",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Harvest User",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Quality Manager",
-   "share": 1,
-   "submit": 1,
-   "write": 1
   }
  ],
  "row_format": "Dynamic",
- "sort_field": "modified",
+ "sort_field": "creation",
  "sort_order": "DESC",
  "states": []
 }

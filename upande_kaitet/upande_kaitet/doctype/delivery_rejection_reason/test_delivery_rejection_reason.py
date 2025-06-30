@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestFieldReject(FrappeTestCase):
+class TestDeliveryRejectionReason(FrappeTestCase):
 	pass
