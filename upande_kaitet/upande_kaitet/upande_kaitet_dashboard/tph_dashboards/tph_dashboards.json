@@ -2,9 +2,6 @@
  "cards": [],
  "charts": [
   {
-   "width": "Half"
-  },
-  {
    "chart": "GreenHouse1",
    "width": "Half"
   },
@@ -20,7 +17,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2025-06-30 12:03:29.929210",
+ "modified": "2025-06-30 22:06:36.057606",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
  "name": "TPH Dashboards",
