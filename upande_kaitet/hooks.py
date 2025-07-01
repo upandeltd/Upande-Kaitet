@@ -338,7 +338,7 @@ fixtures = [
             "Create delivery trip", "Request Concession", "Filtering based on Role",
             "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
             "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form",
-            "Create Field Reject Entry"
+            "Create Field Reject Entry", "Check reason field"
         ]
     ]]
 }, {
@@ -377,6 +377,7 @@ fixtures = [
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
             "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
             "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
+            "Refresh Items Table"
         ]
     ]]
 }, {
