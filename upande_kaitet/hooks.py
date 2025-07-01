@@ -347,6 +347,7 @@ fixtures = [
     "filters": [[
         "name", "in",
         [
+            "Leave Balance After Auto-Calculation", "Leave Encashment Amount Auto-Calculation", "P9 Form",            
             "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
@@ -390,7 +391,8 @@ fixtures = [
             "Harvest Label 2"
         ]
     ]]
-}, {
+},
+{
     "dt":
     "Report",
     "filters": [[
