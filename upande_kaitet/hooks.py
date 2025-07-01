@@ -302,18 +302,7 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
-            "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Box Label", "Box Label Item", "Label Print",
-            "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
-            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason", "Grading Repack Tracker Item",
-            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
-            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
-            "Farm", "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
-            "GPS Readings", "Delivery Type", "Loss Reason", "SO Warehouse Mapping",
-            "SO Warehouse Mapping Item", "Temperature Reading", "Consignee",
-            "Field Reject", "Field Reject Item", "Colors", "Spec Customer Item",
-            "Specifications", "Spec Color Item"
+            "Leave Application", "Family Tree", "P9 Form", "P9 Monthly Breakdown"
         ]
     ]]
 }, {
@@ -322,20 +311,7 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
-            "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
-            "Harvest Stock Entry", "Automate Rejects Material Issue",
-            "Create Box Labels", "Update Grading Forecast Tracker",
-            "Update Sales Order ID on Save",
-            "Update Forecast Tracker (During Grading)",
-            "Update Tracker (During Grading Cancel)",
-            "Update Tracker (Grading Forecast)", "Forecast Entry",
-            "Allow Packing Of Returned Bunches", "FPL Block New Version",
-            "Lock Dates On Submit of Sales Invoice",
-            "Validate unique bucket ID", "Set Bucket Id Status",
-            "Create delivery trip", "Request Concession", "Filtering based on Role",
-            "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
-            "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form",
-            "Create Field Reject Entry"
+            "Auto Promotion Notification", "Auto Promotion Eligibility"
         ]
     ]]
 }, {
@@ -344,47 +320,10 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
-            "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
-            "Scan Data Field Listener", "Scan QR Button",
-            "Populate Number of Items", "Grading Stock Entry",
-            "Field Rejects Stock Entry", "Archive Employee",
-            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
-            "New Form After Save", "Remove Read Only on Field",
-            "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
-            "Hide Filter Button 2",
-            "Hide Filter Button (Bucket QR Code List) 2",
-            "Ensure Uppercase in Bay Field", "Grading Traceability Symbols",
-            "SO target warehouse Population",
-            "Set List View Limit to 500(GRADER)",
-            "Set List View Limit to 500(BUNCH)",
-            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
-            "Autopopulate Sales Order ID in CPL",
-            "Ensure Items are in SO Before Manually Adding (FPL)",
-            "Authorise Under Pack Button in FPL",
-            "Autopopulate Sales Order ID in FPL",
-            "Amount Calc Based on IGP", "Under Pack Cancel Button",
-            "Combined Script", "Request Concession Button", "Request Concession 2",
-            "Employee Filtering", "Yoghurt Manufacturing Stock Entry", "Work Order",
-            "Geo", "Hide Fields in Work Order", "Loss Reason Mandatory", "Stock Entry Type Automation",
-            "Default Source and Target Warehouse", "Allow Valuation Rate", "Start Job Script",
-            "Fetch Farm and Business Unit", "Update Source Warehouse", "Trip Button",
-            "Populate WIP and Target Warehoise in Work Order", "Auto-fetch Company from BOM in Work Order",
-            "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
-            "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
-            "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
+            "Leave Balance After Auto-Calculation", "Leave Encashment Amount Auto-Calculation", "P9 Form"
+            
         ]
     ]]
-}, {
-    "dt":
-    "Print Format",
-    "filters": [[
-        "name", "in",
-        [
-            "QR Code Only", "Box Label", "Harvest Label",
-            "Grader QR Print Format", "Bunch QR Code",
-            "Trial Bunch Print Format", "Grader QR Print format 2",
-            "Harvest Label 2"
-        ]
-    ]]
-}]
+}
+]
 # fixtures = ["Custom Field", "Property Setter", "DocType"]
