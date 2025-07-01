@@ -165,8 +165,8 @@ doc_events = {
         # "upande_kaitet.server_scripts.reserve_stock.on_sales_order_created",
     },
     "Consolidated Pack List": {
-        "on_submit":
-        "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
         "on_cancel": "upande_kaitet.server_scripts.events.on_cpl_cancel"
 
         # "before_submit":
@@ -181,8 +181,8 @@ doc_events = {
     "Farm Pack List": {
         "before_cancel":
         "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-        "on_submit":
-        "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        # "on_submit":
+        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
     }
 }
 
@@ -193,9 +193,9 @@ scheduler_events = {
 	# "all": [
 	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
 	# ],
-	"daily": [
-		"upande_kaitet.tasks.transfer_holding_to_cold_store"
-	],
+	# "daily": [
+	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
+	# ],
 # 	"hourly": [
 # 		"upande_kaitet.tasks.hourly"
 # 	],
@@ -296,6 +296,7 @@ whitelisted_methods = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+<<<<<<< HEAD
 fixtures = [{
     "dt":
     "DocType",
@@ -306,6 +307,32 @@ fixtures = [{
         ]
     ]]
 }, {
+=======
+fixtures = [
+# {
+#     "dt":
+#     "DocType",
+#     "filters": [[
+#         "name", "in",
+#         [
+#             "QR Code", "Packing List", "Pack List Item",
+#             "Scan", 
+#             "Box Label", "Box Label Item", "Label Print",
+#             "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
+#             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+#             "Grading Repack Tracker Item",
+#             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
+#             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
+#             "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+#             "GPS Readings", "Delivery Type", "Loss Reason", 
+#             # "SO Warehouse Mapping",
+# #             "SO Warehouse Mapping Item", 
+#               "Temperature Reading", "Consignee", "Item Subclass"
+#         ]
+#     ]]
+# },
+{
+>>>>>>> 7b67ef17e3b1c9835600acd4fbded587b78f1e1f
     "dt":
     "Server Script",
     "filters": [[
@@ -320,6 +347,7 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
+<<<<<<< HEAD
             "Leave Balance After Auto-Calculation", "Leave Encashment Amount Auto-Calculation", "P9 Form"
             
         ]
@@ -327,3 +355,71 @@ fixtures = [{
 }
 ]
 # fixtures = ["Custom Field", "Property Setter", "DocType"]
+=======
+            "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
+            "Scan Data Field Listener", "Scan QR Button",
+            "Populate Number of Items", "Grading Stock Entry",
+            "Field Rejects Stock Entry", "Archive Employee",
+            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
+            "New Form After Save", "Remove Read Only on Field",
+            "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
+            "Hide Filter Button 2",
+            "Hide Filter Button (Bucket QR Code List) 2",
+            "Ensure Uppercase in Bay Field", "Grading Traceability Symbols",
+            "SO target warehouse Population",
+            "Set List View Limit to 500(GRADER)",
+            "Set List View Limit to 500(BUNCH)",
+            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
+            "Autopopulate Sales Order ID in CPL",
+            "Ensure Items are in SO Before Manually Adding (FPL)",
+            "Authorise Under Pack Button in FPL",
+            "Autopopulate Sales Order ID in FPL",
+            "Amount Calc Based on IGP", "Under Pack Cancel Button",
+            "Combined Script", "Request Concession Button", "Request Concession 2",
+            "Employee Filtering", "Yoghurt Manufacturing Stock Entry", "Work Order",
+            "Geo", "Hide Fields in Work Order", "Loss Reason Mandatory", "Stock Entry Type Automation",
+            "Default Source and Target Warehouse", "Allow Valuation Rate", "Start Job Script",
+            "Fetch Farm and Business Unit", "Update Source Warehouse", "Trip Button",
+            "Populate WIP and Target Warehoise in Work Order", "Auto-fetch Company from BOM in Work Order",
+            "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
+            "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
+            "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
+            "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
+        ]
+    ]]
+}, {
+    "dt":
+    "Print Format",
+    "filters": [[
+        "name", "in",
+        [
+            "QR Code Only", "Box Label", "Harvest Label",
+            "Grader QR Print Format", "Bunch QR Code",
+            "Trial Bunch Print Format", "Grader QR Print format 2",
+            "Harvest Label 2"
+        ]
+    ]]
+}, {
+    "dt":
+    "Report",
+    "filters": [[
+        "name", "in",
+        [
+            "Harvest and Field Rejects Report", "Harvest by Item Group",
+            "Harvest Pick Report", "Harvest Received Report",
+            "Harvest Summary by Time of Day", "Harvest Totals by Variety",
+            "Available for Sale Stock Balance",
+            "Stock Sheet_Available for Sale", "Stock Sheet_Ungraded",
+            "Ungraded Stock Balance", "Field Rejects Report",
+            "Overall Discards and Rejects Report",
+            "Weekly Discards/Rejects Report", "Harvesting Stock Entries",
+            "Grading Stock Entries", "Receiving Stock Entries",
+            "Packhouse Discards or Rejects Details",
+            "Packhouse Discards or Rejects Report", "Sales Invoiced Report",
+            "Sales Invoice Details", "Sales Order Report",
+            "Sales per Variety Report (SO)", "Daily Sales Ops Summary"
+        ]
+    ]]
+}]
+# fixtures = ["Custom Field", "Property Setter", "DocType"]
+>>>>>>> 7b67ef17e3b1c9835600acd4fbded587b78f1e1f

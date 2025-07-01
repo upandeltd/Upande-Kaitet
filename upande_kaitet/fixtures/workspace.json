@@ -311,7 +311,8 @@
     "url": null
    }
   ],
-  "title": "Production Reports"
+  "title": "Production Reports",
+  "type": "Page"
  },
  {
   "charts": [],
@@ -466,6 +467,8 @@
     "url": null
    }
   ],
-  "title": "Packhouse and Sales"
+  "title": "Packhouse and Sales",
+  "type": "Page"
+
  }
 ]
