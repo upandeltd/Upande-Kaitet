@@ -335,7 +335,7 @@ fixtures = [{
             "Create delivery trip", "Request Concession", "Filtering based on Role",
             "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
             "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form",
-            "Create Field Reject Entry"
+            "Create Field Reject Entry", "CFU AM CHECKLIST", "Reefer Truck CLIT → Support Issue", "CSU AM Checksheet → Support Issue", "bPackhouse AM Checklist → Support Issue"
         ]
     ]]
 }, {
@@ -372,8 +372,10 @@ fixtures = [{
             "Auto-fetch Company", "Auto-set Company on BOM based on Item's Warehouse", "Repack Button", 
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
             "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
-            "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
-        ]
+            "CSU AM Checksheet" , "CSU AM Inspection Item"
+,"Tractor Inspection Checksheet","Truck Abnormality Tracking","Truck Inspection Item" ,"Reefer Abnormality Log","REEFER TRUCK CLIT CHECKSHEET","Reefer Inspection Item",
+ "Truck Inspection Checksheet","Packhouse Inspection Item" , "Packhouse Abnormalities Log","Packhouse Equipment and Machine AM Checklist" , "CSU Abnormality Log"
+,"CFU Inspection Checksheet" , "CFU Abnormality Log" ,"Tractor Inspection Item","Tractor Abnormality Tracking","Tractor Inspection Checksheet",        ]
     ]]
 }, {
     "dt":
@@ -387,5 +389,12 @@ fixtures = [{
             "Harvest Label 2"
         ]
     ]]
+    
 }]
 # fixtures = ["Custom Field", "Property Setter", "DocType"]
+doc_events = {
+    "CFU AM CHECKLIST": {
+        "on_submit": "upande_kaitet.events.cfu_am_checksheet.create_support_issues"
+    }
+}
+
