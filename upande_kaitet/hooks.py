@@ -296,18 +296,6 @@ whitelisted_methods = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
-<<<<<<< HEAD
-fixtures = [{
-    "dt":
-    "DocType",
-    "filters": [[
-        "name", "in",
-        [
-            "Leave Application", "Family Tree", "P9 Form", "P9 Monthly Breakdown"
-        ]
-    ]]
-}, {
-=======
 fixtures = [
 # {
 #     "dt":
@@ -332,13 +320,25 @@ fixtures = [
 #     ]]
 # },
 {
->>>>>>> 7b67ef17e3b1c9835600acd4fbded587b78f1e1f
     "dt":
     "Server Script",
     "filters": [[
         "name", "in",
         [
-            "Auto Promotion Notification", "Auto Promotion Eligibility"
+            "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
+            "Harvest Stock Entry", "Automate Rejects Material Issue",
+            "Create Box Labels", "Update Grading Forecast Tracker",
+            "Update Sales Order ID on Save",
+            "Update Forecast Tracker (During Grading)",
+            "Update Tracker (During Grading Cancel)",
+            "Update Tracker (Grading Forecast)", "Forecast Entry",
+            "Allow Packing Of Returned Bunches", "FPL Block New Version",
+            "Lock Dates On Submit of Sales Invoice",
+            "Validate unique bucket ID", "Set Bucket Id Status",
+            "Create delivery trip", "Request Concession", "Filtering based on Role",
+            "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
+            "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form",
+            "Create Field Reject Entry"
         ]
     ]]
 }, {
@@ -347,15 +347,7 @@ fixtures = [
     "filters": [[
         "name", "in",
         [
-<<<<<<< HEAD
-            "Leave Balance After Auto-Calculation", "Leave Encashment Amount Auto-Calculation", "P9 Form"
-            
-        ]
-    ]]
-}
-]
-# fixtures = ["Custom Field", "Property Setter", "DocType"]
-=======
+            "Leave Balance After Auto-Calculation", "Leave Encashment Amount Auto-Calculation", "P9 Form",            
             "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
@@ -399,7 +391,8 @@ fixtures = [
             "Harvest Label 2"
         ]
     ]]
-}, {
+},
+{
     "dt":
     "Report",
     "filters": [[
@@ -422,4 +415,3 @@ fixtures = [
     ]]
 }]
 # fixtures = ["Custom Field", "Property Setter", "DocType"]
->>>>>>> 7b67ef17e3b1c9835600acd4fbded587b78f1e1f
