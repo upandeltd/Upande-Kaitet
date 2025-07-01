@@ -28,6 +28,87 @@
   ],
   "is_standard": "No",
   "javascript": null,
+  "json": "{\"columns\":[{\"fieldtype\":\"Link\",\"options\":\"Customer\",\"width\":200,\"label\":\"Customer\",\"fieldname\":\"customer\",\"id\":\"customer\",\"name\":\"Customer\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":125,\"label\":\"Country\",\"fieldname\":\"country\",\"id\":\"country\",\"name\":\"Country\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Date\",\"width\":125,\"label\":\"Order Date\",\"fieldname\":\"order_date\",\"id\":\"order_date\",\"name\":\"Order Date\",\"editable\":false},{\"fieldtype\":\"Date\",\"width\":125,\"label\":\"Shipment Date\",\"fieldname\":\"shipment_date\",\"id\":\"shipment_date\",\"name\":\"Shipment Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Sales Order\",\"width\":160,\"label\":\"Sales Order ID\",\"fieldname\":\"sales_order_id\",\"id\":\"sales_order_id\",\"name\":\"Sales Order ID\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":90,\"label\":\"Status\",\"fieldname\":\"status\",\"id\":\"status\",\"name\":\"Status\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":100,\"label\":\"Stems\",\"fieldname\":\"stems\",\"id\":\"stems\",\"name\":\"Stems\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Currency\",\"width\":130,\"label\":\"Amount (KES)\",\"fieldname\":\"amount_(kes)\",\"id\":\"amount_(kes)\",\"name\":\"Amount (KES)\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-11\",\"to_date\":\"2025-04-11\"}}",
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-14 23:22:47.656312",
+  "module": "Selling",
+  "name": "Sales per Variety Report (SO)",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    soi.item_code AS \"Item Code:Link/Item:200\",\r\n    SUM(soi.stock_qty) AS \"Stems:Int:70\",\r\n    ROUND(SUM(soi.stock_qty) / total.total_stems * 100, 1) AS \"Contribution:Percent:110\",\r\n   ROUND(SUM(soi.base_amount),2) AS \"Amount (KES):Currency:130\"\r\nFROM\r\n    `tabSales Order` so\r\nJOIN\r\n    `tabSales Order Item` soi ON so.name = soi.parent,\r\n    (\r\n        SELECT SUM(soi.stock_qty) AS total_stems\r\n        FROM `tabSales Order` so\r\n        JOIN `tabSales Order Item` soi ON so.name = soi.parent\r\n        WHERE\r\n            so.docstatus = 1\r\n            AND so.transaction_date >= %(from_date)s\r\n            AND so.transaction_date <= %(to_date)s\r\n    ) AS total\r\nWHERE\r\n    so.docstatus = 1\r\n    AND so.transaction_date >= %(from_date)s\r\n    AND so.transaction_date <= %(to_date)s\r\nGROUP BY\r\n    soi.item_code\r\nORDER BY\r\n    SUM(soi.stock_qty) DESC;",
+  "ref_doctype": "Sales Order",
+  "reference_report": "",
+  "report_name": "Sales per Variety Report (SO)",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "role": "Stock User"
+   },
+   {
+    "role": "Accounts User"
+   },
+   {
+    "role": "Sales User"
+   },
+   {
+    "role": "Sales Manager"
+   },
+   {
+    "role": "Sales Representative"
+   },
+   {
+    "role": "Tambuzi Trainer"
+   },
+   {
+    "role": "CEO"
+   },
+   {
+    "role": "Accounts Manager"
+   },
+   {
+    "role": "AR Accountant"
+   },
+   {
+    "role": "Burguret Packhouse Manager"
+   },
+   {
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "role": "Turacco Packhouse Manager"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
   "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":110,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":90,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":110,\"label\":\"Field Rejects\",\"fieldname\":\"field_rejects\",\"id\":\"field_rejects\",\"name\":\"Field Rejects\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":155,\"label\":\"Ungraded Discards\",\"fieldname\":\"ungraded_discards\",\"id\":\"ungraded_discards\",\"name\":\"Ungraded Discards\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":140,\"label\":\"Graded Discards\",\"fieldname\":\"graded_discards\",\"id\":\"graded_discards\",\"name\":\"Graded Discards\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":130,\"label\":\"Graded Rejects\",\"fieldname\":\"graded_rejects\",\"id\":\"graded_rejects\",\"name\":\"Graded Rejects\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":95,\"label\":\"Total\",\"fieldname\":\"total\",\"id\":\"total\",\"name\":\"Total\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-08\",\"to_date\":\"2025-04-11\"}}",
   "letter_head": "Tambuzi",
   "modified": "2025-04-11 11:53:45.499720",
@@ -113,20 +194,290 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Kapkolia",
+    "default": "Burguret",
     "fieldname": "farm",
-    "fieldtype": "Select",
+    "fieldtype": "Link",
     "label": "Farm",
-    "mandatory": 0,
-    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "mandatory": 1,
+    "options": "Farm",
     "wildcard_filter": 0
    }
   ],
   "is_standard": "No",
   "javascript": null,
   "json": null,
-  "letter_head": "",
-  "modified": "2025-06-29 13:42:42.495093",
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-10 12:29:25.053043",
+  "module": "Stock",
+  "name": "Field Rejects Report",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    se.custom_farm AS \"Farm:Link/Farm:100\",\r\n    sed.t_warehouse AS \"Block:Link/Warehouse:100\",\r\n    UPPER(sed.custom_bay) AS \"Bay:Data:60\",\r\n    sed.custom_rejection_reason AS \"Rejection Reason:Select:180\",\r\n    SUM(sed.qty) AS \"Rejected:Int:70\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code    \r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm= %(farm)s\r\n    AND se.stock_entry_type = \"Field Rejects\"\r\nGROUP BY\r\n    se.posting_date, i.item_group, sed.item_code, se.custom_farm, sed.t_warehouse, sed.custom_bay, sed.custom_rejection_reason\r\nORDER BY\r\n    se.posting_date, i.item_group, sed.item_code, se.custom_farm, sed.t_warehouse, sed.custom_bay;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Field Rejects Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "role": "Stock Manager"
+   },
+   {
+    "role": "Stock User"
+   },
+   {
+    "role": "Manufacturing Manager"
+   },
+   {
+    "role": "Manufacturing User"
+   },
+   {
+    "role": "Agronomist Clerk"
+   },
+   {
+    "role": "Production Manager"
+   },
+   {
+    "role": "Harvest Manager"
+   },
+   {
+    "role": "Harvest User"
+   },
+   {
+    "role": "Packing Supervisor"
+   },
+   {
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "role": "Turacco Packhouse Manager"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Burguret",
+    "fieldname": "farm",
+    "fieldtype": "Link",
+    "label": "Farm",
+    "mandatory": 1,
+    "options": "Farm",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":130,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":90,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":160,\"label\":\"Ungraded Discards\",\"fieldname\":\"ungraded_discards\",\"id\":\"ungraded_discards\",\"name\":\"Ungraded Discards\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":140,\"label\":\"Graded Discards\",\"fieldname\":\"graded_discards\",\"id\":\"graded_discards\",\"name\":\"Graded Discards\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":130,\"label\":\"Graded Rejects\",\"fieldname\":\"graded_rejects\",\"id\":\"graded_rejects\",\"name\":\"Graded Rejects\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":95,\"label\":\"Total Loss\",\"fieldname\":\"total_loss\",\"id\":\"total_loss\",\"name\":\"Total Loss\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-06\",\"to_date\":\"2025-04-08\",\"farm\":\"Burguret\"}}",
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-11 12:11:35.288684",
+  "module": "Stock",
+  "name": "Packhouse Discards or Rejects Details",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    se.custom_farm AS \"Farm:Link/Farm:90\",\r\n    i.item_group AS \"Item Group:Link/Item Group:130\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Ungraded' THEN sed.qty ELSE 0 END) AS \"Ungraded Discards:Int:160\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Graded' THEN sed.qty ELSE 0 END) AS \"Graded Discards:Int:140\",\r\n    SUM(CASE WHEN stock_entry_type = 'Graded Rejects' THEN sed.qty ELSE 0 END) AS \"Graded Rejects:Int:130\",\r\n    SUM(sed.qty) AS \"Total Loss:Int:95\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code    \r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND stock_entry_type IN (\"Discards-Ungraded\", \"Discards-Graded\", \"Graded Rejects\")\r\n    AND (se.custom_farm = %(farm)s\r\n    )\r\nGROUP BY\r\n    se.posting_date, se.custom_farm, i.item_group, sed.item_code\r\nORDER BY\r\n    se.posting_date, se.custom_farm, i.item_group, sed.item_code;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": "",
+  "report_name": "Packhouse Discards or Rejects Details",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "role": "Stock Manager"
+   },
+   {
+    "role": "Stock User"
+   },
+   {
+    "role": "Manufacturing Manager"
+   },
+   {
+    "role": "Manufacturing User"
+   },
+   {
+    "role": "Agronomist Clerk"
+   },
+   {
+    "role": "Production Manager"
+   },
+   {
+    "role": "Harvest Manager"
+   },
+   {
+    "role": "Harvest User"
+   },
+   {
+    "role": "Packing Supervisor"
+   },
+   {
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "role": "Sales Representative"
+   },
+   {
+    "role": "Tambuzi Trainer"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Burguret Packhouse - TL",
+    "fieldname": "parent_warehouse",
+    "fieldtype": "Select",
+    "label": " Parent Warehouse",
+    "mandatory": 1,
+    "options": "Burguret Packhouse - TL\nPendekeza Packhouse - TL\nTuraco Packhouse - TL",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-10 21:46:36.701254",
+  "module": "Stock",
+  "name": "Packhouse Discards or Rejects Report",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    sw.parent_warehouse AS \"Parent Warehouse:Select\",\r\n    i.item_group AS \"Item Group:Link/Item Group:130\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Ungraded' THEN sed.qty ELSE 0 END) AS \"Ungraded Discards:Int:160\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Graded' THEN sed.qty ELSE 0 END) AS \"Graded Discards:Int:140\",\r\n    SUM(CASE WHEN stock_entry_type = 'Graded Rejects' THEN sed.qty ELSE 0 END) AS \"Graded Rejects:Int:130\",\r\n    SUM(sed.qty) AS \"Total Loss:Int:95\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nLEFT JOIN\r\n    `tabWarehouse` sw ON sed.s_warehouse = sw.name\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.stock_entry_type IN (\"Discards-Ungraded\", \"Discards-Graded\", \"Graded Rejects\")\r\n    AND sw.parent_warehouse = %(parent_warehouse)s\r\nGROUP BY\r\n    se.posting_date, sw.parent_warehouse, i.item_group, sed.item_code\r\nORDER BY\r\n    se.posting_date, sw.parent_warehouse, i.item_group, sed.item_code;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Packhouse Discards or Rejects Report",
+  "report_script": "",
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "role": "Stock Manager"
+   },
+   {
+    "role": "Stock User"
+   },
+   {
+    "role": "Manufacturing Manager"
+   },
+   {
+    "role": "Manufacturing User"
+   },
+   {
+    "role": "Agronomist Clerk"
+   },
+   {
+    "role": "Production Manager"
+   },
+   {
+    "role": "Harvest Manager"
+   },
+   {
+    "role": "Harvest User"
+   },
+   {
+    "role": "Packing Supervisor"
+   },
+   {
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "role": "Turacco Packhouse Manager"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Burguret",
+    "fieldname": "farm",
+    "fieldtype": "Data",
+    "label": "Farm",
+    "mandatory": 0,
+    "options": "Farm",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-10 12:06:13.050607",
   "module": "Stock",
   "name": "Harvest by Item Group",
   "prepared_report": 0,
@@ -148,6 +499,9 @@
    },
    {
     "role": "Manufacturing User"
+   },
+   {
+    "role": "Agronomist Clerk"
    },
    {
     "role": "Production Manager"
@@ -290,6 +644,189 @@
   "timeout": 0
  },
  {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Tambuzi",
+  "modified": "2025-05-02 21:12:18.255068",
+  "module": "Selling",
+  "name": "Sales Order Report",
+  "prepared_report": 0,
+  "query": "SELECT\n    so.customer AS \"Customer:Link/Customer:210\",\n    so.custom_statescountry AS \"Country:Data:125\",\n    so.name AS \"Sales Order ID:Link/Sales Order:150\",\n    so.workflow_state AS \"SO Status:Data:95\",\n    so.transaction_date AS \"SO Created:Date:115\",\n    so.delivery_date AS \"SO Ship Date:Date:115\",\n    active_cpl.name AS \"CPL ID:Link/Consolidated Pack List:150\",\n    active_cpl.workflow_state AS \"CPL Status:Data:100\",\n    si_info.invoice_name AS \"SINV ID:Link/Sales Invoice:160\",\n    si_info.status AS \"SINV Status:Data:105\",\n    SUM(CASE WHEN i.item_group <> 'Herbs Qty' THEN soi.stock_qty ELSE 0 END) AS \"Stems_SO Flwrs:Int:140\",\n    SUM(CASE WHEN i.item_group = 'Herbs Qty' THEN soi.stock_qty ELSE 0 END) AS \"Stems_SO Herbs:Int:140\",\n    SUM(soi.stock_qty) AS \"Stems_SO Total:Int:130\",\n    COALESCE(cpl_stems.total_stems, 0) AS \"Stems_CPL:Int:100\",\n    COALESCE(si_info.total_stems, 0) AS \"Stems_SINV:Int:110\",\n    COALESCE(cpl_stems.total_stems, 0) - SUM(COALESCE(soi.stock_qty, 0)) AS \"Packing VAR:Int:110\",\n    so.base_total AS \"Amt_SO:Currency:130\",\n    COALESCE(si_info.amount_pre_tax, 0) AS \"Amt_SINV Pre.Tax:Currency:145\"\nFROM\n    `tabSales Order` so\nJOIN\n    `tabSales Order Item` soi ON so.name = soi.parent\nJOIN\n    `tabItem` i ON soi.item_code = i.name\nJOIN\n    (\n        SELECT\n            t1.sales_order_id,\n            t1.name,\n            t1.workflow_state,\n            t1.modified\n        FROM\n            (\n                SELECT DISTINCT\n                    dfi.sales_order_id,\n                    cpl.name,\n                    cpl.workflow_state,\n                    cpl.modified,\n                    ROW_NUMBER() OVER (\n                        PARTITION BY dfi.sales_order_id\n                        ORDER BY \n                            CASE WHEN cpl.workflow_state != 'Cancelled' THEN 0 ELSE 1 END,\n                            cpl.modified DESC\n                    ) AS row_num\n                FROM \n                    `tabConsolidated Pack List` cpl\n                JOIN\n                    `tabDispatch Form Item` dfi ON dfi.parent = cpl.name\n            ) t1\n        WHERE\n            t1.row_num = 1\n    ) active_cpl ON active_cpl.sales_order_id = so.name\nJOIN\n    (\n        SELECT\n            dfi.sales_order_id,\n            dfi.parent AS cpl_id,\n            SUM(dfi.custom_number_of_stems) AS total_stems\n        FROM\n            `tabDispatch Form Item` dfi\n        GROUP BY\n            dfi.sales_order_id, dfi.parent\n    ) cpl_stems ON cpl_stems.sales_order_id = so.name AND cpl_stems.cpl_id = active_cpl.name\nLEFT JOIN\n    (\n        SELECT\n            si.name AS invoice_name,\n            si.workflow_state AS status,\n            SUM(sii.stock_qty) AS total_stems,\n            si.custom_consolidated_packlist,\n            si.base_net_total AS amount_pre_tax\n        FROM\n            `tabSales Invoice` si\n        JOIN\n            `tabSales Invoice Item` sii ON si.name = sii.parent\n        GROUP BY\n            si.name, si.workflow_state, si.custom_consolidated_packlist\n    ) si_info ON si_info.custom_consolidated_packlist = active_cpl.name\nWHERE\n    so.docstatus = 1\n    AND so.transaction_date >= %(from_date)s\n    AND so.transaction_date <= %(to_date)s\nGROUP BY\n    so.customer, so.custom_statescountry, so.name, active_cpl.name, active_cpl.workflow_state,\n    si_info.invoice_name, si_info.status, cpl_stems.total_stems, si_info.total_stems, si_info.amount_pre_tax\nORDER BY\n    so.customer, so.custom_statescountry, so.name;",
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "Sales Order Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "role": "Stock User"
+   },
+   {
+    "role": "Accounts User"
+   },
+   {
+    "role": "Sales User"
+   },
+   {
+    "role": "Sales Manager"
+   },
+   {
+    "role": "Sales Representative"
+   },
+   {
+    "role": "Tambuzi Trainer"
+   },
+   {
+    "role": "CEO"
+   },
+   {
+    "role": "Accounts Manager"
+   },
+   {
+    "role": "AR Accountant"
+   },
+   {
+    "role": "Credit Controller"
+   },
+   {
+    "role": "Sales Master Manager"
+   },
+   {
+    "role": "Burguret Packhouse Manager"
+   },
+   {
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "role": "Turacco Packhouse Manager"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Burguret",
+    "fieldname": "farm",
+    "fieldtype": "Data",
+    "label": "Farm",
+    "mandatory": 0,
+    "options": "Farm",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":100,\"label\":\"Harvested\",\"fieldname\":\"harvested\",\"id\":\"harvested\",\"name\":\"Harvested\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":100,\"label\":\"Rejected\",\"fieldname\":\"rejected\",\"id\":\"rejected\",\"name\":\"Rejected\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-06\",\"to_date\":\"2025-04-06\",\"farm\":\"Burguret\"}}",
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-07 10:41:14.472240",
+  "module": "Stock",
+  "name": "Harvest Totals by Variety",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    se.custom_farm AS \"Farm:Link/Farm:100\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END) AS \"Good Pick:Int:100\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Field Rejects' THEN sed.qty ELSE 0 END) AS \"Rejected:Int:100\",\r\n    SUM(sed.qty) AS \"Total:Int:100\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Field Rejects\", \"Harvesting\")\r\nGROUP BY\r\n    i.item_group, sed.item_code, se.custom_farm\r\nORDER BY\r\n    se.posting_date, i.item_group, sed.item_code, se.custom_farm;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": "",
+  "report_name": "Harvest Totals by Variety",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "role": "Stock Manager"
+   },
+   {
+    "role": "Stock User"
+   },
+   {
+    "role": "Manufacturing Manager"
+   },
+   {
+    "role": "Manufacturing User"
+   },
+   {
+    "role": "Agronomist Clerk"
+   },
+   {
+    "role": "Production Manager"
+   },
+   {
+    "role": "Harvest Manager"
+   },
+   {
+    "role": "Harvest User"
+   },
+   {
+    "role": "Packing Supervisor"
+   },
+   {
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "role": "Sales Representative"
+   },
+   {
+    "role": "Tambuzi Trainer"
+   }
+  ],
+  "timeout": 0
+ },
+ {
   "add_total_row": 0,
   "add_translate_data": 0,
   "columns": [],
@@ -371,6 +908,105 @@
     "fieldtype": "Date",
     "label": "From Date",
     "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Burguret",
+    "fieldname": "farm",
+    "fieldtype": "Link",
+    "label": "Farm",
+    "mandatory": 1,
+    "options": "Farm",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-09 19:53:13.811217",
+  "module": "Stock",
+  "name": "Harvest Summary by Time of Day",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    se.custom_farm AS \"Farm:Data:90\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    SUM(CASE WHEN HOUR(se.posting_time) < 13 THEN sed.qty ELSE 0 END) AS \"AM Qty:Int:100\",\r\n    SUM(CASE WHEN HOUR(se.posting_time) >= 13 THEN sed.qty ELSE 0 END) AS \"PM Qty:Int:100\",\r\n    SUM(sed.qty) AS \"Total Qty:Int:100\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type = \"Harvesting\"\r\nGROUP BY\r\n    se.custom_farm, i.item_group\r\nORDER BY\r\n    se.custom_farm, i.item_group;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Harvest Summary by Time of Day",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "role": "Stock Manager"
+   },
+   {
+    "role": "Stock User"
+   },
+   {
+    "role": "Manufacturing Manager"
+   },
+   {
+    "role": "Manufacturing User"
+   },
+   {
+    "role": "Agronomist Clerk"
+   },
+   {
+    "role": "Production Manager"
+   },
+   {
+    "role": "Harvest Manager"
+   },
+   {
+    "role": "Harvest User"
+   },
+   {
+    "role": "Packing Supervisor"
+   },
+   {
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "role": "Sales Representative"
+   },
+   {
+    "role": "Sales User"
+   },
+   {
+    "role": "Tambuzi Trainer"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
     "options": "",
     "wildcard_filter": 0
    },
@@ -431,6 +1067,105 @@
    },
    {
     "role": "Sales Representative"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Burguret",
+    "fieldname": "farm",
+    "fieldtype": "Link",
+    "label": "Farm",
+    "mandatory": 1,
+    "options": "Farm",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":70,\"label\":\"Qty\",\"fieldname\":\"qty\",\"id\":\"qty\",\"name\":\"Qty\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-01\",\"to_date\":\"2025-04-01\",\"farm\":\"Pendekeza\"}}",
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-09 19:52:28.351502",
+  "module": "Stock",
+  "name": "Harvest Pick Report",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    -- se.posting_date AS \"Date:Date:120\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    se.custom_farm AS \"Farm:Link/Farm:100\",\r\n    sed.t_warehouse AS \"Block:Link/Warehouse:100\",\r\n    UPPER(se.custom_block__bed_number) AS \"Bay:Data:60\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END) AS \"Good Pick:Int:95\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Field Rejects' THEN sed.qty ELSE 0 END) AS \"Rejected:Int:90\",\r\n    SUM(sed.qty) AS \"Total:Int:90\",\r\n    sed.custom_rejection_reason AS \"Rejection Reason:Select:180\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Field Rejects\", \"Harvesting\")\r\nGROUP BY\r\n    i.item_group, sed.item_code, se.custom_farm, sed.t_warehouse, se.custom_block__bed_number, sed.custom_rejection_reason\r\nORDER BY\r\n    i.item_group, sed.item_code, se.custom_farm, sed.t_warehouse;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": "",
+  "report_name": "Harvest Pick Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "role": "Stock Manager"
+   },
+   {
+    "role": "Stock User"
+   },
+   {
+    "role": "Manufacturing Manager"
+   },
+   {
+    "role": "Manufacturing User"
+   },
+   {
+    "role": "Agronomist Clerk"
+   },
+   {
+    "role": "Production Manager"
+   },
+   {
+    "role": "Harvest Manager"
+   },
+   {
+    "role": "Harvest User"
+   },
+   {
+    "role": "Packing Supervisor"
+   },
+   {
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "role": "Sales Representative"
+   },
+   {
+    "role": "Sales Manager"
+   },
+   {
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -837,116 +1572,20 @@
     "wildcard_filter": 0
    },
    {
-    "default": "Kapkolia",
+    "default": "Burguret",
     "fieldname": "farm",
-    "fieldtype": "Select",
-    "label": "Farm",
-    "mandatory": 1,
-    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":70,\"label\":\"Qty\",\"fieldname\":\"qty\",\"id\":\"qty\",\"name\":\"Qty\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-01\",\"to_date\":\"2025-04-01\",\"farm\":\"Pendekeza\"}}",
-  "letter_head": "",
-  "modified": "2025-06-29 19:22:59.056337",
-  "module": "Stock",
-  "name": "Harvest Pick Report",
-  "prepared_report": 0,
-  "query": "SELECT\r\n    -- se.posting_date AS \"Date:Date:120\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    se.custom_farm AS \"Farm:Link/Farm:100\",\r\n    sed.t_warehouse AS \"Block:Link/Warehouse:100\",\r\n    UPPER(se.custom_block__bed_number) AS \"Bay:Data:60\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END) AS \"Good Pick:Int:95\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Field Rejects' THEN sed.qty ELSE 0 END) AS \"Rejected:Int:90\",\r\n    SUM(sed.qty) AS \"Total:Int:90\",\r\n    sed.custom_rejection_reason AS \"Rejection Reason:Select:180\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Field Rejects\", \"Harvesting\")\r\nGROUP BY\r\n    i.item_group, sed.item_code, se.custom_farm, sed.t_warehouse, se.custom_block__bed_number, sed.custom_rejection_reason\r\nORDER BY\r\n    i.item_group, sed.item_code, se.custom_farm, sed.t_warehouse;",
-  "ref_doctype": "Stock Entry",
-  "reference_report": "",
-  "report_name": "Harvest Pick Report",
-  "report_script": null,
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "role": "Stock Manager"
-   },
-   {
-    "role": "Stock User"
-   },
-   {
-    "role": "Manufacturing Manager"
-   },
-   {
-    "role": "Manufacturing User"
-   },
-   {
-    "role": "Production Manager"
-   },
-   {
-    "role": "Harvest Manager"
-   },
-   {
-    "role": "Harvest User"
-   },
-   {
-    "role": "Packing Supervisor"
-   },
-   {
-    "role": "Pendekeza Packhouse Manager"
-   },
-   {
-    "role": "Assistant Packhouse Manager"
-   },
-   {
-    "role": "Turacco Packhouse Manager"
-   },
-   {
-    "role": "Sales Representative"
-   },
-   {
-    "role": "Sales Manager"
-   },
-   {
-    "role": "Tambuzi Trainer"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Kapkolia",
-    "fieldname": "farm",
-    "fieldtype": "Select",
+    "fieldtype": "Link",
     "label": "Farm",
     "mandatory": 0,
-    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "options": "Farm",
     "wildcard_filter": 0
    }
   ],
   "is_standard": "No",
   "javascript": null,
   "json": "{\"columns\":[{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":95,\"label\":\"Good Pick\",\"fieldname\":\"good_pick\",\"id\":\"good_pick\",\"name\":\"Good Pick\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":90,\"label\":\"Rejected\",\"fieldname\":\"rejected\",\"id\":\"rejected\",\"name\":\"Rejected\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":90,\"label\":\"Total\",\"fieldname\":\"total\",\"id\":\"total\",\"name\":\"Total\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-16\",\"to_date\":\"2025-04-16\",\"farm\":\"Burguret\"}}",
-  "letter_head": "",
-  "modified": "2025-06-29 19:24:17.061976",
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-16 22:32:51.492054",
   "module": "Stock",
   "name": "Harvest Received Report",
   "prepared_report": 0,
@@ -970,6 +1609,9 @@
     "role": "Manufacturing User"
    },
    {
+    "role": "Agronomist Clerk"
+   },
+   {
     "role": "Production Manager"
    },
    {
@@ -998,576 +1640,9 @@
    },
    {
     "role": "Sales Manager"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Kapkolia",
-    "fieldname": "farm",
-    "fieldtype": "Select",
-    "label": "Farm",
-    "mandatory": 1,
-    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": null,
-  "letter_head": "",
-  "modified": "2025-06-29 19:25:05.311169",
-  "module": "Stock",
-  "name": "Harvest Summary by Time of Day",
-  "prepared_report": 0,
-  "query": "SELECT\r\n    se.custom_farm AS \"Farm:Data:90\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    SUM(CASE WHEN HOUR(se.posting_time) < 13 THEN sed.qty ELSE 0 END) AS \"AM Qty:Int:100\",\r\n    SUM(CASE WHEN HOUR(se.posting_time) >= 13 THEN sed.qty ELSE 0 END) AS \"PM Qty:Int:100\",\r\n    SUM(sed.qty) AS \"Total Qty:Int:100\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type = \"Harvesting\"\r\nGROUP BY\r\n    se.custom_farm, i.item_group\r\nORDER BY\r\n    se.custom_farm, i.item_group;",
-  "ref_doctype": "Stock Entry",
-  "reference_report": null,
-  "report_name": "Harvest Summary by Time of Day",
-  "report_script": null,
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "role": "Stock Manager"
-   },
-   {
-    "role": "Stock User"
-   },
-   {
-    "role": "Manufacturing Manager"
-   },
-   {
-    "role": "Manufacturing User"
-   },
-   {
-    "role": "Production Manager"
-   },
-   {
-    "role": "Harvest Manager"
-   },
-   {
-    "role": "Harvest User"
-   },
-   {
-    "role": "Packing Supervisor"
-   },
-   {
-    "role": "Pendekeza Packhouse Manager"
-   },
-   {
-    "role": "Assistant Packhouse Manager"
-   },
-   {
-    "role": "Turacco Packhouse Manager"
-   },
-   {
-    "role": "Sales Representative"
-   },
-   {
-    "role": "Sales User"
-   },
-   {
-    "role": "Tambuzi Trainer"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Kapkolia",
-    "fieldname": "farm",
-    "fieldtype": "Select",
-    "label": "Farm",
-    "mandatory": 0,
-    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":100,\"label\":\"Harvested\",\"fieldname\":\"harvested\",\"id\":\"harvested\",\"name\":\"Harvested\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":100,\"label\":\"Rejected\",\"fieldname\":\"rejected\",\"id\":\"rejected\",\"name\":\"Rejected\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-06\",\"to_date\":\"2025-04-06\",\"farm\":\"Burguret\"}}",
-  "letter_head": "",
-  "modified": "2025-06-29 19:25:43.443371",
-  "module": "Stock",
-  "name": "Harvest Totals by Variety",
-  "prepared_report": 0,
-  "query": "SELECT\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    se.custom_farm AS \"Farm:Link/Farm:100\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END) AS \"Good Pick:Int:100\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Field Rejects' THEN sed.qty ELSE 0 END) AS \"Rejected:Int:100\",\r\n    SUM(sed.qty) AS \"Total:Int:100\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Field Rejects\", \"Harvesting\")\r\nGROUP BY\r\n    i.item_group, sed.item_code, se.custom_farm\r\nORDER BY\r\n    se.posting_date, i.item_group, sed.item_code, se.custom_farm;",
-  "ref_doctype": "Stock Entry",
-  "reference_report": "",
-  "report_name": "Harvest Totals by Variety",
-  "report_script": null,
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "role": "Stock Manager"
-   },
-   {
-    "role": "Stock User"
-   },
-   {
-    "role": "Manufacturing Manager"
-   },
-   {
-    "role": "Manufacturing User"
-   },
-   {
-    "role": "Production Manager"
-   },
-   {
-    "role": "Harvest Manager"
-   },
-   {
-    "role": "Harvest User"
-   },
-   {
-    "role": "Packing Supervisor"
-   },
-   {
-    "role": "Pendekeza Packhouse Manager"
-   },
-   {
-    "role": "Assistant Packhouse Manager"
-   },
-   {
-    "role": "Turacco Packhouse Manager"
-   },
-   {
-    "role": "Sales Representative"
-   },
-   {
-    "role": "Tambuzi Trainer"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Kapkolia",
-    "fieldname": "farm",
-    "fieldtype": "Select",
-    "label": "Farm",
-    "mandatory": 1,
-    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": null,
-  "letter_head": "",
-  "modified": "2025-06-29 19:32:14.755742",
-  "module": "Stock",
-  "name": "Field Rejects Report",
-  "prepared_report": 0,
-  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    se.custom_farm AS \"Farm:Link/Farm:100\",\r\n    sed.t_warehouse AS \"Block:Link/Warehouse:100\",\r\n    UPPER(sed.custom_bay) AS \"Bay:Data:60\",\r\n    sed.custom_rejection_reason AS \"Rejection Reason:Select:180\",\r\n    SUM(sed.qty) AS \"Rejected:Int:70\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code    \r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm= %(farm)s\r\n    AND se.stock_entry_type = \"Field Rejects\"\r\nGROUP BY\r\n    se.posting_date, i.item_group, sed.item_code, se.custom_farm, sed.t_warehouse, sed.custom_bay, sed.custom_rejection_reason\r\nORDER BY\r\n    se.posting_date, i.item_group, sed.item_code, se.custom_farm, sed.t_warehouse, sed.custom_bay;",
-  "ref_doctype": "Stock Entry",
-  "reference_report": null,
-  "report_name": "Field Rejects Report",
-  "report_script": null,
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "role": "Stock Manager"
-   },
-   {
-    "role": "Stock User"
-   },
-   {
-    "role": "Manufacturing Manager"
-   },
-   {
-    "role": "Manufacturing User"
-   },
-   {
-    "role": "Production Manager"
-   },
-   {
-    "role": "Harvest Manager"
-   },
-   {
-    "role": "Harvest User"
-   },
-   {
-    "role": "Packing Supervisor"
-   },
-   {
-    "role": "Pendekeza Packhouse Manager"
-   },
-   {
-    "role": "Turacco Packhouse Manager"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Kapkolia",
-    "fieldname": "farm",
-    "fieldtype": "Select",
-    "label": "Farm",
-    "mandatory": 1,
-    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": "{\"columns\":[{\"fieldtype\":\"Date\",\"width\":120,\"label\":\"Date\",\"fieldname\":\"date\",\"id\":\"date\",\"name\":\"Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":130,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":90,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":160,\"label\":\"Ungraded Discards\",\"fieldname\":\"ungraded_discards\",\"id\":\"ungraded_discards\",\"name\":\"Ungraded Discards\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":140,\"label\":\"Graded Discards\",\"fieldname\":\"graded_discards\",\"id\":\"graded_discards\",\"name\":\"Graded Discards\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":130,\"label\":\"Graded Rejects\",\"fieldname\":\"graded_rejects\",\"id\":\"graded_rejects\",\"name\":\"Graded Rejects\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":95,\"label\":\"Total Loss\",\"fieldname\":\"total_loss\",\"id\":\"total_loss\",\"name\":\"Total Loss\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-06\",\"to_date\":\"2025-04-08\",\"farm\":\"Burguret\"}}",
-  "letter_head": "Karen Roses Invoice",
-  "modified": "2025-06-29 19:36:53.644265",
-  "module": "Stock",
-  "name": "Packhouse Discards or Rejects Details",
-  "prepared_report": 0,
-  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    se.custom_farm AS \"Farm:Link/Farm:90\",\r\n    i.item_group AS \"Item Group:Link/Item Group:130\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Ungraded' THEN sed.qty ELSE 0 END) AS \"Ungraded Discards:Int:160\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Graded' THEN sed.qty ELSE 0 END) AS \"Graded Discards:Int:140\",\r\n    SUM(CASE WHEN stock_entry_type = 'Graded Rejects' THEN sed.qty ELSE 0 END) AS \"Graded Rejects:Int:130\",\r\n    SUM(sed.qty) AS \"Total Loss:Int:95\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code    \r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND stock_entry_type IN (\"Discards-Ungraded\", \"Discards-Graded\", \"Graded Rejects\")\r\n    AND (se.custom_farm = %(farm)s\r\n    )\r\nGROUP BY\r\n    se.posting_date, se.custom_farm, i.item_group, sed.item_code\r\nORDER BY\r\n    se.posting_date, se.custom_farm, i.item_group, sed.item_code;",
-  "ref_doctype": "Stock Entry",
-  "reference_report": "",
-  "report_name": "Packhouse Discards or Rejects Details",
-  "report_script": null,
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "role": "Stock Manager"
-   },
-   {
-    "role": "Stock User"
-   },
-   {
-    "role": "Manufacturing Manager"
-   },
-   {
-    "role": "Manufacturing User"
-   },
-   {
-    "role": "Production Manager"
-   },
-   {
-    "role": "Harvest Manager"
-   },
-   {
-    "role": "Harvest User"
-   },
-   {
-    "role": "Packing Supervisor"
-   },
-   {
-    "role": "Assistant Packhouse Manager"
-   },
-   {
-    "role": "Sales Representative"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "",
-    "fieldname": "parent_warehouse",
-    "fieldtype": "Select",
-    "label": " Parent Warehouse",
-    "mandatory": 1,
-    "options": "",
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": null,
-  "letter_head": "Karen Roses Invoice",
-  "modified": "2025-06-29 19:37:38.731188",
-  "module": "Stock",
-  "name": "Packhouse Discards or Rejects Report",
-  "prepared_report": 0,
-  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    sw.parent_warehouse AS \"Parent Warehouse:Select\",\r\n    i.item_group AS \"Item Group:Link/Item Group:130\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Ungraded' THEN sed.qty ELSE 0 END) AS \"Ungraded Discards:Int:160\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Graded' THEN sed.qty ELSE 0 END) AS \"Graded Discards:Int:140\",\r\n    SUM(CASE WHEN stock_entry_type = 'Graded Rejects' THEN sed.qty ELSE 0 END) AS \"Graded Rejects:Int:130\",\r\n    SUM(sed.qty) AS \"Total Loss:Int:95\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nLEFT JOIN\r\n    `tabWarehouse` sw ON sed.s_warehouse = sw.name\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.stock_entry_type IN (\"Discards-Ungraded\", \"Discards-Graded\", \"Graded Rejects\")\r\n    AND sw.parent_warehouse = %(parent_warehouse)s\r\nGROUP BY\r\n    se.posting_date, sw.parent_warehouse, i.item_group, sed.item_code\r\nORDER BY\r\n    se.posting_date, sw.parent_warehouse, i.item_group, sed.item_code;",
-  "ref_doctype": "Stock Entry",
-  "reference_report": null,
-  "report_name": "Packhouse Discards or Rejects Report",
-  "report_script": "",
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "role": "Stock Manager"
-   },
-   {
-    "role": "Stock User"
-   },
-   {
-    "role": "Production Manager"
-   },
-   {
-    "role": "Packing Supervisor"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": null,
-  "letter_head": "Karen Roses Invoice",
-  "modified": "2025-06-29 19:39:29.741097",
-  "module": "Selling",
-  "name": "Sales Order Report",
-  "prepared_report": 0,
-  "query": "SELECT\n    so.customer AS \"Customer:Link/Customer:210\",\n    so.custom_statescountry AS \"Country:Data:125\",\n    so.name AS \"Sales Order ID:Link/Sales Order:150\",\n    so.workflow_state AS \"SO Status:Data:95\",\n    so.transaction_date AS \"SO Created:Date:115\",\n    so.delivery_date AS \"SO Ship Date:Date:115\",\n    active_cpl.name AS \"CPL ID:Link/Consolidated Pack List:150\",\n    active_cpl.workflow_state AS \"CPL Status:Data:100\",\n    si_info.invoice_name AS \"SINV ID:Link/Sales Invoice:160\",\n    si_info.status AS \"SINV Status:Data:105\",\n    SUM(CASE WHEN i.item_group <> 'Herbs Qty' THEN soi.stock_qty ELSE 0 END) AS \"Stems_SO Flwrs:Int:140\",\n    SUM(CASE WHEN i.item_group = 'Herbs Qty' THEN soi.stock_qty ELSE 0 END) AS \"Stems_SO Herbs:Int:140\",\n    SUM(soi.stock_qty) AS \"Stems_SO Total:Int:130\",\n    COALESCE(cpl_stems.total_stems, 0) AS \"Stems_CPL:Int:100\",\n    COALESCE(si_info.total_stems, 0) AS \"Stems_SINV:Int:110\",\n    COALESCE(cpl_stems.total_stems, 0) - SUM(COALESCE(soi.stock_qty, 0)) AS \"Packing VAR:Int:110\",\n    so.base_total AS \"Amt_SO:Currency:130\",\n    COALESCE(si_info.amount_pre_tax, 0) AS \"Amt_SINV Pre.Tax:Currency:145\"\nFROM\n    `tabSales Order` so\nJOIN\n    `tabSales Order Item` soi ON so.name = soi.parent\nJOIN\n    `tabItem` i ON soi.item_code = i.name\nJOIN\n    (\n        SELECT\n            t1.sales_order_id,\n            t1.name,\n            t1.workflow_state,\n            t1.modified\n        FROM\n            (\n                SELECT DISTINCT\n                    dfi.sales_order_id,\n                    cpl.name,\n                    cpl.workflow_state,\n                    cpl.modified,\n                    ROW_NUMBER() OVER (\n                        PARTITION BY dfi.sales_order_id\n                        ORDER BY \n                            CASE WHEN cpl.workflow_state != 'Cancelled' THEN 0 ELSE 1 END,\n                            cpl.modified DESC\n                    ) AS row_num\n                FROM \n                    `tabConsolidated Pack List` cpl\n                JOIN\n                    `tabDispatch Form Item` dfi ON dfi.parent = cpl.name\n            ) t1\n        WHERE\n            t1.row_num = 1\n    ) active_cpl ON active_cpl.sales_order_id = so.name\nJOIN\n    (\n        SELECT\n            dfi.sales_order_id,\n            dfi.parent AS cpl_id,\n            SUM(dfi.custom_number_of_stems) AS total_stems\n        FROM\n            `tabDispatch Form Item` dfi\n        GROUP BY\n            dfi.sales_order_id, dfi.parent\n    ) cpl_stems ON cpl_stems.sales_order_id = so.name AND cpl_stems.cpl_id = active_cpl.name\nLEFT JOIN\n    (\n        SELECT\n            si.name AS invoice_name,\n            si.workflow_state AS status,\n            SUM(sii.stock_qty) AS total_stems,\n            si.custom_consolidated_packlist,\n            si.base_net_total AS amount_pre_tax\n        FROM\n            `tabSales Invoice` si\n        JOIN\n            `tabSales Invoice Item` sii ON si.name = sii.parent\n        GROUP BY\n            si.name, si.workflow_state, si.custom_consolidated_packlist\n    ) si_info ON si_info.custom_consolidated_packlist = active_cpl.name\nWHERE\n    so.docstatus = 1\n    AND so.transaction_date >= %(from_date)s\n    AND so.transaction_date <= %(to_date)s\nGROUP BY\n    so.customer, so.custom_statescountry, so.name, active_cpl.name, active_cpl.workflow_state,\n    si_info.invoice_name, si_info.status, cpl_stems.total_stems, si_info.total_stems, si_info.amount_pre_tax\nORDER BY\n    so.customer, so.custom_statescountry, so.name;",
-  "ref_doctype": "Sales Order",
-  "reference_report": null,
-  "report_name": "Sales Order Report",
-  "report_script": null,
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "role": "Stock User"
-   },
-   {
-    "role": "Accounts User"
-   },
-   {
-    "role": "Sales User"
-   },
-   {
-    "role": "Sales Manager"
-   },
-   {
-    "role": "Sales Representative"
-   },
-   {
-    "role": "Accounts Manager"
-   },
-   {
-    "role": "AR Accountant"
-   },
-   {
-    "role": "Sales Master Manager"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   },
-   {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": "{\"columns\":[{\"fieldtype\":\"Link\",\"options\":\"Customer\",\"width\":200,\"label\":\"Customer\",\"fieldname\":\"customer\",\"id\":\"customer\",\"name\":\"Customer\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":125,\"label\":\"Country\",\"fieldname\":\"country\",\"id\":\"country\",\"name\":\"Country\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Date\",\"width\":125,\"label\":\"Order Date\",\"fieldname\":\"order_date\",\"id\":\"order_date\",\"name\":\"Order Date\",\"editable\":false},{\"fieldtype\":\"Date\",\"width\":125,\"label\":\"Shipment Date\",\"fieldname\":\"shipment_date\",\"id\":\"shipment_date\",\"name\":\"Shipment Date\",\"editable\":false},{\"fieldtype\":\"Link\",\"options\":\"Sales Order\",\"width\":160,\"label\":\"Sales Order ID\",\"fieldname\":\"sales_order_id\",\"id\":\"sales_order_id\",\"name\":\"Sales Order ID\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":90,\"label\":\"Status\",\"fieldname\":\"status\",\"id\":\"status\",\"name\":\"Status\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":100,\"label\":\"Stems\",\"fieldname\":\"stems\",\"id\":\"stems\",\"name\":\"Stems\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Currency\",\"width\":130,\"label\":\"Amount (KES)\",\"fieldname\":\"amount_(kes)\",\"id\":\"amount_(kes)\",\"name\":\"Amount (KES)\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-11\",\"to_date\":\"2025-04-11\"}}",
-  "letter_head": "Karen Roses Invoice",
-  "modified": "2025-06-29 19:40:59.546381",
-  "module": "Selling",
-  "name": "Sales per Variety Report (SO)",
-  "prepared_report": 0,
-  "query": "SELECT\r\n    soi.item_code AS \"Item Code:Link/Item:200\",\r\n    SUM(soi.stock_qty) AS \"Stems:Int:70\",\r\n    ROUND(SUM(soi.stock_qty) / total.total_stems * 100, 1) AS \"Contribution:Percent:110\",\r\n   ROUND(SUM(soi.base_amount),2) AS \"Amount (KES):Currency:130\"\r\nFROM\r\n    `tabSales Order` so\r\nJOIN\r\n    `tabSales Order Item` soi ON so.name = soi.parent,\r\n    (\r\n        SELECT SUM(soi.stock_qty) AS total_stems\r\n        FROM `tabSales Order` so\r\n        JOIN `tabSales Order Item` soi ON so.name = soi.parent\r\n        WHERE\r\n            so.docstatus = 1\r\n            AND so.transaction_date >= %(from_date)s\r\n            AND so.transaction_date <= %(to_date)s\r\n    ) AS total\r\nWHERE\r\n    so.docstatus = 1\r\n    AND so.transaction_date >= %(from_date)s\r\n    AND so.transaction_date <= %(to_date)s\r\nGROUP BY\r\n    soi.item_code\r\nORDER BY\r\n    SUM(soi.stock_qty) DESC;",
-  "ref_doctype": "Sales Order",
-  "reference_report": "",
-  "report_name": "Sales per Variety Report (SO)",
-  "report_script": null,
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "role": "Stock User"
-   },
-   {
-    "role": "Accounts User"
-   },
-   {
-    "role": "Sales User"
-   },
-   {
-    "role": "Sales Manager"
-   },
-   {
-    "role": "Sales Representative"
-   },
-   {
-    "role": "Tambuzi Trainer"
-   },
-   {
-    "role": "Accounts Manager"
-   },
-   {
-    "role": "AR Accountant"
-   },
-   {
-    "role": "Burguret Packhouse Manager"
-   },
-   {
-    "role": "Pendekeza Packhouse Manager"
    },
    {
-    "role": "Turacco Packhouse Manager"
+    "role": "CEO"
    }
   ],
   "timeout": 0
