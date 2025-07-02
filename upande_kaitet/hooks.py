@@ -411,5 +411,11 @@ fixtures = [
             "Sales per Variety Report (SO)", "Daily Sales Ops Summary"
         ]
     ]]
-}]
+},   {
+    "dt": "Server Script",
+    "filters": [
+        ["name", "=", "Vehicle Location Update"]
+    ]
+    }
+]
 # fixtures = ["Custom Field", "Property Setter", "DocType"]
