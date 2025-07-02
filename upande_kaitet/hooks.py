@@ -342,6 +342,7 @@ fixtures = [
 					"Repack",
 					"Create Invoice From Dispatch Form",
 					"Create Field Reject Entry",
+					"Check reason field",
 				],
 			]
 		],
@@ -353,6 +354,9 @@ fixtures = [
 				"name",
 				"in",
 				[
+					"Leave Balance After Auto-Calculation",
+					"Leave Encashment Amount Auto-Calculation",
+					"P9 Form",
 					"Qr Code gen",
 					"Close Box Button",
 					"Scan Via Honeywell",
@@ -417,7 +421,7 @@ fixtures = [
 					"Packhouse Equipment and Machine AM Checklist",
 					"CFU Inspection Checksheet",
 					"CSU AM Checksheet",
-					"Tractor Inspection Checksheet",
+					"Tractor Inspection Checksheet" "Refresh Items Table",
 				],
 			]
 		],

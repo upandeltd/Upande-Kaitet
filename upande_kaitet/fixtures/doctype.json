@@ -442,6 +442,7 @@
   ],
   "force_re_route_to_default_view": 0,
   "grid_page_length": 50,
+
   "has_web_view": 0,
   "hide_toolbar": 0,
   "icon": null,
@@ -773,8 +774,8 @@
     "documentation_url": null,
     "fetch_from": null,
     "fetch_if_empty": 0,
-    "fieldname": "imei",
     "fieldtype": "Data",
+    "fieldname": "imei",
     "hidden": 0,
     "hide_border": 0,
     "hide_days": 0,
@@ -10106,8 +10107,7 @@
     "share": 1,
     "submit": 0,
     "write": 1
-   },
-   {
+   },{
     "print": 1,
     "read": 1,
     "report": 1,
@@ -10442,7 +10442,6 @@
     "unique": 0,
     "width": null
    },
-   {},
    {
     "allow_bulk_edit": 0,
     "allow_in_quick_entry": 0,
@@ -12314,7 +12313,7 @@
   "autoname": "",
   "beta": 0,
   "color": null,
-  "custom": 0,
+  "custom": 1,
   "default_email_template": null,
   "default_print_format": null,
   "default_view": "Map",
@@ -13081,7 +13080,7 @@
   "autoname": "naming_series:",
   "beta": 0,
   "color": null,
-  "custom": 0,
+  "custom": 1,
   "default_email_template": null,
   "default_print_format": null,
   "default_view": null,
