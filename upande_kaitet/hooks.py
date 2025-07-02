@@ -163,54 +163,52 @@ doc_events = {
 		# "upande_kaitet.server_scripts.reserve_stock.on_sales_order_created",
 	},
 	"Consolidated Pack List": {
-		"on_submit": "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
-		"on_cancel": "upande_kaitet.server_scripts.events.on_cpl_cancel",
+		# "on_submit":
+		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+		"on_cancel": "upande_kaitet.server_scripts.events.on_cpl_cancel"
 		# "before_submit":
 		# "upande_kaitet.server_scripts.completion_percentage.validate_completion_percentage"
 	},
 	"Sales Invoice": {
-		# "on_submit":
-		# "upande_kaitet.server_scripts.sinv_approved_by.set_approved_by",
-		"on_cancel": "upande_kaitet.server_scripts.events.on_sales_invoice_cancel"
+		"on_submit": "upande_kaitet.server_scripts.sinv_approved_by.set_approved_by",
+		"on_cancel": "upande_kaitet.server_scripts.events.on_sales_invoice_cancel",
 	},
 	"Farm Pack List": {
 		"before_cancel": "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-		"on_submit": "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+		# "on_submit":
+		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 	},
 }
 
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"upande_kaitet.tasks.all"
-# 	],
-# 	"daily": [
-# 		"upande_kaitet.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"upande_kaitet.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"upande_kaitet.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"upande_kaitet.tasks.monthly"
-# 	],
-# }
-
-# Testing
-# -------
-
-# before_tests = "upande_kaitet.install.before_tests"
-
-# Overriding Methods
-# ------------------------------
-#
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "upande_kaitet.event.get_events"
-# }
+scheduler_events = {
+	# "all": [
+	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
+	# ],
+	# "daily": [
+	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
+	# ],
+	# 	"hourly": [
+	# 		"upande_kaitet.tasks.hourly"
+	# 	],
+	# 	"weekly": [
+	# 		"upande_kaitet.tasks.weekly"
+	# 	],
+	# 	"monthly": [
+	# 		"upande_kaitet.tasks.monthly"
+	# 	],
+	# }
+	# Testing
+	# -------
+	# before_tests = "upande_kaitet.install.before_tests"
+	# Overriding Methods
+	# ------------------------------
+	#
+	# override_whitelisted_methods = {
+	# 	"frappe.desk.doctype.event.event.get_events": "upande_kaitet.event.get_events"
+}
 
 override_class = {
 	"erpnext.controllers.taxes_and_totals.calculate_taxes_and_totals": "upande_kaitet.overrides.standard_system_rate.CustomTaxesAndTotals"
@@ -287,6 +285,28 @@ whitelisted_methods = {
 # }
 
 fixtures = [
+	# {
+	#     "dt":
+	#     "DocType",
+	#     "filters": [[
+	#         "name", "in",
+	#         [
+	#             "QR Code", "Packing List", "Pack List Item",
+	#             "Scan",
+	#             "Box Label", "Box Label Item", "Label Print",
+	#             "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
+	#             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+	#             "Grading Repack Tracker Item",
+	#             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
+	#             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
+	#             "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+	#             "GPS Readings", "Delivery Type", "Loss Reason",
+	#             # "SO Warehouse Mapping",
+	# #             "SO Warehouse Mapping Item",
+	#               "Temperature Reading", "Consignee", "Item Subclass"
+	#         ]
+	#     ]]
+	# },
 	{
 		"dt": "Server Script",
 		"filters": [
@@ -321,6 +341,7 @@ fixtures = [
 					"Gps",
 					"Repack",
 					"Create Invoice From Dispatch Form",
+					"Create Field Reject Entry",
 				],
 			]
 		],
@@ -389,52 +410,14 @@ fixtures = [
 					"Custom Workflow Approval (Delivery note)",
 					"Fetch SO Details",
 					"Yoghurt Delivery Workflow",
-				],
-			]
-		],
-	},
-	{
-		"dt": "DocType",
-		"filters": [
-			[
-				"name",
-				"in",
-				[
-					"QR Code",
-					"Packing List",
-					"Pack List Item",
-					"Scan",
-					"Box Label",
-					"Box Label Item",
-					"Label Print",
-					"Bucket QR Code",
-					"Bunch QR Code",
-					"Grader QR Code",
-					"Harvest",
-					"Scanned Items",
-					"Scan Check",
-					"Scan Check List",
-					"QR Sequence",
-					"Rejection Reason",
-					"Grading Repack Tracker Item",
-					"Grading Forecast Tracker",
-					"Forecast Entry",
-					"Forecast Entry Item",
-					"Business Unit",
-					"Scan Location Mapping",
-					"Scan Location Mapping Items",
-					"Farm",
-					"Joint Companies",
-					"Business Unit",
-					"GPS Reading",
-					"Vehicle",
-					"GPS Readings",
-					"Delivery Type",
-					"Loss Reason",
-					"SO Warehouse Mapping",
-					"SO Warehouse Mapping Item",
-					"Temperature Reading",
-					"Consignee",
+					"Autopopulate Week Number",
+					"Populate Available Qty Field" "CSU AM Checksheet",
+					"Tractor Inspection Checksheet",
+					"Truck Inspection Checksheet",
+					"Packhouse Equipment and Machine AM Checklist",
+					"CFU Inspection Checksheet",
+					"CSU AM Checksheet",
+					"Tractor Inspection Checksheet",
 				],
 			]
 		],
@@ -454,6 +437,40 @@ fixtures = [
 					"Trial Bunch Print Format",
 					"Grader QR Print format 2",
 					"Harvest Label 2",
+				],
+			]
+		],
+	},
+	{
+		"dt": "Report",
+		"filters": [
+			[
+				"name",
+				"in",
+				[
+					"Harvest and Field Rejects Report",
+					"Harvest by Item Group",
+					"Harvest Pick Report",
+					"Harvest Received Report",
+					"Harvest Summary by Time of Day",
+					"Harvest Totals by Variety",
+					"Available for Sale Stock Balance",
+					"Stock Sheet_Available for Sale",
+					"Stock Sheet_Ungraded",
+					"Ungraded Stock Balance",
+					"Field Rejects Report",
+					"Overall Discards and Rejects Report",
+					"Weekly Discards/Rejects Report",
+					"Harvesting Stock Entries",
+					"Grading Stock Entries",
+					"Receiving Stock Entries",
+					"Packhouse Discards or Rejects Details",
+					"Packhouse Discards or Rejects Report",
+					"Sales Invoiced Report",
+					"Sales Invoice Details",
+					"Sales Order Report",
+					"Sales per Variety Report (SO)",
+					"Daily Sales Ops Summary",
 				],
 			]
 		],

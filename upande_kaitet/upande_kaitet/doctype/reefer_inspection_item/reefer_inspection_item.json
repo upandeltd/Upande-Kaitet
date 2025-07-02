@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-23 22:15:07.527922",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_27jk",
+  "item",
+  "check_detail",
+  "action_required",
+  "status",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_27jk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Data",
+   "label": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "check_detail",
+   "fieldtype": "Data",
+   "label": "Check",
+   "reqd": 1
+  },
+  {
+   "fieldname": "action_required",
+   "fieldtype": "Data",
+   "label": "Action Required"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Not Checked\n\u221a Okay\nX Faulty",
+   "reqd": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-06-24 20:22:56.388102",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Reefer Inspection Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

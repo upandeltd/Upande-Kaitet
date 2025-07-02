@@ -4,6 +4,7 @@
  "allow_rename": 1,
  "creation": "2025-06-20 11:47:27.527102",
  "doctype": "DocType",
+  "custom": 1,
  "engine": "InnoDB",
  "field_order": [
   "section_break_xity",
