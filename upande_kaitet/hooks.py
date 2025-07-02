@@ -320,6 +320,10 @@ fixtures = [
 #     ]]
 # },
 {
+    "dt": "DocType",
+    "filters": [["name", "=", "Vehicle"]]
+},
+{
     "dt":
     "Server Script",
     "filters": [[
@@ -338,7 +342,7 @@ fixtures = [
             "Create delivery trip", "Request Concession", "Filtering based on Role",
             "Work Order, Event; on_submit", "Material Issue Notification", "Start Trip Transfer",
             "End Trip Transfer", "Gps", "Repack", "Create Invoice From Dispatch Form",
-            "Create Field Reject Entry"
+            "Create Field Reject Entry","Vehicle Location Update"
         ]
     ]]
 }, {
@@ -418,4 +422,5 @@ fixtures = [
     ]
     }
 ]
+
 # fixtures = ["Custom Field", "Property Setter", "DocType"]
