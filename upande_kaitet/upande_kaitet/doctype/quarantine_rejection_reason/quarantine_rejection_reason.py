@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class FieldReject(Document):
+class QuarantineRejectionReason(Document):
 	pass
