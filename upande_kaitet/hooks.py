@@ -425,5 +425,3 @@ fixtures = [
     ]
     }
 ]
-
-# fixtures = ["Custom Field", "Property Setter", "DocType"]
