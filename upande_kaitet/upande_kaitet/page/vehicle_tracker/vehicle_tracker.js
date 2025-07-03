@@ -28,7 +28,6 @@ frappe.pages['vehicle-tracker'].on_page_load = function(wrapper) {
 					<div class="col-md-3">
 						<label for="vehicle-select" class="form-label">Vehicle</label>
 						<select id="vehicle-select" class="form-select">
-							<option value="">All Vehicles</option>
 						</select>
 					</div>
 					<div class="col-md-1 d-grid">

@@ -172,7 +172,8 @@ function setup_refresh_handler() {
 					colors: ['#5e64ff'],
 					axisOptions: {
 						xAxisMode: 'tick',
-						yAxisMode: 'tick'
+						yAxisMode: 'tick',
+						xAxisLabelRotation: 30 
 					}
 				});
 			}
