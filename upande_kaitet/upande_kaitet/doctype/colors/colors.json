@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:color",
+ "creation": "2025-06-23 13:11:44.543068",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "color"
+ ],
+ "fields": [
+  {
+   "fieldname": "color",
+   "fieldtype": "Data",
+   "label": "Color",
+   "unique": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-06-23 13:49:04.064550",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Colors",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

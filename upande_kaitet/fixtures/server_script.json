@@ -473,5 +473,24 @@
   "reference_doctype": "Stock Entry",
   "script": "if doc.stock_entry_type == \"Harvesting\":\n\n    bucket_id_doc = frappe.get_doc(\"Bucket QR Code\", doc.custom_bucket_id)\n    bucket_id_doc.last_stock_entry = doc.name\n    bucket_id_doc.status = \"In Use\"\n    \n    bucket_id_doc.save()\n\n\nif doc.stock_entry_type == \"Receiving\":\n    \n    bucket_id_doc = frappe.get_doc(\"Bucket QR Code\", doc.custom_received_bucket_id)\n    bucket_id_doc.status = \"Available\"\n    \n    bucket_id_doc.save()\n",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Submit",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-06-26 23:39:58.836022",
+  "module": "Upande Kaitet",
+  "name": "CFU AM CHECKLIST Assign",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "CFU Inspection Checksheet",
+  "script": "# Replace with actual user email to assign ToDos\nassigned_user = \"james@upande.com\"\n\nfor item in doc.inspection_items:\n    if item.status == \"X Faulty\":\n        subject = f\"[{doc.name}] CFU Faulty: {item.equipment or 'Unknown'}\"\n        description = (\n            f\"⚠️ Issue reported from CFU AM CHECKLIST:\\n\\n\"\n            f\"• Equipment: {item.equipment or 'N/A'}\\n\"\n            f\"• Part: {item.part_name or 'N/A'}\\n\"\n            f\"• Parameter Checked: {item.parameter_checked or 'N/A'}\\n\"\n            f\"• Notes: {item.notes or 'N/A'}\\n\"\n            f\"• Reported by: {doc.inspector or 'Unknown'}\\n\"\n            f\"• Date: {doc.date or 'Unknown'}\\n\"\n            f\"• Time: {doc.time or 'Unknown'}\"\n        )\n\n        # Create the Issue\n        issue = frappe.get_doc({\n            \"doctype\": \"Issue\",\n            \"subject\": subject,\n            \"issue_type\": \"Maintenance\",\n            \"raised_by\": frappe.session.user,\n            \"description\": description,\n            \"reference_doctype\": doc.doctype,\n            \"reference_name\": doc.name,\n            \"priority\": \"High\"\n        }).insert(ignore_permissions=True)\n\n        # Use notes as ToDo description\n        todo_description = item.notes or f\"Faulty issue in part: {item.part_name or 'N/A'}\"\n\n        # Assign ToDo\n        frappe.get_doc({\n            \"doctype\": \"ToDo\",\n            \"allocated_to\": assigned_user,\n            \"reference_type\": \"Issue\",\n            \"reference_name\": issue.name,\n            \"description\": todo_description,\n            \"priority\": \"High\"\n        }).insert(ignore_permissions=True)\n",
+  "script_type": "DocType Event"
  }
 ]

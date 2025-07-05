@@ -1,0 +1,13 @@
+{
+ "creation": "2025-06-27 10:12:57.496372",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart Source",
+ "idx": 0,
+ "modified": "2025-06-27 10:12:57.496372",
+ "modified_by": "Administrator",
+ "module": "Sensor Dashboard",
+ "name": "GreenHouse Hourly",
+ "owner": "Administrator",
+ "source_name": "GreenHouse Hourly",
+ "timeseries": 1
+}
