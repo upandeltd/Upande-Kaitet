@@ -297,31 +297,27 @@ whitelisted_methods = {
 # }
 
 fixtures = [
-{
-    "dt":
-    "DocType",
-    "filters": [[
-        "name", "in",
-        [
-            "QR Code", "Packing List", "Pack List Item",
-            "Scan", 
-            "Box Label", "Box Label Item", "Label Print",
-            "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
-            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Grading Repack Tracker Item",
-            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
-            "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
-            "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
-            "GPS Readings", "Delivery Type", "Loss Reason", 
-            "SO Warehouse Mapping",
-            "SO Warehouse Mapping Item", 
-            "Temperature Reading", "Consignee", "Item Subclass"
-        ]
-    ]]
-},
 # {
-#     "dt": "DocType",
-#     "filters": [["name", "=", "Vehicle"]]
+#     "dt":
+#     "DocType",
+#     "filters": [[
+#         "name", "in",
+#         [
+#             "QR Code", "Packing List", "Pack List Item",
+#             "Scan", 
+#             "Box Label", "Box Label Item", "Label Print",
+#             "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
+#             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+#             "Grading Repack Tracker Item",
+#             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
+#             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
+#             "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+#             "GPS Readings", "Delivery Type", "Loss Reason", 
+#             "SO Warehouse Mapping",
+#             "SO Warehouse Mapping Item", 
+#             "Temperature Reading", "Consignee", "Item Subclass"
+#         ]
+#     ]]
 # },
 {
     "dt":
@@ -381,7 +377,7 @@ fixtures = [
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
             "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
             "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
-            "Refresh Items Table"
+            "Refresh Items Table", "Persist Variety, Farm and Greenhouse", "Variety Select Dialog"
         ]
     ]]
 }, {
@@ -393,7 +389,7 @@ fixtures = [
             "QR Code Only", "Box Label", "Harvest Label",
             "Grader QR Print Format", "Bunch QR Code",
             "Trial Bunch Print Format", "Grader QR Print format 2",
-            "Harvest Label 2"
+            "Harvest Label 2", "Box Label 2"
         ]
     ]]
 },
@@ -418,10 +414,11 @@ fixtures = [
             "Sales per Variety Report (SO)", "Daily Sales Ops Summary"
         ]
     ]]
-},   {
-    "dt": "Server Script",
-    "filters": [
-        ["name", "=", "Vehicle Location Update"]
-    ]
-    }
+},   
+# {
+    # "dt": "Server Script",
+    # "filters": [
+    #     ["name", "=", "Vehicle Location Update"]
+    # ]
+    # }
 ]
