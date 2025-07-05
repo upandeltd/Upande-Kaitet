@@ -425,6 +425,7 @@ fixtures = [
 					"CSU AM Checksheet",
 					"Tractor Inspection Checksheet",
 					"Refresh Items Table",
+                    "checksheets button",
 				],
 			]
 		],
