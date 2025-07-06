@@ -1,6 +1,8 @@
 {
+ "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:{Inspector}-{#####}",
  "creation": "2025-06-23 16:41:55.137412",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -78,11 +80,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-24 20:20:23.815080",
+ "modified": "2025-07-04 08:58:31.315141",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
  "name": "REEFER TRUCK CLIT CHECKSHEET",
- "naming_rule": "By script",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

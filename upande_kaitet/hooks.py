@@ -1,6 +1,6 @@
 app_name = "upande_kaitet"
 app_title = "Upande Kaitet"
-app_publisher = "	Upande"
+app_blisher = "	Upande"
 app_description = "Kaitet ERP System"
 app_email = "dev@upande.com"
 app_license = "mit"
@@ -146,44 +146,38 @@ app_license = "mit"
 # }
 
 doc_events = {
-    "Sales Order": {
-        "on_submit": [
-            #"upande_kaitet.server_scripts.reserve_stock.unreserve_stems",
-            "upande_kaitet.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
-        ],
-        "on_update": [
-            # "upande_kaitet.server_scripts.reserve_stock.on_sales_order_update",
-            "upande_kaitet.server_scripts.so_delivery_warehouse.handle_sales_order_approval"
-        ],
-        "before_submit":
-        "upande_kaitet.upande_kaitet.custom.sales_order_custom.validate_customer_check_limit",
-        "on_cancel":
-        "upande_kaitet.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation",
-        # "on_save":
-        # "upande_kaitet.server_scripts.reserve_stock.on_sales_order_save",
-        # "after_insert":
-        # "upande_kaitet.server_scripts.reserve_stock.on_sales_order_created",
-    },
-    "Consolidated Pack List": {
-        # "on_submit":
-        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
-        "on_cancel": "upande_kaitet.server_scripts.events.on_cpl_cancel"
-
-        # "before_submit":
-        # "upande_kaitet.server_scripts.completion_percentage.validate_completion_percentage"
-    },
-    "Sales Invoice": {
-        "on_submit":
-        "upande_kaitet.server_scripts.sinv_approved_by.set_approved_by",
-        "on_cancel":
-        "upande_kaitet.server_scripts.events.on_sales_invoice_cancel"
-    },
-    "Farm Pack List": {
-        "before_cancel":
-        "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-        # "on_submit":
-        # "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
-    }
+	"Sales Order": {
+		"on_submit": [
+			# "upande_kaitet.server_scripts.reserve_stock.unreserve_stems",
+			"upande_kaitet.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
+		],
+		"on_update": [
+			# "upande_kaitet.server_scripts.reserve_stock.on_sales_order_update",
+			"upande_kaitet.server_scripts.so_delivery_warehouse.handle_sales_order_approval"
+		],
+		"before_submit": "upande_kaitet.upande_kaitet.custom.sales_order_custom.validate_customer_check_limit",
+		"on_cancel": "upande_kaitet.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation",
+		# "on_save":
+		# "upande_kaitet.server_scripts.reserve_stock.on_sales_order_save",
+		# "after_insert":
+		# "upande_kaitet.server_scripts.reserve_stock.on_sales_order_created",
+	},
+	"Consolidated Pack List": {
+		# "on_submit":
+		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+		"on_cancel": "upande_kaitet.server_scripts.events.on_cpl_cancel"
+		# "before_submit":
+		# "upande_kaitet.server_scripts.completion_percentage.validate_completion_percentage"
+	},
+	"Sales Invoice": {
+		"on_submit": "upande_kaitet.server_scripts.sinv_approved_by.set_approved_by",
+		"on_cancel": "upande_kaitet.server_scripts.events.on_sales_invoice_cancel",
+	},
+	"Farm Pack List": {
+		"before_cancel": "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
+		# "on_submit":
+		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+	},
 }
 
 # Scheduled Tasks
@@ -196,39 +190,33 @@ scheduler_events = {
 	# "daily": [
 	# 	"upande_kaitet.tasks.transfer_holding_to_cold_store"
 	# ],
-# 	"hourly": [
-# 		"upande_kaitet.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"upande_kaitet.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"upande_kaitet.tasks.monthly"
-# 	],
-# }
-
-# Testing
-# -------
-
-# before_tests = "upande_kaitet.install.before_tests"
-
-# Overriding Methods
-# ------------------------------
-#
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "upande_kaitet.event.get_events"
+	# 	"hourly": [
+	# 		"upande_kaitet.tasks.hourly"
+	# 	],
+	# 	"weekly": [
+	# 		"upande_kaitet.tasks.weekly"
+	# 	],
+	# 	"monthly": [
+	# 		"upande_kaitet.tasks.monthly"
+	# 	],
+	# }
+	# Testing
+	# -------
+	# before_tests = "upande_kaitet.install.before_tests"
+	# Overriding Methods
+	# ------------------------------
+	#
+	# override_whitelisted_methods = {
+	# 	"frappe.desk.doctype.event.event.get_events": "upande_kaitet.event.get_events"
 }
 
 override_class = {
-    "erpnext.controllers.taxes_and_totals.calculate_taxes_and_totals":
-    "upande_kaitet.overrides.standard_system_rate.CustomTaxesAndTotals"
+	"erpnext.controllers.taxes_and_totals.calculate_taxes_and_totals": "upande_kaitet.overrides.standard_system_rate.CustomTaxesAndTotals"
 }
 
 whitelisted_methods = {
-    "get_item_group_price":
-    "upande_kaitet.server_scripts.fetch_item_grp_price.get_item_group_price",
-    "create_sales_invoice":
-    "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice"
+	"get_item_group_price": "upande_kaitet.server_scripts.fetch_item_grp_price.get_item_group_price",
+	"create_sales_invoice": "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice",
 }
 
 #
@@ -297,28 +285,28 @@ whitelisted_methods = {
 # }
 
 fixtures = [
- {
-     "dt":
-     "DocType",
-     "filters": [[
-         "name", "in",
-         [
-             "QR Code", "Packing List", "Pack List Item",
-             "Scan", 
-             "Box Label", "Box Label Item", "Label Print",
-             "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
-             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-             "Grading Repack Tracker Item",
-             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
-             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
-             "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
-             "GPS Readings", "Delivery Type", "Loss Reason", 
-              "SO Warehouse Mapping",
-              "SO Warehouse Mapping Item", 
-               "Temperature Reading", "Consignee", "Item Subclass"
-        ]
-    ]]
-},
+# {
+#     "dt":
+#     "DocType",
+#     "filters": [[
+#         "name", "in",
+#         [
+#             "QR Code", "Packing List", "Pack List Item",
+#             "Scan", 
+#             "Box Label", "Box Label Item", "Label Print",
+#             "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
+#             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+#             "Grading Repack Tracker Item",
+#             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
+#             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
+#             "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+#             "GPS Readings", "Delivery Type", "Loss Reason", 
+#             "SO Warehouse Mapping",
+#             "SO Warehouse Mapping Item", 
+#             "Temperature Reading", "Consignee", "Item Subclass"
+#         ]
+#     ]]
+# },
 {
     "dt":
     "Server Script",
@@ -377,7 +365,7 @@ fixtures = [
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
             "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
             "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
-            "Refresh Items Table"
+            "Refresh Items Table", "Persist Variety, Farm and Greenhouse", "Variety Select Dialog"
         ]
     ]]
 }, {
@@ -389,7 +377,7 @@ fixtures = [
             "QR Code Only", "Box Label", "Harvest Label",
             "Grader QR Print Format", "Bunch QR Code",
             "Trial Bunch Print Format", "Grader QR Print format 2",
-            "Harvest Label 2"
+            "Harvest Label 2", "Box Label 2"
         ]
     ]]
 },
@@ -414,5 +402,11 @@ fixtures = [
             "Sales per Variety Report (SO)", "Daily Sales Ops Summary"
         ]
     ]]
-}
+},   
+# {
+    # "dt": "Server Script",
+    # "filters": [
+    #     ["name", "=", "Vehicle Location Update"]
+    # ]
+    # }
 ]
