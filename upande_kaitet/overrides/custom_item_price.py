@@ -10,7 +10,7 @@ def custom_check_duplicates(self, *args, **kwargs):
         "selling": self.selling,
         "buying": self.buying,
         "uom": self.uom,
-        "length": self.length, 
+        "length": self.custom_length, 
     }
 
     if self.name:
