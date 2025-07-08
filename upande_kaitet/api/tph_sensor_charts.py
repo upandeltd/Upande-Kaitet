@@ -1,6 +1,8 @@
+from datetime import datetime, timedelta
+
 import frappe
-from frappe.utils import getdate
-from datetime import datetime
+from frappe.utils import getdate, now_datetime
+
 
 @frappe.whitelist()
 def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timespan=None, time_interval=None):
@@ -11,18 +13,53 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 	conditions = ["sensor_name = %s"]
 	params = [sensor_name]
 
-	if date_from:
+	# ---- Special Handling: Past 24 hours dynamic hourly labels ----
+	if time_interval == "hourly" and timespan == "last_24h":
+		now = now_datetime()
+		start_time = now - timedelta(hours=24)
+
 		conditions.append("timestamp >= %s")
-		params.append(date_from)
+		params.append(start_time)
 
-	if date_to:
-		conditions.append("timestamp <= %s")
-		params.append(date_to)
+		where_clause = " AND ".join(conditions)
 
-	where_clause = " AND ".join(conditions)
+		query = f"""
+			SELECT
+				DATE_FORMAT(timestamp, '%%H:00') as hour_label,
+				AVG(value) as avg_value
+			FROM `tabSensor Reading`
+			WHERE {where_clause}
+			GROUP BY hour_label
+			ORDER BY hour_label
+		"""
+		data = frappe.db.sql(query, params, as_dict=True)
 
-	# ---- HOURLY HANDLING ----
+		# Create map of available data
+		data_map = {row["hour_label"]: round(row["avg_value"], 2) for row in data}
+
+		# Generate last 24 hourly labels from current time
+		labels = []
+		values = []
+
+		for i in range(24):
+			hour_time = (now - timedelta(hours=23 - i)).replace(minute=0, second=0, microsecond=0)
+			label = hour_time.strftime("%H:00")
+			labels.append(label)
+			values.append(data_map.get(label, 0))
+
+		return {"labels": labels, "values": values}
+
+	# ---- Default HOURLY HANDLING: Static 00:00 → 23:00 ----
 	if time_interval == "hourly":
+		if date_from:
+			conditions.append("timestamp >= %s")
+			params.append(date_from)
+		if date_to:
+			conditions.append("timestamp <= %s")
+			params.append(date_to)
+
+		where_clause = " AND ".join(conditions)
+
 		query = f"""
 			SELECT
 				HOUR(timestamp) as hour,
@@ -34,17 +71,22 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 		"""
 		data = frappe.db.sql(query, params, as_dict=True)
 
-		# Prepare 24-hour timeline: 00:00 → 23:00
 		all_hours = [f"{str(h).zfill(2)}:00" for h in range(24)]
 		data_map = {f"{str(row['hour']).zfill(2)}:00": round(row["avg_value"], 2) for row in data}
 
-		return {
-			"labels": all_hours,
-			"values": [data_map.get(h, 0) for h in all_hours]
-		}
+		return {"labels": all_hours, "values": [data_map.get(h, 0) for h in all_hours]}
 
 	# ---- QUARTERLY HANDLING ----
 	elif time_interval == "quarterly":
+		if date_from:
+			conditions.append("timestamp >= %s")
+			params.append(date_from)
+		if date_to:
+			conditions.append("timestamp <= %s")
+			params.append(date_to)
+
+		where_clause = " AND ".join(conditions)
+
 		query = f"""
 			SELECT
 				CONCAT(YEAR(timestamp), '-Q', QUARTER(timestamp)) as label,
@@ -58,13 +100,17 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 
 	# ---- OTHER INTERVALS ----
 	else:
-		time_format_map = {
-			"daily": "%Y-%m-%d",
-			"weekly": "%Y-%u",
-			"monthly": "%Y-%m",
-			"yearly": "%Y"
-		}
-		time_fmt = time_format_map.get(time_interval, "%Y-%m-%d")  # default: daily
+		if date_from:
+			conditions.append("timestamp >= %s")
+			params.append(date_from)
+		if date_to:
+			conditions.append("timestamp <= %s")
+			params.append(date_to)
+
+		where_clause = " AND ".join(conditions)
+
+		time_format_map = {"daily": "%Y-%m-%d", "weekly": "%Y-%u", "monthly": "%Y-%m", "yearly": "%Y"}
+		time_fmt = time_format_map.get(time_interval, "%Y-%m-%d")  # default to daily
 
 		query = f"""
 			SELECT
@@ -75,17 +121,13 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 			GROUP BY label
 			ORDER BY label
 		"""
-		params = [time_fmt] + params
+		# params = [time_fmt] + params
+		params = [time_fmt, *params]
+
 		data = frappe.db.sql(query, params, as_dict=True)
 
-	# Fallback in case no data
+	# Fallback
 	if not data:
-		return {
-			"labels": [],
-			"values": []
-		}
+		return {"labels": [], "values": []}
 
-	return {
-		"labels": [row['label'] for row in data],
-		"values": [round(row['avg_value'], 2) for row in data]
-	}
+	return {"labels": [row["label"] for row in data], "values": [round(row["avg_value"], 2) for row in data]}

@@ -2,10 +2,9 @@
  "actions": [],
  "allow_import": 1,
  "autoname": "format:{plates}",
- "creation": "2014-08-22 12:43:50.701715",
- "default_view": "Map",
+ "creation": "2025-07-07 18:19:58.110433",
+ "default_view": "List",
  "doctype": "DocType",
- "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
   "title",
@@ -16,13 +15,11 @@
   "purchase_date",
   "user",
   "odometer_reading",
-  "route",
   "column_break_cvgs",
   "imei",
   "latitude",
   "longitude",
-  "timestamp",
-  "is_published"
+  "timestamp"
  ],
  "fields": [
   {
@@ -105,27 +102,11 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Timestamp"
-  },
-  {
-   "fieldname": "route",
-   "fieldtype": "Data",
-   "is_virtual": 1,
-   "label": "Route",
-   "options": "f\"{doc.plates}\"",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "is_published",
-   "fieldtype": "Check",
-   "label": "is published?"
   }
  ],
- "has_web_view": 1,
- "is_published_field": "is_published",
  "links": [],
  "max_attachments": 1000,
- "modified": "2025-06-30 20:44:27.607076",
+ "modified": "2025-07-07 19:42:29.680323",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
  "name": "Vehicle",
@@ -152,7 +133,6 @@
    "write": 1
   }
  ],
- "route": "vehicle",
  "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
