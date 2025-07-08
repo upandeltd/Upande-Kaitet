@@ -132,7 +132,7 @@ app_license = "mit"
 # override_doctype_class = {
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
-
+override_doctype_class = {"Item Price": "upande_kaitet.overrides.custom_item_price_naming.CustomItemPrice"}
 # Document Events
 # ---------------
 # Hook on document methods and events
@@ -178,6 +178,7 @@ doc_events = {
 		# "on_submit":
 		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 	},
+	"Item Price": {"validate": "upande_kaitet.overrides.custom_item_price.custom_check_duplicates"},
 }
 
 # Scheduled Tasks
@@ -285,49 +286,28 @@ whitelisted_methods = {
 # }
 
 fixtures = [
-	{
-		"dt": "DocType",
-		"filters": [
-			[
-				"name",
-				"in",
-				[
-					"QR Code",
-					"Packing List",
-					"Pack List Item",
-					"Scan",
-					"Box Label",
-					"Box Label Item",
-					"Label Print",
-					"Bucket QR Code",
-					"Bunch QR Code",
-					"Grader QR Code",
-					"Scanned Items",
-					"Scan Check",
-					"Scan Check List",
-					"QR Sequence",
-					"Grading Repack Tracker Item",
-					"Grading Forecast Tracker",
-					"Forecast Entry",
-					"Forecast Entry Item",
-					"Business Unit",
-					"Scan Location Mapping",
-					"Scan Location Mapping Items",
-					"Joint Companies",
-					"Business Unit",
-					"GPS Reading",
-					"Vehicle",
-					"GPS Readings",
-					"Delivery Type",
-					"Loss Reason",
-					"SO Warehouse Mapping",
-					"SO Warehouse Mapping Item",
-					"Consignee",
-					"Item Subclass",
-				],
-			]
-		],
-	},
+	# {
+	#     "dt":
+	#     "DocType",
+	#     "filters": [[
+	#         "name", "in",
+	#         [
+	#             "QR Code", "Packing List", "Pack List Item",
+	#             "Scan",
+	#             "Box Label", "Box Label Item", "Label Print",
+	#             "Bucket QR Code", "Bunch QR Code", "Grader QR Code",
+	#             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+	#             "Grading Repack Tracker Item",
+	#             "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item",
+	#             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
+	#             "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
+	#             "GPS Readings", "Delivery Type", "Loss Reason",
+	#             "SO Warehouse Mapping",
+	#             "SO Warehouse Mapping Item",
+	#             "Temperature Reading", "Consignee", "Item Subclass"
+	#         ]
+	#     ]]
+	# },
 	{
 		"dt": "Server Script",
 		"filters": [
@@ -363,6 +343,7 @@ fixtures = [
 					"Repack",
 					"Create Invoice From Dispatch Form",
 					"Create Field Reject Entry",
+					"Vehicle Location Update",
 				],
 			]
 		],
@@ -444,6 +425,7 @@ fixtures = [
 					"Tractor Inspection Checksheet" "Refresh Items Table",
 					"Persist Variety, Farm and Greenhouse",
 					"Variety Select Dialog",
+					"Rate based on Length",
 				],
 			]
 		],
