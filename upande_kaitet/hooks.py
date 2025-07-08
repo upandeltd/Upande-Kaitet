@@ -132,7 +132,7 @@ app_license = "mit"
 # override_doctype_class = {
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
-
+override_doctype_class = {"Item Price": "upande_kaitet.overrides.custom_item_price_naming.CustomItemPrice"}
 # Document Events
 # ---------------
 # Hook on document methods and events
@@ -178,6 +178,7 @@ doc_events = {
 		# "on_submit":
 		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 	},
+	"Item Price": {"validate": "upande_kaitet.overrides.custom_item_price.custom_check_duplicates"},
 }
 
 # Scheduled Tasks
@@ -423,9 +424,12 @@ fixtures = [
 					"CFU Inspection Checksheet",
 					"CSU AM Checksheet",
 					"Tractor Inspection Checksheet" "Refresh Items Table",
+					"Bed Sampling Script",
+					"Mapping Sections to Greenhouse",
 					"Persist Variety, Farm and Greenhouse",
 					"Variety Select Dialog",
 					"Set Source and Target Warehouse",
+					"Rate based on Length",
 				],
 			]
 		],
