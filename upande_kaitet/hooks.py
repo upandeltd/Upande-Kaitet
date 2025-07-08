@@ -178,6 +178,9 @@ doc_events = {
 		# "on_submit":
 		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 	},
+    "Item Price": {
+        "validate": "upande_kaitet.overrides.custom_item_price.custom_check_duplicates"
+    }
 }
 
 # Scheduled Tasks
@@ -365,7 +368,7 @@ fixtures = [
             "Create Delivery Note Button", "Autopopulate Farm and Business Unit (SO)", "Custom Workflow Approval (Delivery note)",
             "Fetch SO Details", "Yoghurt Delivery Workflow", "Autopopulate Week Number", "Populate Available Qty Field"
             "CSU AM Checksheet" , "Tractor Inspection Checksheet" , "Truck Inspection Checksheet" ,"Packhouse Equipment and Machine AM Checklist" , "CFU Inspection Checksheet" , "CSU AM Checksheet" ,"Tractor Inspection Checksheet"
-            "Refresh Items Table", "Persist Variety, Farm and Greenhouse", "Variety Select Dialog"
+            "Refresh Items Table", "Persist Variety, Farm and Greenhouse", "Variety Select Dialog","Rate based on Length"
         ]
     ]]
 }, {
