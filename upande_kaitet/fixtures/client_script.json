@@ -647,5 +647,16 @@
   "name": "Persist Variety, Farm and Greenhouse",
   "script": "frappe.ui.form.on('Harvest', {\n\tonload(frm) {\n\t\tlet farm = localStorage.getItem('farm') || \"Kapkolia\";\n\t\tlet block = localStorage.getItem('block');\n\t\tlet item_code = localStorage.getItem('item_code');\n\t\t\n        if (frm.is_new() ) {\n            frm.set_value('farm', farm);\n            frm.set_value('block', block);\n            frm.set_value('item_code', item_code);\n        }\n        \n        setTimeout(() => {\n\t\t\tif (frm.doc.farm && frm.doc.block) {\n\t\t\t\t// Trigger button click or handler\n\t\t\t\tif (frm.custom_buttons && frm.custom_buttons['Scan QR Code']) {\n\t\t\t\t\tfrm.custom_buttons['Scan QR Code'].click();\n\t\t\t\t} else if (frm.trigger && typeof frm.trigger_scan_qr_code === 'function') {\n\t\t\t\t\tfrm.trigger_scan_qr_code();\n\t\t\t\t}\n\t\t\t}\n\t\t}, 500);\n\t},\n\t\n\tfarm: function(frm) {\n        // Save value to localStorage when field is changed\n        if (frm.doc.farm) {\n            localStorage.setItem('farm', frm.doc.farm);\n        }\n    },\n    \n    block: function(frm) {\n        // Save value to localStorage when field is changed\n        if (frm.doc.block) {\n            localStorage.setItem('block', frm.doc.block);\n        }\n    },\n    \n    item_code: function(frm) {\n        // Save value to localStorage when field is changed\n        if (frm.doc.item_code) {\n            localStorage.setItem('item_code', frm.doc.item_code);\n        }\n    }\n})\n\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Delivery Note",
+  "enabled": 1,
+  "modified": "2025-07-08 18:00:55.490301",
+  "module": "Upande Kaitet",
+  "name": "Set Source and Target Warehouse",
+  "script": "frappe.ui.form.on('Delivery Note', {\n\tasync custom_delivery_type(frm) {\n        const customer_doc = await frappe.db.get_doc(\"Customer\", frm.doc.customer);\n        const delivery_type_doc = await frappe.db.get_doc(\"Delivery Type\", frm.doc.custom_delivery_type);\n\t    \n\t\tif (frm.doc.custom_delivery_type == \"Yoghurt Dispatch\" && customer_doc.is_internal_customer) {\n\t\t    frm.set_value(\"set_warehouse\", delivery_type_doc.source_warehouse);\n\t\t}\n\t}\n});",
+  "view": "Form"
  }
 ]
