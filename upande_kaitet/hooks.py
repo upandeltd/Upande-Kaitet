@@ -344,6 +344,7 @@ fixtures = [
 					"Create Invoice From Dispatch Form",
 					"Create Field Reject Entry",
 					"Vehicle Location Update",
+					"Create Sales Invoice",
 				],
 			]
 		],
@@ -427,6 +428,7 @@ fixtures = [
 					"Mapping Sections to Greenhouse",
 					"Persist Variety, Farm and Greenhouse",
 					"Variety Select Dialog",
+					"Set Source and Target Warehouse",
 					"Rate based on Length",
 				],
 			]
