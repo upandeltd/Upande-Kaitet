@@ -423,6 +423,8 @@ fixtures = [
 					"CFU Inspection Checksheet",
 					"CSU AM Checksheet",
 					"Tractor Inspection Checksheet" "Refresh Items Table",
+					"Bed Sampling Script",
+					"Mapping Sections to Greenhouse",
 					"Persist Variety, Farm and Greenhouse",
 					"Variety Select Dialog",
 					"Rate based on Length",
