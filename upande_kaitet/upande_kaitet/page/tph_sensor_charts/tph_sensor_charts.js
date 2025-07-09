@@ -6,41 +6,35 @@ frappe.pages["tph-sensor-charts"].on_page_load = function (wrapper) {
 	});
 
 	$(page.body).html(`
-
 		<div class="row d-flex flex-wrap align-items-end justify-content-center" style="gap: 10px; margin-bottom: 15px; margin-top:10px;">
 			<div class="col-auto">
 				<label for="sensor-name">Sensor Name</label>
 				<select class="form-control" id="sensor-name">
-				<option value="">Loading sensors...</option>
+					<option value="">Loading sensors...</option>
 				</select>
 			</div>
 
 			<div class="col-auto">
-				<label for="date-from">Date From</label>
+				<label for="date-from">Select Date</label>
 				<input type="date" class="form-control" id="date-from">
-			</div>
-
-			<div class="col-auto">
-				<label for="date-to">Date To</label>
-				<input type="date" class="form-control" id="date-to">
 			</div>
 
 			<div class="col-auto">
 				<label for="timespan">Timespan</label>
 				<select class="form-control" id="timespan">
-				<option value="">Select Timespan</option>
-				<option value="last_year">Last Year</option>
-				<option value="last_quarter">Last Quarter</option>
-				<option value="last_month">Last Month</option>
-				<option value="last_week">Last Week</option>
-				<option value="last_24h" selected>Last 24 Hours</option>
+					<option value="">Select Timespan</option>
+					<option value="last_year">Last Year</option>
+					<option value="last_quarter">Last Quarter</option>
+					<option value="last_month">Last Month</option>
+					<option value="last_week">Last Week</option>
+					<option value="last_24h" selected>Last 24 Hours</option>
 				</select>
 			</div>
 
 			<div class="col-auto">
 				<label for="time-interval">Time Interval</label>
 				<select class="form-control" id="time-interval">
-				<option value="hourly" selected>Hourly</option>
+					<option value="hourly" selected>Hourly</option>
 				</select>
 			</div>
 
@@ -51,14 +45,24 @@ frappe.pages["tph-sensor-charts"].on_page_load = function (wrapper) {
 
 		<div style="margin-top: 0px; padding-top: 0px; width: 100%;">
 			<div id="chart-area" style="padding-top: 40px; width: 100%; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;">
-				<div id="chart-wrapper" style="min-width: 1600px;"></div>
+				<div id="chart-wrapper" style="min-width: 100%;"></div>
 			</div>
 		</div>
 	`);
 
 	load_sensor_names(() => {
 		setup_timespan_filter_handler();
+		setup_date_filter_handler();
+		setup_auto_refresh_on_filter_change();
 		setup_refresh_handler();
+
+		// Set initial defaults
+		$("#timespan").val("last_24h").trigger("change");
+		setTimeout(() => {
+			$("#time-interval").val("hourly");
+			$("#sensor-name").val("kaitet_greenhouse1");
+			$("#date-from").val("");
+		}, 200);
 	});
 };
 
@@ -104,14 +108,11 @@ function load_sensor_names(callback) {
 				select.append(`<option value="">No sensors found</option>`);
 			}
 
-			// Fallback to first sensor if greenhouse1 doesn't exist
 			if (!defaultSensorSet && r.message.length > 0) {
 				select.val(r.message[0].sensor_name);
 			}
 
 			if (callback) callback();
-
-			// Auto load chart after dropdown is filled
 			$("#refresh-chart").click();
 		},
 	});
@@ -131,12 +132,36 @@ function setup_timespan_filter_handler() {
 		const intervalSelect = $("#time-interval");
 		intervalSelect.empty().append(`<option value="">Select Interval</option>`);
 
+		if (selected) {
+			$("#date-from").val("");
+		}
+
 		if (interval_map[selected]) {
-			interval_map[selected].forEach((interval) => {
+			interval_map[selected].forEach((interval, index) => {
 				const label = interval.charAt(0).toUpperCase() + interval.slice(1);
-				intervalSelect.append(`<option value="${interval}">${label}</option>`);
+				const selectedAttr = index === 0 ? "selected" : "";
+				intervalSelect.append(
+					`<option value="${interval}" ${selectedAttr}>${label}</option>`
+				);
 			});
 		}
+	});
+}
+
+function setup_date_filter_handler() {
+	$("#date-from").on("change", function () {
+		const date = $(this).val();
+		if (date) {
+			$("#timespan").val("");
+			$("#time-interval").html(`<option value="hourly" selected>Hourly</option>`);
+			$("#refresh-chart").click();
+		}
+	});
+}
+
+function setup_auto_refresh_on_filter_change() {
+	$("#sensor-name, #timespan, #time-interval").on("change", function () {
+		$("#refresh-chart").click();
 	});
 }
 
@@ -145,7 +170,6 @@ function setup_refresh_handler() {
 		const filters = {
 			sensor_name: $("#sensor-name").val(),
 			date_from: $("#date-from").val(),
-			date_to: $("#date-to").val(),
 			timespan: $("#timespan").val(),
 			time_interval: $("#time-interval").val(),
 		};
@@ -163,7 +187,7 @@ function setup_refresh_handler() {
 		}
 
 		$("#chart-area").html(
-			"<div id='chart-wrapper' style='min-width: 1600px;'><p>Loading chart...</p></div>"
+			"<div id='chart-wrapper' style='min-width: 100%;'><p>Loading chart...</p></div>"
 		);
 
 		frappe.call({
@@ -183,14 +207,55 @@ function setup_refresh_handler() {
 					],
 				};
 
+				// Remove previous custom title and axis date label
+				$("#custom-chart-title").remove();
+				$("#x-axis-date-label").remove();
 				$("#chart-wrapper").empty();
 
+				// Insert styled chart title above the chart
+				$("#chart-wrapper").before(`
+					<div id="custom-chart-title" style="
+						text-align: center;
+						font-size: 26px;
+						font-weight: bold;
+						margin-bottom: 15px;
+						color: #2c3e50;
+					">
+						${chartTitle}
+					</div>
+				`);
+
+				// Append selected date label below chart (if any)
+				const selectedDate = $("#date-from").val();
+				if (selectedDate) {
+					const readableDate = new Date(selectedDate).toLocaleDateString("en-KE", {
+						year: "numeric",
+						month: "long",
+						day: "numeric",
+					});
+
+					$("#chart-wrapper").after(`
+						<div id="x-axis-date-label" style="
+							text-align: center;
+							font-size: 14px;
+							color: #666;
+							margin-top: 10px;
+						">
+							Sensor data for ${readableDate}
+						</div>
+					`);
+				}
+
+				// Render the chart
 				new frappe.Chart("#chart-wrapper", {
-					title: chartTitle,
 					data: chartData,
 					type: "bar",
 					height: 300,
 					colors: ["#5e64ff"],
+					barOptions: {
+						spaceRatio: 0.1,
+						barWidth: 0.5,
+					},
 					axisOptions: {
 						xAxisMode: "tick",
 						yAxisMode: "tick",
