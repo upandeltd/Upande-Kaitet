@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:SPEC-{####}",
+ "creation": "2025-06-29 21:35:41.209613",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_cbgd",
+  "amended_from",
+  "specification_basis",
+  "colors_in_bunch",
+  "colors_in_box",
+  "varieties_in_bunch",
+  "varieties_in_box"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_cbgd",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Specifications",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "specification_basis",
+   "fieldtype": "Link",
+   "label": "Specification Basis",
+   "options": "Spec Basis"
+  },
+  {
+   "fieldname": "colors_in_bunch",
+   "fieldtype": "Table",
+   "label": "Colors (In Bunch)",
+   "options": "Spec Color Item"
+  },
+  {
+   "fieldname": "colors_in_box",
+   "fieldtype": "Table",
+   "label": "Colors (In Box)",
+   "options": "Spec Color Item"
+  },
+  {
+   "fieldname": "varieties_in_bunch",
+   "fieldtype": "Table",
+   "label": "Varieties (In Bunch)",
+   "options": "Spec Variety Item"
+  },
+  {
+   "fieldname": "varieties_in_box",
+   "fieldtype": "Table",
+   "label": "Varieties (In Box)",
+   "options": "Spec Variety Item"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-07-09 17:16:36.550056",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Specifications",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

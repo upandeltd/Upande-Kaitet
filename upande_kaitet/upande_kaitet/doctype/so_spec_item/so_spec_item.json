@@ -1,37 +1,42 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-06-23 13:11:44.445087",
+ "creation": "2025-07-09 17:35:36.667677",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "color",
-  "ratio_in_percentage"
+  "specification",
+  "quantity",
+  "selected_varieties"
  ],
  "fields": [
   {
-   "fieldname": "color",
+   "fieldname": "specification",
    "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Color",
-   "options": "Colors"
+   "label": "Specification",
+   "options": "Specifications"
   },
   {
-   "fieldname": "ratio_in_percentage",
+   "fieldname": "quantity",
    "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Ratio (in %)"
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "selected_varieties",
+   "fieldtype": "Table",
+   "label": "Selected Varieties",
+   "options": "Spec Variety Item"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-07-09 16:58:53.439448",
+ "modified": "2025-07-09 17:37:30.235868",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
- "name": "Spec Color Item",
+ "name": "SO Spec Item",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",
