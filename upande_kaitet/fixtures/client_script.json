@@ -1,13 +1,24 @@
 [
+  {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Bed Sampling Form",
+  "enabled": 1,
+  "modified": "2025-07-04 10:03:24.723170",
+  "module": "Upande Kaitet",
+  "name": "Bed Sampling Script",
+  "script": "frappe.ui.form.on('Bed Sampling Form', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tonload: function(frm) {\n        if (frm.is_new()) {\n            frm.clear_table('growth_stages');\n            const stages = [\n                \"Fresh cut\",\n                \"Rice stage\",\n                \"Pea stage\",\n                \"Bean stage\",\n                \"Ball stage\",\n                \"Colour Break\",\n                \"Harvest\"\n            ];\n            stages.forEach(stage => {\n                let row = frm.add_child('growth_stages');\n                row.growth_stage = stage;\n            });\n            frm.refresh_field('growth_stages');\n        }\n    }\n})",
+  "view": "Form"
+ },
  {
   "docstatus": 0,
   "doctype": "Client Script",
-  "dt": "CSU AM Checksheet",
+  "dt": "Crop Cycle",
   "enabled": 1,
-  "modified": "2025-06-23 17:30:57.166746",
+  "modified": "2025-07-07 10:45:00.439098",
   "module": "Upande Kaitet",
-  "name": "CSU AM Checksheet",
-  "script": "frappe.ui.form.on('CSU AM Checksheet', {\n    refresh(frm) {\n        if (frm.doc.__islocal && frm.doc.frequency && (!frm.doc.inspection_items || frm.doc.inspection_items.length === 0)) {\n            load_inspection_items(frm);\n        }\n    },\n\n    frequency(frm) {\n        if (frm.doc.frequency) {\n            frm.clear_table('inspection_items');\n            load_inspection_items(frm);\n        }\n    }\n});\n\nfunction load_inspection_items(frm) {\n    const frequency = frm.doc.frequency;\n    const items = get_items_by_frequency(frequency);\n\n    items.forEach(item => {\n        const row = frm.add_child('inspection_items');\n        row.equipment = item.equipment;\n        row.part_name = item.part_name;\n        row.parameter_checked = item.parameter;\n        row.status = 'Not Checked';\n    });\n\n    frm.refresh_field('inspection_items');\n}\n\nfunction get_items_by_frequency(freq) {\n    const daily = [\n        { equipment: \"Buffer Tank\", part_name: \"Gate valve\", parameter: \"opening and closing\" },\n        { equipment: \"Buffer Tank\", part_name: \"Inlet/Strainer Filters\", parameter: \"cleaning\" },\n        { equipment: \"Buffer Tank\", part_name: \"Sunction Filters\", parameter: \"cleaning\" },\n        { equipment: \"Pump\", part_name: \"Oil Gauge\", parameter: \"Levels (Min,Max)\" },\n        { equipment: \"Pump\", part_name: \"Control Valves\", parameter: \"opening and closing\" },\n        { equipment: \"Motor\", part_name: \"Motor\", parameter: \"overheating\" },\n        { equipment: \"Spray Delivery system\", part_name: \"Lanze\", parameter: \"Trigger Valve - Close & Open\" },\n        { equipment: \"Electrical\", part_name: \"Bulb\", parameter: \"Lighting\" }\n    ];\n\n    const weekly = [\n        { equipment: \"Pump\", part_name: \"Oil Gauge\", parameter: \"Cap tightening\" },\n        { equipment: \"Pump\", part_name: \"PRV valve\", parameter: \"Tightening\" },\n        { equipment: \"Pump\", part_name: \"Vee Belts guard\", parameter: \"Tightening\" },\n        { equipment: \"Hose Reel\", part_name: \"Hose Pipe Reel\", parameter: \"Inspection\" }\n    ];\n\n    const monthly = [\n        { equipment: \"Buffer Tank\", part_name: \"Base Frame\", parameter: \"Tightening\" },\n        { equipment: \"Pump\", part_name: \"Bolts & nuts\", parameter: \"Tightening\" },\n        { equipment: \"Electrical Control Panel\", part_name: \"Cables\", parameter: \"Inspection & Tightening\" }\n    ];\n\n    const quarterly = [\n        { equipment: \"Motor\", part_name: \"Electrical systems\", parameter: \"Cleaning, Inspection, Tightening\" },\n        { equipment: \"Pump\", part_name: \"Pump\", parameter: \"Full CLIT Service\" },\n        { equipment: \"Spray Delivery system\", part_name: \"Control Valves\", parameter: \"Inspection - Close and Open\" }\n    ];\n\n    switch (freq) {\n        case 'Daily': return daily;\n        case 'Weekly': return weekly;\n        case 'Monthly': return monthly;\n        case 'Quarterly': return quarterly;\n        default: return [];\n    }\n}\n",
+  "name": "Mapping Sections to Greenhouse",
+  "script": "frappe.ui.form.on('Crop Cycle', {\n  greenhouse: function(frm) {\n    if (frm.doc.greenhouse) {\n      // Fetch the Greenhouse with its custom_sections child table\n      frappe.call({\n        method: \"frappe.client.get\",\n        args: {\n          doctype: \"Warehouse\",\n          name: frm.doc.greenhouse\n        },\n        callback: function(r) {\n          if (r.message) {\n            // Store sections for later use\n            frm.custom_sections_data = r.message.custom_sections || [];\n            // Build Section options\n            let options = frm.custom_sections_data.map(row => row.section_no);\n            frm.set_df_property('section', 'options', options.join('\\n'));\n          }\n        }\n      });\n    }\n  },\n\n  section: function(frm) {\n    if (frm.custom_sections_data && frm.doc.section) {\n      // Find selected section data\n      let selected = frm.custom_sections_data.find(row => row.section_no == frm.doc.section);\n      if (selected) {\n        frm.set_value('assigned_grower', selected.assigned_staff);\n        frm.set_value('crop_name', selected.crop_variety);\n      }\n    }\n  },\n\n  bed_no: function(frm) {\n    if (frm.custom_sections_data && frm.doc.section && frm.doc.bed_no) {\n      let selected = frm.custom_sections_data.find(row => row.section_no == frm.doc.section);\n      if (selected) {\n        let bed = frm.doc.bed_no;\n        if (bed < selected.start_bed || bed > selected.end_bed) {\n          frappe.msgprint(__('Bed No must be between {0} and {1}', [selected.start_bed, selected.end_bed]));\n          frm.set_value('bed_no', null);\n        }\n      }\n    }\n  }\n});\n",
   "view": "Form"
  },
  {
@@ -477,10 +488,10 @@
   "doctype": "Client Script",
   "dt": "Harvest",
   "enabled": 1,
-  "modified": "2025-06-08 07:30:56.628089",
+  "modified": "2025-07-08 06:22:45.130729",
   "module": "Upande Kaitet",
   "name": "Ensure Bucket Is Scanned On Save",
-  "script": "frappe.ui.form.on('Harvest', {\n\tbefore_save(frm) {\n\t\tif (!frm.doc.bucket_id) {\n\t\t    frappe.throw(\"Please Refresh and scan the bucket QR Code before saving!\");\n\t\t    \n\t\t    \n\t\t    setTimeout(() => {\n                frappe.set_route('Form', frm.doctype, 'new');\n            }, 4000);\n            \n            setTimeout(() => {\n                window.location.reload();\n            }, 1000);\n\t\t}\n\t}\n})",
+  "script": "frappe.ui.form.on('Harvest', {\n\tbefore_save(frm) {\n\t    if (frm.doc.quantity > 300 ) {\n\t        frappe.throw('Quantity in bucket cannot be more than 300 stems.');\n\t    }\n\t    \n\t\tif (!frm.doc.bucket_id) {\n\t\t    frappe.throw(\"Please Refresh and scan the bucket QR Code before saving!\");\n\t\t    \n\t\t    \n\t\t    setTimeout(() => {\n                frappe.set_route('Form', frm.doctype, 'new');\n            }, 4000);\n            \n            setTimeout(() => {\n                window.location.reload();\n            }, 1000);\n\t\t}\n\t}\n})",
   "view": "Form"
  },
  {
@@ -668,6 +679,28 @@
   "module": "Upande Kaitet",
   "name": "Persist Variety, Farm and Greenhouse",
   "script": "frappe.ui.form.on('Harvest', {\n\tonload(frm) {\n\t\tlet farm = localStorage.getItem('farm') || \"Kapkolia\";\n\t\tlet block = localStorage.getItem('block');\n\t\tlet item_code = localStorage.getItem('item_code');\n\t\t\n        if (frm.is_new() ) {\n            frm.set_value('farm', farm);\n            frm.set_value('block', block);\n            frm.set_value('item_code', item_code);\n        }\n        \n        setTimeout(() => {\n\t\t\tif (frm.doc.farm && frm.doc.block) {\n\t\t\t\t// Trigger button click or handler\n\t\t\t\tif (frm.custom_buttons && frm.custom_buttons['Scan QR Code']) {\n\t\t\t\t\tfrm.custom_buttons['Scan QR Code'].click();\n\t\t\t\t} else if (frm.trigger && typeof frm.trigger_scan_qr_code === 'function') {\n\t\t\t\t\tfrm.trigger_scan_qr_code();\n\t\t\t\t}\n\t\t\t}\n\t\t}, 500);\n\t},\n\t\n\tfarm: function(frm) {\n        // Save value to localStorage when field is changed\n        if (frm.doc.farm) {\n            localStorage.setItem('farm', frm.doc.farm);\n        }\n    },\n    \n    block: function(frm) {\n        // Save value to localStorage when field is changed\n        if (frm.doc.block) {\n            localStorage.setItem('block', frm.doc.block);\n        }\n    },\n    \n    item_code: function(frm) {\n        // Save value to localStorage when field is changed\n        if (frm.doc.item_code) {\n            localStorage.setItem('item_code', frm.doc.item_code);\n        }\n    }\n})\n\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Delivery Note",
+  "enabled": 1,
+  "modified": "2025-07-08 18:00:55.490301",
+  "module": "Upande Kaitet",
+  "name": "Set Source and Target Warehouse",
+  "script": "frappe.ui.form.on('Delivery Note', {\n\tasync custom_delivery_type(frm) {\n        const customer_doc = await frappe.db.get_doc(\"Customer\", frm.doc.customer);\n        const delivery_type_doc = await frappe.db.get_doc(\"Delivery Type\", frm.doc.custom_delivery_type);\n\t    \n\t\tif (frm.doc.custom_delivery_type == \"Yoghurt Dispatch\" && customer_doc.is_internal_customer) {\n\t\t    frm.set_value(\"set_warehouse\", delivery_type_doc.source_warehouse);\n\t\t}\n\t}\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
+  "modified": "2025-07-08 06:45:26.790185",
+  "module": "Upande Kaitet",
+  "name": "Rate based on Length",
+  "script": "frappe.ui.form.on('Sales Order Item', {\n    custom_length(frm, cdt, cdn) {\n        let row = frappe.get_doc(cdt, cdn);\n\n        if (row.item_name && row.custom_length && frm.doc.price_list_currency && frm.doc.currency) {\n            // Primary fetch: current price list\n            fetch_price_from_list(frm, cdt, cdn, row.item_name, row.custom_length, frm.doc.selling_price_list, frm.doc.plc_conversion_rate, true);\n        }\n    }\n});\n\nfunction fetch_price_from_list(frm, cdt, cdn, item_name, length, price_list, conversion_rate, is_primary = false) {\n    frappe.call({\n        method: \"upande_kaitet.api.item_length_price.get_length_price\",\n        args: {\n            item_name: item_name,\n            length: length,\n            currency: frm.doc.price_list_currency,\n            price_list: price_list\n        },\n        callback: function (r) {\n            if (r.message) {\n                const base_currency = frm.doc.currency;\n                const rate_currency = frm.doc.price_list_currency;\n                const exchange_rate = conversion_rate || 1;\n\n                let converted_rate = flt(r.message);\n\n                if (rate_currency !== base_currency) {\n                    converted_rate = converted_rate * flt(exchange_rate);\n                }\n\n                frappe.model.set_value(cdt, cdn, 'price_list_rate', converted_rate);\n                frappe.model.set_value(cdt, cdn, 'base_price_list_rate', converted_rate);\n                frappe.model.set_value(cdt, cdn, 'stock_uom_rate', converted_rate);\n                frappe.model.set_value(cdt, cdn, 'amount', converted_rate * frappe.get_doc(cdt, cdn).qty);\n            } else if (is_primary) {\n                frappe.msgprint(\"No price found for this price list. Falling back to Standard Selling...\");\n                fetch_price_from_list(frm, cdt, cdn, item_name, length, \"Standard Selling\", 1, false);\n            } else {\n                // Fallback also failed\n                frappe.msgprint(\"No price found for the selected item, length, and currency even in Standard Selling.\");\n                frappe.model.set_value(cdt, cdn, 'price_list_rate', 0);\n            }\n        }\n    });\n}\n",
   "view": "Form"
  }
 ]
