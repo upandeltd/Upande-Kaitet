@@ -1,6 +1,6 @@
 app_name = "upande_kaitet"
 app_title = "Upande Kaitet"
-app_blisher = "	Upande"
+app_publisher = "Upande"
 app_description = "Kaitet ERP System"
 app_email = "dev@upande.com"
 app_license = "mit"

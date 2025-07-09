@@ -9,10 +9,8 @@ from pytz import UTC, timezone
 
 ke_tz = timezone("Africa/Nairobi")
 
-
 def is_valid_latlon(lat, lon):
 	return -5.0 <= lat <= 5.0 and 33.5 <= lon <= 42.5
-
 
 def haversine(lat1, lon1, lat2, lon2):
 	R = 6371
@@ -20,7 +18,6 @@ def haversine(lat1, lon1, lat2, lon2):
 	dlon = radians(lon2 - lon1)
 	a = sin(dlat / 2) ** 2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
 	return R * 2 * atan2(sqrt(a), sqrt(1 - a))
-
 
 def is_plausible_movement(prev, curr, min_distance_m=10, max_speed_kmph=80):
 	if not prev:
@@ -35,26 +32,39 @@ def is_plausible_movement(prev, curr, min_distance_m=10, max_speed_kmph=80):
 	speed_kmph = dist_km / time_diff_hr
 	return speed_kmph <= max_speed_kmph
 
-
 @frappe.whitelist()
-def get_all_vehicle_trails(start_date=None, end_date=None, interval="hour", vehicle=None):
+def get_all_vehicle_trails(start_date=None, vehicle=None):
 	try:
-		filters = {"latitude": ["not in", [None, "", 0]], "longitude": ["not in", [None, "", 0]]}
+		if not start_date:
+			frappe.throw(_("Start date is required"))
 
-		if start_date and end_date:
-			filters["creation"] = [
-				"between",
-				[get_datetime(start_date), get_datetime(end_date) + timedelta(days=1)],
-			]
-		elif start_date:
-			filters["creation"] = [">=", get_datetime(start_date)]
-		elif end_date:
-			filters["creation"] = ["<=", get_datetime(end_date) + timedelta(days=1)]
+		filters = {
+			"latitude": ["not in", [None, "", 0]],
+			"longitude": ["not in", [None, "", 0]]
+		}
+		imei_list = []
+
+		# Get datetime range for the selected day in Kenya timezone
+		base_dt = ke_tz.localize(datetime.strptime(start_date, "%Y-%m-%d"))
+		start_dt = base_dt
+		end_dt = base_dt + timedelta(days=1)
+
+		# Filter by date range (in UTC)
+		filters["creation"] = ["between", [start_dt.astimezone(UTC), end_dt.astimezone(UTC)]]
 
 		if vehicle:
 			vehicle_doc = frappe.get_doc("Vehicle", vehicle)
-			filters["imei"] = vehicle_doc.imei
+			imei = vehicle_doc.imei
+			filters["imei"] = imei
+			imei_list = [imei]
+		else:
+			imei_list = list({
+				d["imei"]
+				for d in frappe.get_all("Vehicle", fields=["imei"])
+				if d["imei"]
+			})
 
+		# Get all GPS readings for that day
 		readings = frappe.get_all(
 			"GPS Reading",
 			filters=filters,
@@ -84,50 +94,30 @@ def get_all_vehicle_trails(start_date=None, end_date=None, interval="hour", vehi
 			if is_plausible_movement(prev, point):
 				vehicle_trails[r["imei"]].append(point)
 
-		# Get latest raw readings by IMEI (regardless of plausibility)
-		imei_list = list(vehicle_trails.keys())
-		latest_by_imei = {}
-		if imei_list:
-			for r in frappe.get_all(
-				"GPS Reading",
-				filters={
-					"imei": ["in", imei_list],
-					"latitude": ["not in", [None, "", 0]],
-					"longitude": ["not in", [None, "", 0]],
-				},
-				fields=["imei", "latitude", "longitude", "creation"],
-				order_by="creation desc",
-			):
-				if r["imei"] not in latest_by_imei:
-					latest_by_imei[r["imei"]] = r  # only first (latest) per imei
-
+		# Prepare final results: use last point from the trail for that date
 		results = []
 
 		for v in frappe.get_all("Vehicle", filters={"imei": ["in", imei_list]}, fields=["name", "imei"]):
 			trail = vehicle_trails[v.imei]
-			latest = latest_by_imei.get(v.imei)
 
-			if not latest:
+			if not trail:
 				continue
 
-			latest_lat = float(latest["latitude"])
-			latest_lon = float(latest["longitude"])
-			latest_time = latest["creation"].replace(tzinfo=UTC).astimezone(ke_tz)
-			formatted_ts = latest_time.strftime("%d-%m-%Y %H:%M")
+			last = trail[-1]  # last point of the day
 
-			results.append(
-				{
-					"name": v.name,
-					"imei": v.imei,
-					"timestamp": formatted_ts,  # Used for 'Last Seen'
-					"trail": trail,  # For drawing the polyline
-					"latest_position": {
-						"latitude": latest_lat,
-						"longitude": latest_lon,
-						"timestamp": formatted_ts,
-					},
+			formatted_ts = last["timestamp"].replace(tzinfo=UTC).astimezone(ke_tz).strftime("%d-%m-%Y %H:%M")
+
+			results.append({
+				"name": v.name,
+				"imei": v.imei,
+				"timestamp": formatted_ts,
+				"trail": trail,
+				"latest_position": {
+					"latitude": last["latitude"],
+					"longitude": last["longitude"],
+					"timestamp": formatted_ts,
 				}
-			)
+			})
 
 		return results
 
