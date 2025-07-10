@@ -424,7 +424,7 @@ function setup_refresh_handler() {
 		$("#custom-chart-title, #x-axis-date-label").remove();
 
 		frappe.call({
-			method: "upande_kaitet.api.tph_sensor_charts.get_sensor_chart_data",
+			method: "upande_kaitet.api.sensor_charts.get_sensor_chart_data",
 			args: filters,
 			callback: function (r) {
 				const labels = Array.isArray(r.message.labels) ? r.message.labels : [];
