@@ -7,8 +7,12 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_cbgd",
+  "column_break_isqc",
   "amended_from",
   "specification_basis",
+  "mix_type",
+  "bunch_rate",
+  "stem_length",
   "colors_in_bunch",
   "colors_in_box",
   "varieties_in_bunch",
@@ -36,35 +40,64 @@
    "options": "Spec Basis"
   },
   {
+   "depends_on": "eval: doc.mix_type == \"Bunch Mix\"",
    "fieldname": "colors_in_bunch",
    "fieldtype": "Table",
    "label": "Colors (In Bunch)",
    "options": "Spec Color Item"
   },
   {
+   "depends_on": "eval: doc.mix_type == \"Box Mix\"",
    "fieldname": "colors_in_box",
    "fieldtype": "Table",
    "label": "Colors (In Box)",
    "options": "Spec Color Item"
   },
   {
+   "depends_on": "eval: doc.mix_type == \"Bunch Mix\"",
    "fieldname": "varieties_in_bunch",
    "fieldtype": "Table",
    "label": "Varieties (In Bunch)",
    "options": "Spec Variety Item"
   },
   {
+   "depends_on": "eval: doc.mix_type == \"Box Mix\"",
    "fieldname": "varieties_in_box",
    "fieldtype": "Table",
    "label": "Varieties (In Box)",
    "options": "Spec Variety Item"
+  },
+  {
+   "fieldname": "mix_type",
+   "fieldtype": "Select",
+   "label": "Mix Type",
+   "options": "\nBunch Mix\nBox Mix"
+  },
+  {
+   "depends_on": "eval: doc.mix_type == \"Bunch Mix\"",
+   "fieldname": "column_break_isqc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.mix_type == \"Bunch Mix\"",
+   "fieldname": "bunch_rate",
+   "fieldtype": "Link",
+   "label": "Bunch Rate",
+   "link_filters": "[[\"UOM\",\"name\",\"like\",\"Bunch%\"]]",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "stem_length",
+   "fieldtype": "Link",
+   "label": "Stem Length",
+   "options": "Stem Length"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-07-09 17:16:36.550056",
+ "modified": "2025-07-10 13:29:20.317955",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
  "name": "Specifications",
