@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
-
 import frappe
-from frappe.utils import getdate, now_datetime
+from frappe.utils import now_datetime
 
 
 @frappe.whitelist()
@@ -13,7 +12,17 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 	conditions = ["sensor_name = %s"]
 	params = [sensor_name]
 
-	# ---- Special Handling: Past 24 hours dynamic hourly labels ----
+	# Handle single-date filtering (e.g., from date picker only)
+	if date_from and not date_to:
+		try:
+			start_dt = datetime.strptime(date_from, "%Y-%m-%d")
+			end_dt = start_dt + timedelta(days=1)
+			date_from = start_dt.strftime("%Y-%m-%d %H:%M:%S")
+			date_to = end_dt.strftime("%Y-%m-%d %H:%M:%S")
+		except:
+			pass  # fallback silently
+
+	# ---- Special Handling: Last 24 Hours with HOURLY grouping ----
 	if time_interval == "hourly" and timespan == "last_24h":
 		now = now_datetime()
 		start_time = now - timedelta(hours=24)
@@ -34,13 +43,10 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 		"""
 		data = frappe.db.sql(query, params, as_dict=True)
 
-		# Create map of available data
 		data_map = {row["hour_label"]: round(row["avg_value"], 2) for row in data}
 
-		# Generate last 24 hourly labels from current time
 		labels = []
 		values = []
-
 		for i in range(24):
 			hour_time = (now - timedelta(hours=23 - i)).replace(minute=0, second=0, microsecond=0)
 			label = hour_time.strftime("%H:00")
@@ -49,7 +55,7 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 
 		return {"labels": labels, "values": values}
 
-	# ---- Default HOURLY HANDLING: Static 00:00 → 23:00 ----
+	# ---- General HOURLY handling for specific dates ----
 	if time_interval == "hourly":
 		if date_from:
 			conditions.append("timestamp >= %s")
@@ -76,7 +82,7 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 
 		return {"labels": all_hours, "values": [data_map.get(h, 0) for h in all_hours]}
 
-	# ---- QUARTERLY HANDLING ----
+	# ---- QUARTERLY grouping ----
 	elif time_interval == "quarterly":
 		if date_from:
 			conditions.append("timestamp >= %s")
@@ -98,7 +104,7 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 		"""
 		data = frappe.db.sql(query, params, as_dict=True)
 
-	# ---- OTHER INTERVALS ----
+	# ---- All Other Intervals (daily, weekly, monthly, yearly) ----
 	else:
 		if date_from:
 			conditions.append("timestamp >= %s")
@@ -109,8 +115,14 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 
 		where_clause = " AND ".join(conditions)
 
-		time_format_map = {"daily": "%Y-%m-%d", "weekly": "%Y-%u", "monthly": "%Y-%m", "yearly": "%Y"}
-		time_fmt = time_format_map.get(time_interval, "%Y-%m-%d")  # default to daily
+		time_format_map = {
+			"daily": "%Y-%m-%d",
+			"weekly": "%Y-%u",
+			"monthly": "%Y-%m",
+			"yearly": "%Y"
+		}
+		# default to daily
+		time_fmt = time_format_map.get(time_interval, "%Y-%m-%d")  
 
 		query = f"""
 			SELECT
@@ -121,13 +133,14 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 			GROUP BY label
 			ORDER BY label
 		"""
-		# params = [time_fmt] + params
 		params = [time_fmt, *params]
-
 		data = frappe.db.sql(query, params, as_dict=True)
 
-	# Fallback
+	# ---- Final Output ----
 	if not data:
 		return {"labels": [], "values": []}
 
-	return {"labels": [row["label"] for row in data], "values": [round(row["avg_value"], 2) for row in data]}
+	return {
+		"labels": [row["label"] for row in data],
+		"values": [round(row["avg_value"], 2) for row in data]
+	}

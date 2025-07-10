@@ -487,11 +487,5 @@ fixtures = [
 				],
 			]
 		],
-	},
-	# {
-	# "dt": "Server Script",
-	# "filters": [
-	#     ["name", "=", "Vehicle Location Update"]
-	# ]
-	# }
+	}
 ]
