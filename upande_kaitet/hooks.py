@@ -430,6 +430,7 @@ fixtures = [
 					"Variety Select Dialog",
 					"Set Source and Target Warehouse",
 					"Rate based on Length",
+					"Dynamic Spec Items Population",
 				],
 			]
 		],
