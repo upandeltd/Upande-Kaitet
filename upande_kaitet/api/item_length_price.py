@@ -70,7 +70,11 @@ def get_length_price(item_name, length, currency, price_list):
                 fields=["name", "price_list_rate", "custom_length"]
             )
             
-            frappe.log_error(f"All price records for {item_name}: {all_price_records}", "DEBUG Price Fetch")
+            frappe.log_error(
+    title="Error in get_length_price",
+    message=f"All price records for {item_name}: {frappe.as_json(records)}"
+)
+
             
             # Check each record manually
             for record in all_price_records:

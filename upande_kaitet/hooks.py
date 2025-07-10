@@ -429,7 +429,7 @@ fixtures = [
 					"Persist Variety, Farm and Greenhouse",
 					"Variety Select Dialog",
 					"Set Source and Target Warehouse",
-					"Rate based on Length",
+					"Rate based on Length","Visibility of length and packrate fields",
 				],
 			]
 		],
