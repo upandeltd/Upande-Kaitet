@@ -78,12 +78,8 @@ function loadCombinedScripts(callback) {
 }
 
 // ==================== EC CHART SECTION ==================================
-/*
 function initEcCharts() {
 	const site_name = 'kaitet';
-
-	let end = new Date();
-	let start = new Date(end.getTime() - 24 * 60 * 60 * 1000); // Default: Last 24 hours
 
 	// Update interval options based on timespan or date
 	function updateIntervalOptions(timespan, isDateSelected) {
@@ -96,7 +92,7 @@ function initEcCharts() {
 			options = ['hourly'];
 		} else {
 			if (timespan === 'last_year') {
-				options = ['yearly','quarterly', 'monthly'];
+				options = ['yearly', 'quarterly', 'monthly'];
 			} else if (timespan === 'last_quarter') {
 				options = ['monthly', 'weekly'];
 			} else if (timespan === 'last_month') {
@@ -115,11 +111,14 @@ function initEcCharts() {
 		});
 	}
 
-	// Calculate start/end datetime based on selection
+	// Compute range safely using fresh Date objects
 	function computeRange() {
+		const now = new Date();
+		let start = new Date(now);
+		let end = new Date(now);
+
 		const selectedDate = $('#ec-date').val();
 		const timespan = $('#ec-timespan').val();
-		end = new Date();
 
 		if (selectedDate) {
 			const date = new Date(selectedDate);
@@ -128,30 +127,31 @@ function initEcCharts() {
 		} else {
 			switch (timespan) {
 				case 'last_year':
-					start = new Date(end);
-					start.setFullYear(end.getFullYear() - 1);
+					start = new Date(now);
+					start.setFullYear(now.getFullYear() - 1);
 					break;
 				case 'last_quarter':
-					start = new Date(end);
-					start.setMonth(end.getMonth() - 3);
+					start = new Date(now);
+					start.setMonth(now.getMonth() - 3);
 					break;
 				case 'last_month':
-					start = new Date(end);
-					start.setMonth(end.getMonth() - 1);
+					start = new Date(now);
+					start.setMonth(now.getMonth() - 1);
 					break;
 				case 'last_week':
-					start = new Date(end.getTime() - 7 * 24 * 60 * 60 * 1000);
+					start = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 					break;
 				default:
-					start = new Date(end.getTime() - 24 * 60 * 60 * 1000);
+					start = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 			}
 		}
+
+		return { start, end };
 	}
 
-	// Load EC data
+	// Load EC data using calculated range
 	function loadEcData() {
-		computeRange();
-
+		const { start, end } = computeRange();
 		const interval = $('#ec-interval').val() || 'hourly';
 
 		frappe.call({
@@ -187,124 +187,7 @@ function initEcCharts() {
 	// Init
 	updateIntervalOptions('last_24h', false);
 	loadEcData();
-}*/
-
-function initEcCharts() {
-	const site_name = 'kaitet';
-
-	let end = new Date();
-	let start = new Date(end.getTime() - 24 * 60 * 60 * 1000); // Default: Last 24 hours
-
-	// Update interval dropdown options dynamically
-	function updateIntervalOptions(timespan, isDateSelected) {
-		const $interval = $('#ec-interval');
-		$interval.empty();
-
-		let options = [];
-
-		if (isDateSelected) {
-			options = ['hourly'];
-		} else {
-			switch (timespan) {
-				case 'last_year':
-					options = ['yearly', 'quarterly', 'monthly'];
-					break;
-				case 'last_quarter':
-					options = ['monthly', 'weekly'];
-					break;
-				case 'last_month':
-					options = ['weekly', 'daily'];
-					break;
-				case 'last_week':
-					options = ['daily'];
-					break;
-				default:
-					options = ['hourly'];
-			}
-		}
-
-		options.forEach(val => {
-			$interval.append(
-				`<option value="${val}">${val.charAt(0).toUpperCase() + val.slice(1)}</option>`
-			);
-		});
-	}
-
-	// Compute start and end date range based on filters
-	function computeRange() {
-		const selectedDate = $('#ec-date').val();
-		const timespan = $('#ec-timespan').val();
-		end = new Date();
-
-		if (selectedDate) {
-			const date = new Date(selectedDate);
-			start = new Date(date.setHours(0, 0, 0, 0));
-			end = new Date(date.setHours(23, 59, 59, 999));
-		} else {
-			switch (timespan) {
-				case 'last_year':
-					start = new Date(end);
-					start.setFullYear(end.getFullYear() - 1);
-					break;
-				case 'last_quarter':
-					start = new Date(end);
-					start.setMonth(end.getMonth() - 3);
-					break;
-				case 'last_month':
-					start = new Date(end);
-					start.setMonth(end.getMonth() - 1);
-					break;
-				case 'last_week':
-					start = new Date(end.getTime() - 7 * 24 * 60 * 60 * 1000);
-					break;
-				default: // last_24h or blank
-					start = new Date(end.getTime() - 24 * 60 * 60 * 1000);
-			}
-		}
-	}
-
-	// Load EC data and draw chart + gauge
-	function loadEcData() {
-		computeRange();
-		const interval = $('#ec-interval').val() || 'hourly';
-
-		frappe.call({
-			method: "upande_sensors.upande_sensors.doctype.sensor_chart_data.sensor_chart_data.get_combined_sensor_data",
-			args: {
-				site_name,
-				start_datetime: start.toISOString(),
-				end_datetime: end.toISOString(),
-				time_interval: interval, // ✅ now sent to backend
-			},
-		}).then((res) => {
-			const ec_data = res.message[1].ec_data || [];
-			drawEcChart(ec_data, start.toISOString(), end.toISOString(), interval);
-			drawEcGauge(ec_data);
-		});
-	}
-
-	// Event listeners for filters
-	$('#ec-date').on('change', function () {
-		$('#ec-timespan').val('');
-		updateIntervalOptions(null, true);
-		loadEcData();
-	});
-
-	$('#ec-timespan').on('change', function () {
-		$('#ec-date').val('');
-		const selected = $(this).val();
-		updateIntervalOptions(selected, false);
-		loadEcData();
-	});
-
-	$('#ec-interval').on('change', loadEcData);
-
-	// Init chart on first load
-	updateIntervalOptions('last_24h', false);
-	loadEcData();
 }
-
-
 
 // ==================== TPH (Temperature) CHART SECTION ====================
 function initTempCharts() {
@@ -343,6 +226,7 @@ function load_sensor_names(callback) {
 						seen.add(sensor);
 						let label = sensor.replace("kaitet_", "").replace("_", " ").toUpperCase();
 						if (sensor === "kaitet_greenhouse1") label = "Cold Room";
+						if (sensor === "ec") label = "EC Sensor"
 						else if (sensor === "kaitet_greenhouse2") label = "GreenHouse";
 						select.append(`<option value="${sensor}">${label}</option>`);
 					}
@@ -399,6 +283,7 @@ function setup_auto_refresh_on_filter_change() {
 		$("#refresh-chart").click();
 	});
 }
+//timespan and time interval is working well on load and x-axis but date select is showing both datetime on the x-axis
 
 function setup_refresh_handler() {
 	$("#refresh-chart").on("click", function () {
@@ -415,10 +300,19 @@ function setup_refresh_handler() {
 			return;
 		}
 
-		let chartTitle = "TPH Sensor Chart";
-		if (filters.sensor_name === "kaitet_greenhouse1") chartTitle = "Cold Room Temperature Chart";
-		else if (filters.sensor_name === "kaitet_greenhouse2") chartTitle = "GreenHouse Temperature Chart";
-		else if (filters.sensor_name === "ec") chartTitle = "EC Chart (µS/cm )";
+		let chartTitle = "Sensor Charts";
+		let unit = "";
+
+		if (filters.sensor_name === "kaitet_greenhouse1") {
+			chartTitle = "Cold Room Temperature Chart";
+			unit = "°C";
+		} else if (filters.sensor_name === "kaitet_greenhouse2") {
+			chartTitle = "GreenHouse Temperature Chart";
+			unit = "°C";
+		} else if (filters.sensor_name === "ec") {
+			chartTitle = "EC Chart (µS/cm)";
+			unit = "µS/cm";
+		}
 
 		$("#chart-area").html(`<div id="chart-wrapper" style="min-width: 100%;"><p>Loading chart...</p></div>`);
 		$("#custom-chart-title, #x-axis-date-label").remove();
@@ -429,6 +323,7 @@ function setup_refresh_handler() {
 			callback: function (r) {
 				const labels = Array.isArray(r.message.labels) ? r.message.labels : [];
 				const values = Array.isArray(r.message.values) ? r.message.values : [];
+				const labelFormat = r.message.label_format;
 
 				const hasRealData = labels.length && values.length && values.some(v => v !== null && v !== 0);
 
@@ -445,37 +340,26 @@ function setup_refresh_handler() {
 				} else {
 					const interval = filters.time_interval || "hourly";
 					const selectedDate = filters.date_from;
+
 					let start, end;
+					const now = new Date();
+					end = new Date(now);
+					start = new Date(now);
 
 					if (selectedDate) {
 						start = new Date(`${selectedDate}T00:00:00`);
 						end = new Date(`${selectedDate}T23:59:59`);
 					} else {
-						end = new Date();
 						switch (filters.timespan) {
-							case "last_year":
-								start = new Date(end);
-								start.setFullYear(end.getFullYear() - 1);
-								break;
-							case "last_quarter":
-								start = new Date(end);
-								start.setMonth(end.getMonth() - 3);
-								break;
-							case "last_month":
-								start = new Date(end);
-								start.setMonth(end.getMonth() - 1);
-								break;
-							case "last_week":
-								start = new Date(end.getTime() - 7 * 24 * 60 * 60 * 1000);
-								break;
-							default: // last_24h or blank
-								start = new Date(end.getTime() - 24 * 60 * 60 * 1000);
+							case "last_year": start.setFullYear(start.getFullYear() - 1); break;
+							case "last_quarter": start.setMonth(start.getMonth() - 3); break;
+							case "last_month": start.setMonth(start.getMonth() - 1); break;
+							case "last_week": start.setDate(start.getDate() - 7); break;
+							default: start.setHours(start.getHours() - 24);
 						}
 					}
 
-					let emptyLabels = [];
-					let emptyValues = [];
-					let cursor = new Date(start);
+					let emptyLabels = [], emptyValues = [], cursor = new Date(start);
 
 					while (cursor <= end) {
 						if (interval === "hourly") {
@@ -503,17 +387,24 @@ function setup_refresh_handler() {
 					};
 				}
 
-				// Display chart title
+				// Time-only label adjustment
+				if (labelFormat === "time_only") {
+					chartData.labels = chartData.labels.map(l => {
+						const parts = l.split(" ");
+						return parts.length === 2 ? parts[1] : l;
+					});
+				}
+
+				// Chart Title
 				$("#chart-wrapper").before(`
 					<div id="custom-chart-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #2c3e50;">
 						${chartTitle}
 					</div>
 				`);
 
-				// Date display below chart
-				const selectedDate = filters.date_from;
-				if (selectedDate) {
-					const readableDate = new Date(selectedDate).toLocaleDateString("en-KE", {
+				// X-axis annotation
+				if (filters.date_from) {
+					const readableDate = new Date(filters.date_from).toLocaleDateString("en-KE", {
 						year: "numeric", month: "long", day: "numeric"
 					});
 					$("#chart-wrapper").after(`
@@ -528,12 +419,23 @@ function setup_refresh_handler() {
 				new frappe.Chart("#chart-wrapper", {
 					data: chartData,
 					type: chartType,
-					height: 300,
+					height: 350,
 					colors: ["#5e64ff"],
 					barOptions: { spaceRatio: 0.3 },
-					axisOptions: { xAxisMode: "tick", yAxisMode: "tick", xIsSeries: true },
+					axisOptions: {
+						xAxisMode: "tick",
+						yAxisMode: "tick",
+						xIsSeries: true
+					},
+					tooltipOptions: {
+						formatTooltipX: d => {
+							const parts = d.split(" ");
+							return parts.length === 2 ? parts[1] : d;
+						},
+						formatTooltipY: val => (val !== null && val !== undefined ? `${val} ${unit}` : "No data")
+					}
 				});
-			},
+			}
 		});
 	});
 }
@@ -546,5 +448,3 @@ function getWeekNumber(d) {
 	const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
 	return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
-
-

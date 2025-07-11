@@ -2,17 +2,15 @@ from datetime import datetime, timedelta
 import frappe
 from frappe.utils import now_datetime
 
-
 @frappe.whitelist()
 def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timespan=None, time_interval=None):
 	if not sensor_name:
 		return {"labels": [], "values": []}
 
-	# SQL WHERE clause builder
 	conditions = ["sensor_name = %s"]
 	params = [sensor_name]
 
-	# Handle single-date filtering (e.g., from date picker only)
+	# Handle single-date input (date picker)
 	if date_from and not date_to:
 		try:
 			start_dt = datetime.strptime(date_from, "%Y-%m-%d")
@@ -20,127 +18,129 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 			date_from = start_dt.strftime("%Y-%m-%d %H:%M:%S")
 			date_to = end_dt.strftime("%Y-%m-%d %H:%M:%S")
 		except:
-			pass  # fallback silently
+			pass
 
-	# ---- Special Handling: Last 24 Hours with HOURLY grouping ----
-	if time_interval == "hourly" and timespan == "last_24h":
-		now = now_datetime()
-		start_time = now - timedelta(hours=24)
+	# Set default date range using timespan
+	now = now_datetime()
+	if not date_from:
+		if timespan == "last_year":
+			start_dt = now - timedelta(days=365)
+		elif timespan == "last_quarter":
+			start_dt = now - timedelta(days=90)
+		elif timespan == "last_month":
+			start_dt = now - timedelta(days=30)
+		elif timespan == "last_week":
+			start_dt = now - timedelta(days=7)
+		else:  # default or "last_24h"
+			start_dt = now - timedelta(hours=24)
+		date_from = start_dt.strftime("%Y-%m-%d %H:%M:%S")
+	if not date_to:
+		date_to = now.strftime("%Y-%m-%d %H:%M:%S")
 
-		conditions.append("timestamp >= %s")
-		params.append(start_time)
+	# WHERE clause
+	conditions.append("timestamp >= %s")
+	conditions.append("timestamp <= %s")
+	params.extend([date_from, date_to])
+	where_clause = " AND ".join(conditions)
 
-		where_clause = " AND ".join(conditions)
+	# SQL format strings
+	format_map = {
+		"hourly": "%Y-%m-%d %H:00",
+		"daily": "%Y-%m-%d",
+		"weekly": "%Y-%U",
+		"monthly": "%Y-%m",
+		"yearly": "%Y"
+	}
 
-		query = f"""
-			SELECT
-				DATE_FORMAT(timestamp, '%%H:00') as hour_label,
-				AVG(value) as avg_value
-			FROM `tabSensor Reading`
-			WHERE {where_clause}
-			GROUP BY hour_label
-			ORDER BY hour_label
-		"""
-		data = frappe.db.sql(query, params, as_dict=True)
+	if not time_interval:
+		time_interval = "daily"
 
-		data_map = {row["hour_label"]: round(row["avg_value"], 2) for row in data}
-
-		labels = []
-		values = []
-		for i in range(24):
-			hour_time = (now - timedelta(hours=23 - i)).replace(minute=0, second=0, microsecond=0)
-			label = hour_time.strftime("%H:00")
-			labels.append(label)
-			values.append(data_map.get(label, 0))
-
-		return {"labels": labels, "values": values}
-
-	# ---- General HOURLY handling for specific dates ----
-	if time_interval == "hourly":
-		if date_from:
-			conditions.append("timestamp >= %s")
-			params.append(date_from)
-		if date_to:
-			conditions.append("timestamp <= %s")
-			params.append(date_to)
-
-		where_clause = " AND ".join(conditions)
-
-		query = f"""
-			SELECT
-				HOUR(timestamp) as hour,
-				AVG(value) as avg_value
-			FROM `tabSensor Reading`
-			WHERE {where_clause}
-			GROUP BY hour
-			ORDER BY hour
-		"""
-		data = frappe.db.sql(query, params, as_dict=True)
-
-		all_hours = [f"{str(h).zfill(2)}:00" for h in range(24)]
-		data_map = {f"{str(row['hour']).zfill(2)}:00": round(row["avg_value"], 2) for row in data}
-
-		return {"labels": all_hours, "values": [data_map.get(h, 0) for h in all_hours]}
-
-	# ---- QUARTERLY grouping ----
-	elif time_interval == "quarterly":
-		if date_from:
-			conditions.append("timestamp >= %s")
-			params.append(date_from)
-		if date_to:
-			conditions.append("timestamp <= %s")
-			params.append(date_to)
-
-		where_clause = " AND ".join(conditions)
-
+	# Handle quarterly separately
+	if time_interval == "quarterly":
 		query = f"""
 			SELECT
 				CONCAT(YEAR(timestamp), '-Q', QUARTER(timestamp)) as label,
 				AVG(value) as avg_value
 			FROM `tabSensor Reading`
 			WHERE {where_clause}
-			GROUP BY YEAR(timestamp), QUARTER(timestamp)
-			ORDER BY YEAR(timestamp), QUARTER(timestamp)
-		"""
-		data = frappe.db.sql(query, params, as_dict=True)
-
-	# ---- All Other Intervals (daily, weekly, monthly, yearly) ----
-	else:
-		if date_from:
-			conditions.append("timestamp >= %s")
-			params.append(date_from)
-		if date_to:
-			conditions.append("timestamp <= %s")
-			params.append(date_to)
-
-		where_clause = " AND ".join(conditions)
-
-		time_format_map = {
-			"daily": "%Y-%m-%d",
-			"weekly": "%Y-%u",
-			"monthly": "%Y-%m",
-			"yearly": "%Y"
-		}
-		# default to daily
-		time_fmt = time_format_map.get(time_interval, "%Y-%m-%d")  
-
-		query = f"""
-			SELECT
-				DATE_FORMAT(timestamp, %s) as label,
-				AVG(value) as avg_value
-			FROM `tabSensor Reading`
-			WHERE {where_clause}
 			GROUP BY label
 			ORDER BY label
 		"""
-		params = [time_fmt, *params]
 		data = frappe.db.sql(query, params, as_dict=True)
+		data_map = {row["label"]: round(row["avg_value"], 2) for row in data}
 
-	# ---- Final Output ----
-	if not data:
-		return {"labels": [], "values": []}
+		start_dt = datetime.strptime(date_from, "%Y-%m-%d %H:%M:%S")
+		end_dt = datetime.strptime(date_to, "%Y-%m-%d %H:%M:%S")
+		labels = []
+		cursor = start_dt
+		while cursor <= end_dt:
+			quarter = (cursor.month - 1) // 3 + 1
+			label = f"{cursor.year}-Q{quarter}"
+			if label not in labels:
+				labels.append(label)
+			month = cursor.month + 3
+			year = cursor.year + (month - 1) // 12
+			month = (month - 1) % 12 + 1
+			cursor = cursor.replace(year=year, month=month, day=1)
+
+		values = [data_map.get(label, None) for label in labels]
+		return {
+			"labels": labels,
+			"values": values,
+			"label_format": "quarterly"
+		}
+
+	# Other intervals
+	sql_format = format_map.get(time_interval, "%Y-%m-%d")
+
+	query = f"""
+		SELECT
+			DATE_FORMAT(timestamp, %s) as label,
+			AVG(value) as avg_value
+		FROM `tabSensor Reading`
+		WHERE {where_clause}
+		GROUP BY label
+		ORDER BY label
+	"""
+	data = frappe.db.sql(query, [sql_format] + params, as_dict=True)
+	data_map = {row["label"]: round(row["avg_value"], 2) for row in data}
+
+	start_dt = datetime.strptime(date_from, "%Y-%m-%d %H:%M:%S")
+	end_dt = datetime.strptime(date_to, "%Y-%m-%d %H:%M:%S")
+	labels = []
+	cursor = start_dt
+
+	while cursor <= end_dt:
+		if time_interval == "hourly":
+			labels.append(cursor.strftime("%Y-%m-%d %H:00"))
+			cursor += timedelta(hours=1)
+		elif time_interval == "daily":
+			labels.append(cursor.strftime("%Y-%m-%d"))
+			cursor += timedelta(days=1)
+		elif time_interval == "weekly":
+			labels.append(cursor.strftime("%Y-%U"))
+			cursor += timedelta(days=7)
+		elif time_interval == "monthly":
+			labels.append(cursor.strftime("%Y-%m"))
+			month = cursor.month + 1
+			year = cursor.year + (month - 1) // 12
+			month = (month - 1) % 12 + 1
+			cursor = cursor.replace(year=year, month=month, day=1)
+		elif time_interval == "yearly":
+			labels.append(cursor.strftime("%Y"))
+			cursor = cursor.replace(year=cursor.year + 1)
+		else:
+			break
+
+	values = [data_map.get(label, None) for label in labels]
+
+	# Hint to frontend how to format labels
+	label_format = (
+		"time_only" if time_interval == "hourly" and date_from and not timespan else time_interval
+	)
 
 	return {
-		"labels": [row["label"] for row in data],
-		"values": [round(row["avg_value"], 2) for row in data]
+		"labels": labels,
+		"values": values,
+		"label_format": label_format
 	}
