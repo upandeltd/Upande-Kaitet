@@ -430,6 +430,8 @@ fixtures = [
 					"Variety Select Dialog",
 					"Set Source and Target Warehouse",
 					"Rate based on Length",
+					"Visibility of length and packrate fields",
+					"Dynamic Spec Items Population",
 				],
 			]
 		],
@@ -487,11 +489,5 @@ fixtures = [
 				],
 			]
 		],
-	},
-	# {
-	# "dt": "Server Script",
-	# "filters": [
-	#     ["name", "=", "Vehicle Location Update"]
-	# ]
-	# }
+	}
 ]
