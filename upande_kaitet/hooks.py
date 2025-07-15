@@ -346,6 +346,7 @@ fixtures = [
 					"Create Field Reject Entry",
 					"Vehicle Location Update",
 					"Create Sales Invoice",
+					"Production Forecast Analysis Generation",
 				],
 			]
 		],
@@ -433,6 +434,11 @@ fixtures = [
 					"Rate based on Length",
 					"Visibility of length and packrate fields",
 					"Dynamic Spec Items Population",
+					"Calculate Zerobending and Production Dates",
+					"Agriculture Production Plan Creation",
+					"Agriculture Tasks Filter",
+					"Create Tracking Form from Grower Production Plan",
+					"Updated Production Tracking Form for Manual Creation",
 				],
 			]
 		],
@@ -490,5 +496,5 @@ fixtures = [
 				],
 			]
 		],
-	}
+	},
 ]
