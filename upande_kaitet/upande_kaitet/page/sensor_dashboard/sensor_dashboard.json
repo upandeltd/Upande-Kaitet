@@ -1,19 +1,19 @@
 {
  "content": null,
- "creation": "2025-07-01 13:17:23.838980",
+ "creation": "2025-07-10 22:06:15.662822",
  "docstatus": 0,
  "doctype": "Page",
  "idx": 0,
- "modified": "2025-07-01 13:17:23.838980",
+ "modified": "2025-07-10 22:06:15.662822",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
- "name": "tph-sensor-charts",
+ "name": "sensor-dashboard",
  "owner": "Administrator",
- "page_name": "tph-sensor-charts",
+ "page_name": "sensor-dashboard",
  "roles": [],
  "script": null,
  "standard": "Yes",
  "style": null,
- "system_page": 1,
- "title": "TPH Sensor Charts"
+ "system_page": 0,
+ "title": "Sensor Dashboard"
 }
