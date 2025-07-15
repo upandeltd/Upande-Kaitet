@@ -183,21 +183,14 @@ function initAllCharts(callback) {
 
 function load_sensor_names(callback) {
 	frappe.call({
-		method: "frappe.client.get_list",
-		args: {
-			doctype: "Sensor Reading",
-			fields: ["sensor_name"],
-			distinct: true,
-			limit_page_length: 100,
-		},
+		method: "upande_kaitet.api.sensor_charts.get_all_sensor_names",
 		callback: function (r) {
 			const select = $("#sensor-name");
 			select.empty().append(`<option value="">Select Sensor</option>`);
 			let seen = new Set();
 
 			if (r.message && r.message.length > 0) {
-				r.message.forEach(row => {
-					const sensor = row.sensor_name;
+				r.message.forEach(sensor => {
 					if (sensor && !seen.has(sensor)) {
 						seen.add(sensor);
 						let label = sensor.replace("kaitet_", "").replace("_", " ").toUpperCase();
@@ -220,8 +213,7 @@ function load_sensor_names(callback) {
 
 			if (callback) callback();
 			$("#refresh-chart").click();
-		},
-
+		}
 	});
 }
 
@@ -466,6 +458,7 @@ function setup_refresh_handler() {
 						formatTooltipY: val => (val !== null && val !== undefined ? `${val} ${unit}` : "No data")
 					}
 				});
+
 			}
 		});
 	});
