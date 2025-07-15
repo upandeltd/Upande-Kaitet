@@ -175,7 +175,8 @@ doc_events = {
 	},
 	"Farm Pack List": {
 		"before_cancel": "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-		# "on_submit":
+		"before_submit": "upande_kaitet.server_scripts.create_box_label.create_box_label",
+		# "before_submit":
 		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 	},
 	"Item Price": {"validate": "upande_kaitet.overrides.custom_item_price.custom_check_duplicates"},
