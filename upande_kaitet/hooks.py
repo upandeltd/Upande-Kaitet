@@ -1,6 +1,6 @@
 app_name = "upande_kaitet"
 app_title = "Upande Kaitet"
-app_blisher = "	Upande"
+app_publisher = "Upande"
 app_description = "Kaitet ERP System"
 app_email = "dev@upande.com"
 app_license = "mit"
@@ -132,7 +132,7 @@ app_license = "mit"
 # override_doctype_class = {
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
-
+override_doctype_class = {"Item Price": "upande_kaitet.overrides.custom_item_price_naming.CustomItemPrice"}
 # Document Events
 # ---------------
 # Hook on document methods and events
@@ -175,9 +175,11 @@ doc_events = {
 	},
 	"Farm Pack List": {
 		"before_cancel": "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-		# "on_submit":
+		"before_submit": "upande_kaitet.server_scripts.create_box_label.create_box_label",
+		# "before_submit":
 		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 	},
+	"Item Price": {"validate": "upande_kaitet.overrides.custom_item_price.custom_check_duplicates"},
 }
 
 # Scheduled Tasks
@@ -301,9 +303,9 @@ fixtures = [
 	#             "Business Unit", "Scan Location Mapping", "Scan Location Mapping Items",
 	#             "Joint Companies", "Business Unit", "GPS Reading", "Vehicle",
 	#             "GPS Readings", "Delivery Type", "Loss Reason",
-	#             # "SO Warehouse Mapping",
-	# #             "SO Warehouse Mapping Item",
-	#               "Temperature Reading", "Consignee", "Item Subclass"
+	#             "SO Warehouse Mapping",
+	#             "SO Warehouse Mapping Item",
+	#             "Temperature Reading", "Consignee", "Item Subclass"
 	#         ]
 	#     ]]
 	# },
@@ -342,8 +344,8 @@ fixtures = [
 					"Repack",
 					"Create Invoice From Dispatch Form",
 					"Create Field Reject Entry",
-					"Check reason field",
-                    "CFU AM CHECKLIST Assign",
+					"Vehicle Location Update",
+					"Create Sales Invoice",
 				],
 			]
 		],
@@ -416,16 +418,21 @@ fixtures = [
 					"Fetch SO Details",
 					"Yoghurt Delivery Workflow",
 					"Autopopulate Week Number",
-					"Populate Available Qty Field",
-					"CSU AM Checksheet",
+					"Populate Available Qty Field" "CSU AM Checksheet",
 					"Tractor Inspection Checksheet",
 					"Truck Inspection Checksheet",
 					"Packhouse Equipment and Machine AM Checklist",
 					"CFU Inspection Checksheet",
 					"CSU AM Checksheet",
-					"Tractor Inspection Checksheet",
-					"Refresh Items Table",
-                    "checksheets button",
+					"Tractor Inspection Checksheet" "Refresh Items Table",
+					"Bed Sampling Script",
+					"Mapping Sections to Greenhouse",
+					"Persist Variety, Farm and Greenhouse",
+					"Variety Select Dialog",
+					"Set Source and Target Warehouse",
+					"Rate based on Length",
+					"Visibility of length and packrate fields",
+					"Dynamic Spec Items Population",
 				],
 			]
 		],
@@ -445,6 +452,7 @@ fixtures = [
 					"Trial Bunch Print Format",
 					"Grader QR Print format 2",
 					"Harvest Label 2",
+					"Box Label 2",
 				],
 			]
 		],
@@ -479,24 +487,8 @@ fixtures = [
 					"Sales Order Report",
 					"Sales per Variety Report (SO)",
 					"Daily Sales Ops Summary",
-                    "Tractor Inspection Checksheet → Support Issue",
-                    "Tractor Issue Auto Assign",
-                    "TRUCK CLIT CHECKSHEET ISSUE AND AUTO ASSIGN",
-                    "CSU AM Checksheet issues",
-                    "CSU AM Checksheet → Support Issue",
-                    "CFU AM CHECKLIST",
-                    "CFU AM CHECKLIST Assign",
-                    "Packhouse AM Checklist → Support Issue with ToDo",
-                    "Reefer Truck CLIT → Support Issue",
 				],
 			]
 		],
-	},
+	}
 ]
-# fixtures = ["Custom Field", "Property Setter", "DocType"]
-
-app_publisher = "Upande"
-app_description = "Custom logic and overrides"
-app_email = "devs@upande.com"
-app_license = "MIT"
-
