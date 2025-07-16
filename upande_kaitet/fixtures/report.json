@@ -1,5 +1,69 @@
 [
  {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Karen Roses Invoice",
+  "modified": "2025-07-16 04:32:30.059437",
+  "module": "Agriculture",
+  "name": "Bed Sampling Summary",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Bed Sampling Form",
+  "reference_report": null,
+  "report_name": "Bed Sampling Summary",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Bed Sampling Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"columns\":[{\"label\":\"ID\",\"fieldname\":\"ID\",\"fieldtype\":\"Link\",\"options\":\"Bed Sampling Form\",\"width\":120,\"id\":\"ID\",\"name\":\"ID\",\"editable\":false,\"compareValue\":null},{\"label\":\"Greenhouse\",\"fieldname\":\"Greenhouse\",\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":120,\"id\":\"Greenhouse\",\"name\":\"Greenhouse\",\"editable\":false,\"compareValue\":null},{\"label\":\"Variety\",\"fieldname\":\"Variety\",\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":120,\"id\":\"Variety\",\"name\":\"Variety\",\"editable\":false,\"compareValue\":null},{\"label\":\"Week No.\",\"fieldname\":\"Week No.\",\"fieldtype\":\"Int\",\"width\":80,\"id\":\"Week No.\",\"name\":\"Week No.\",\"editable\":false,\"compareValue\":null},{\"label\":\"Sampling Area\",\"fieldname\":\"Sampling Area\",\"fieldtype\":\"Float\",\"width\":100,\"id\":\"Sampling Area\",\"name\":\"Sampling Area\",\"editable\":false,\"compareValue\":null},{\"label\":\"Total Variety Area\",\"fieldname\":\"Total Variety Area\",\"fieldtype\":\"Float\",\"width\":120,\"id\":\"Total Variety Area\",\"name\":\"Total Variety Area\",\"editable\":false,\"compareValue\":null},{\"label\":\"Sampling Date\",\"fieldname\":\"Sampling Date\",\"fieldtype\":\"Date\",\"width\":100,\"id\":\"Sampling Date\",\"name\":\"Sampling Date\",\"editable\":false}],\"filters\":{\"greenhouse\":\"Kapkolia GH 06 - KR\",\"variety\":\"Bombastic\",\"week_no\":27}}",
+  "letter_head": "Karen Roses Invoice",
+  "modified": "2025-07-16 11:23:20.281166",
+  "module": "Agriculture",
+  "name": "Bed Sampling Report",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Bed Sampling Form",
+  "reference_report": "Bed Sampling Summary",
+  "report_name": "Bed Sampling Report",
+  "report_script": null,
+  "report_type": "Custom Report",
+  "roles": [
+   {
+    "parent": "Bed Sampling Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ],
+  "timeout": 0
+ },
+ {
   "add_total_row": 1,
   "add_translate_data": 0,
   "columns": [],

@@ -493,6 +493,8 @@ fixtures = [
 					"Sales Order Report",
 					"Sales per Variety Report (SO)",
 					"Daily Sales Ops Summary",
+					"Bed Sampling Summary",
+					"Bed Sampling Report",
 				],
 			]
 		],
