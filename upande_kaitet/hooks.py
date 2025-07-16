@@ -175,7 +175,8 @@ doc_events = {
 	},
 	"Farm Pack List": {
 		"before_cancel": "upande_kaitet.server_scripts.fpl_to_cpl_link.before_cancel",
-		# "on_submit":
+		"before_submit": "upande_kaitet.server_scripts.create_box_label.create_box_label",
+		# "before_submit":
 		# "upande_kaitet.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 	},
 	"Item Price": {"validate": "upande_kaitet.overrides.custom_item_price.custom_check_duplicates"},
@@ -345,6 +346,7 @@ fixtures = [
 					"Create Field Reject Entry",
 					"Vehicle Location Update",
 					"Create Sales Invoice",
+					"Production Forecast Analysis Generation",
 				],
 			]
 		],
@@ -432,6 +434,11 @@ fixtures = [
 					"Rate based on Length",
 					"Visibility of length and packrate fields",
 					"Dynamic Spec Items Population",
+					"Calculate Zerobending and Production Dates",
+					"Agriculture Production Plan Creation",
+					"Agriculture Tasks Filter",
+					"Create Tracking Form from Grower Production Plan",
+					"Updated Production Tracking Form for Manual Creation",
 				],
 			]
 		],
@@ -486,8 +493,10 @@ fixtures = [
 					"Sales Order Report",
 					"Sales per Variety Report (SO)",
 					"Daily Sales Ops Summary",
+					"Bed Sampling Summary",
+					"Bed Sampling Report",
 				],
 			]
 		],
-	}
+	},
 ]

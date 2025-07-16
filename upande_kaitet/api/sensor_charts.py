@@ -7,10 +7,34 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 	if not sensor_name:
 		return {"labels": [], "values": []}
 
+	def format_label(label, interval):
+		try:
+			if interval == "hourly":
+				dt = datetime.strptime(label, "%Y-%m-%d %H:00")
+				return dt.strftime("%H:%M")
+			elif interval == "daily":
+				dt = datetime.strptime(label, "%Y-%m-%d")
+				return dt.strftime("%d-%m-%Y")
+			elif interval == "weekly":
+				year, week = label.split("-")
+				return f"Week {week}, {year}"
+			elif interval == "monthly":
+				dt = datetime.strptime(label, "%Y-%m")
+				return dt.strftime("%b %Y")
+			elif interval == "yearly":
+				return label
+			elif interval == "quarterly":
+				return label.replace("-", " Q")
+			else:
+				return label
+		except:
+			return label
+
+	# Build WHERE conditions
 	conditions = ["sensor_name = %s"]
 	params = [sensor_name]
 
-	# Handle single-date input (date picker)
+	# Handle single-date input (e.g. from date picker)
 	if date_from and not date_to:
 		try:
 			start_dt = datetime.strptime(date_from, "%Y-%m-%d")
@@ -20,7 +44,7 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 		except:
 			pass
 
-	# Set default date range using timespan
+	# Default to timespan if no explicit date range provided
 	now = now_datetime()
 	if not date_from:
 		if timespan == "last_year":
@@ -31,19 +55,19 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 			start_dt = now - timedelta(days=30)
 		elif timespan == "last_week":
 			start_dt = now - timedelta(days=7)
-		else:  # default or "last_24h"
+		else:
 			start_dt = now - timedelta(hours=24)
 		date_from = start_dt.strftime("%Y-%m-%d %H:%M:%S")
 	if not date_to:
 		date_to = now.strftime("%Y-%m-%d %H:%M:%S")
 
-	# WHERE clause
+	# Final WHERE clause
 	conditions.append("timestamp >= %s")
 	conditions.append("timestamp <= %s")
 	params.extend([date_from, date_to])
 	where_clause = " AND ".join(conditions)
 
-	# SQL format strings
+	# Format mapping
 	format_map = {
 		"hourly": "%Y-%m-%d %H:00",
 		"daily": "%Y-%m-%d",
@@ -52,10 +76,11 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 		"yearly": "%Y"
 	}
 
+	# Default interval
 	if not time_interval:
 		time_interval = "daily"
 
-	# Handle quarterly separately
+	# Handle quarterly interval
 	if time_interval == "quarterly":
 		query = f"""
 			SELECT
@@ -73,9 +98,10 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 		end_dt = datetime.strptime(date_to, "%Y-%m-%d %H:%M:%S")
 		labels = []
 		cursor = start_dt
+
 		while cursor <= end_dt:
-			quarter = (cursor.month - 1) // 3 + 1
-			label = f"{cursor.year}-Q{quarter}"
+			q = (cursor.month - 1) // 3 + 1
+			label = f"{cursor.year}-Q{q}"
 			if label not in labels:
 				labels.append(label)
 			month = cursor.month + 3
@@ -84,13 +110,15 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 			cursor = cursor.replace(year=year, month=month, day=1)
 
 		values = [data_map.get(label, None) for label in labels]
+		formatted_labels = [format_label(l, "quarterly") for l in labels]
+
 		return {
-			"labels": labels,
+			"labels": formatted_labels,
 			"values": values,
 			"label_format": "quarterly"
 		}
 
-	# Other intervals
+	# For all other intervals
 	sql_format = format_map.get(time_interval, "%Y-%m-%d")
 
 	query = f"""
@@ -133,14 +161,25 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 			break
 
 	values = [data_map.get(label, None) for label in labels]
+	formatted_labels = [format_label(l, time_interval) for l in labels]
 
-	# Hint to frontend how to format labels
+	# Set label format flag for front-end tooltip behavior
 	label_format = (
-		"time_only" if time_interval == "hourly" and date_from and not timespan else time_interval
+		"time_only" if time_interval == "hourly" and (date_from or timespan == "last_24h") else time_interval
 	)
 
 	return {
-		"labels": labels,
+		"labels": formatted_labels,
 		"values": values,
 		"label_format": label_format
 	}
+
+@frappe.whitelist()
+def get_all_sensor_names():
+    sensor_names = frappe.db.sql("""
+        SELECT DISTINCT sensor_name
+        FROM `tabSensor Reading`
+        WHERE sensor_name IS NOT NULL AND sensor_name != ''
+        ORDER BY sensor_name
+    """, as_list=True)
+    return [row[0] for row in sensor_names]

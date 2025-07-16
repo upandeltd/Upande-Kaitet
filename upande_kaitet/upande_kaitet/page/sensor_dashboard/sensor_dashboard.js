@@ -53,9 +53,8 @@ frappe.pages['sensor-dashboard'].on_page_load = function (wrapper) {
 	`);
 
 	loadCombinedScripts(() => {
-		initEcCharts();
-		initTempCharts(() => {
-			// Auto-select Cold Room and delay refresh slightly to allow DOM updates
+		initAllCharts(() => {
+			// Auto-select Cold Room and refresh after short delay
 			setTimeout(() => {
 				$('#sensor-name').val('kaitet_greenhouse1');
 				$('#refresh-chart').trigger('click');
@@ -77,41 +76,30 @@ function loadCombinedScripts(callback) {
 	document.head.appendChild(jscMain);
 }
 
-// ==================== EC CHART SECTION ==================================
-function initEcCharts() {
+function initAllCharts(callback) {
 	const site_name = 'kaitet';
 
-	// Update interval options based on timespan or date
+	// ---------- Interval Options ----------
 	function updateIntervalOptions(timespan, isDateSelected) {
 		const $interval = $('#ec-interval');
 		$interval.empty();
 
 		let options = [];
-
-		if (isDateSelected) {
-			options = ['hourly'];
-		} else {
-			if (timespan === 'last_year') {
-				options = ['yearly', 'quarterly', 'monthly'];
-			} else if (timespan === 'last_quarter') {
-				options = ['monthly', 'weekly'];
-			} else if (timespan === 'last_month') {
-				options = ['weekly', 'daily'];
-			} else if (timespan === 'last_week') {
-				options = ['daily'];
-			} else {
-				options = ['hourly'];
-			}
+		if (isDateSelected) options = ['hourly'];
+		else {
+			if (timespan === 'last_year') options = ['yearly', 'quarterly', 'monthly'];
+			else if (timespan === 'last_quarter') options = ['monthly', 'weekly'];
+			else if (timespan === 'last_month') options = ['weekly', 'daily'];
+			else if (timespan === 'last_week') options = ['daily'];
+			else options = ['hourly'];
 		}
 
 		options.forEach(val => {
-			$interval.append(
-				`<option value="${val}">${val.charAt(0).toUpperCase() + val.slice(1)}</option>`
-			);
+			$interval.append(`<option value="${val}">${val.charAt(0).toUpperCase() + val.slice(1)}</option>`);
 		});
 	}
 
-	// Compute range safely using fresh Date objects
+	// ---------- Date Range ----------
 	function computeRange() {
 		const now = new Date();
 		let start = new Date(now);
@@ -126,30 +114,18 @@ function initEcCharts() {
 			end = new Date(date.setHours(23, 59, 59, 999));
 		} else {
 			switch (timespan) {
-				case 'last_year':
-					start = new Date(now);
-					start.setFullYear(now.getFullYear() - 1);
-					break;
-				case 'last_quarter':
-					start = new Date(now);
-					start.setMonth(now.getMonth() - 3);
-					break;
-				case 'last_month':
-					start = new Date(now);
-					start.setMonth(now.getMonth() - 1);
-					break;
-				case 'last_week':
-					start = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-					break;
-				default:
-					start = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+				case 'last_year': start.setFullYear(now.getFullYear() - 1); break;
+				case 'last_quarter': start.setMonth(now.getMonth() - 3); break;
+				case 'last_month': start.setMonth(now.getMonth() - 1); break;
+				case 'last_week': start = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000); break;
+				default: start = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 			}
 		}
 
 		return { start, end };
 	}
 
-	// Load EC data using calculated range
+	// ---------- Load EC Data ----------
 	function loadEcData() {
 		const { start, end } = computeRange();
 		const interval = $('#ec-interval').val() || 'hourly';
@@ -168,7 +144,18 @@ function initEcCharts() {
 		});
 	}
 
-	// Event handlers
+	// ---------- Init Temperature Charts ----------
+	function initTempCharts(cb) {
+		load_sensor_names(() => {
+			setup_timespan_filter_handler();
+			setup_date_filter_handler();
+			setup_auto_refresh_on_filter_change();
+			setup_refresh_handler();
+			if (typeof cb === 'function') cb(); // Call callback if provided
+		});
+	}
+
+	// ---------- Set Up EC Events ----------
 	$('#ec-date').on('change', function () {
 		$('#ec-timespan').val('');
 		updateIntervalOptions(null, true);
@@ -184,50 +171,39 @@ function initEcCharts() {
 
 	$('#ec-interval').on('change', loadEcData);
 
-	// Init
+	// ---------- Init Both Sections ----------
 	updateIntervalOptions('last_24h', false);
 	loadEcData();
-}
 
-// ==================== TPH (Temperature) CHART SECTION ====================
-function initTempCharts() {
-	load_sensor_names(() => {
-		setup_timespan_filter_handler();
-		setup_date_filter_handler();
-		setup_auto_refresh_on_filter_change();
-		setup_refresh_handler();
-
-		setTimeout(() => {
-			$("#time-interval").val("hourly");
-			$("#sensor-name").val("kaitet_greenhouse1");
-			$("#date-from").val("");
-		}, 200);
+	// Init temperature charts and call callback after all is set
+	initTempCharts(() => {
+		if (typeof callback === 'function') callback();
 	});
 }
 
 function load_sensor_names(callback) {
 	frappe.call({
-		method: "frappe.client.get_list",
-		args: {
-			doctype: "Sensor Reading",
-			fields: ["sensor_name"],
-			distinct: true,
-			limit_page_length: 100,
-		},
+		method: "upande_kaitet.api.sensor_charts.get_all_sensor_names",
 		callback: function (r) {
 			const select = $("#sensor-name");
 			select.empty().append(`<option value="">Select Sensor</option>`);
 			let seen = new Set();
 
 			if (r.message && r.message.length > 0) {
-				r.message.forEach(row => {
-					const sensor = row.sensor_name;
+				r.message.forEach(sensor => {
 					if (sensor && !seen.has(sensor)) {
 						seen.add(sensor);
 						let label = sensor.replace("kaitet_", "").replace("_", " ").toUpperCase();
+
 						if (sensor === "kaitet_greenhouse1") label = "Cold Room";
-						if (sensor === "ec") label = "EC Sensor"
-						else if (sensor === "kaitet_greenhouse2") label = "GreenHouse";
+						if (sensor === "kaitet_greenhouse2") label = "GreenHouse";
+						if (sensor === "energy") label = "Energy";
+						if (sensor === "precipitation") label = "Precipitation";
+						if (sensor === "level") label = "Tank Level";
+						if (sensor === "ec") label = "EC Sensor";
+						if (sensor === "main") label = "Flow Rate";
+						if (sensor === "ph") label = "PH Sensor";
+
 						select.append(`<option value="${sensor}">${label}</option>`);
 					}
 				});
@@ -237,7 +213,7 @@ function load_sensor_names(callback) {
 
 			if (callback) callback();
 			$("#refresh-chart").click();
-		},
+		}
 	});
 }
 
@@ -283,7 +259,6 @@ function setup_auto_refresh_on_filter_change() {
 		$("#refresh-chart").click();
 	});
 }
-//timespan and time interval is working well on load and x-axis but date select is showing both datetime on the x-axis
 
 function setup_refresh_handler() {
 	$("#refresh-chart").on("click", function () {
@@ -303,15 +278,52 @@ function setup_refresh_handler() {
 		let chartTitle = "Sensor Charts";
 		let unit = "";
 
-		if (filters.sensor_name === "kaitet_greenhouse1") {
-			chartTitle = "Cold Room Temperature Chart";
-			unit = "°C";
-		} else if (filters.sensor_name === "kaitet_greenhouse2") {
-			chartTitle = "GreenHouse Temperature Chart";
-			unit = "°C";
-		} else if (filters.sensor_name === "ec") {
-			chartTitle = "EC Chart (µS/cm)";
-			unit = "µS/cm";
+		const sensorMetadata = {
+			"kaitet_greenhouse1": {
+				label: "Cold Room",
+				chartTitle: "Cold Room Temperature Chart (°C)",
+				unit: "°C"
+			},
+			"kaitet_greenhouse2": {
+				label: "GreenHouse",
+				chartTitle: "GreenHouse Temperature Chart (°C)",
+				unit: "°C"
+			},
+			"energy": {
+				label: "Energy",
+				chartTitle: "Energy Consumption Chart (kWh)",
+				unit: "kWh"
+			},
+			"precipitation": {
+				label: "Precipitation",
+				chartTitle: "Rainfall Chart (mm)",
+				unit: "mm"
+			},
+			"level": {
+				label: "Tank Level",
+				chartTitle: "Tank Level Chart (cm)",
+				unit: "cm"
+			},
+			"ec": {
+				label: "EC Sensor",
+				chartTitle: "EC Chart (µS/cm)",
+				unit: "µS/cm"
+			},
+			"main": {
+				label: "Flow Rate",
+				chartTitle: "Water Flow Rate Chart (L/min)",
+				unit: "L/min"
+			},
+			"ph": {
+				label: "PH Sensor",
+				chartTitle: "pH Level Chart (pH)",
+				unit: "pH"
+			}
+		};
+
+		if (filters.sensor_name && sensorMetadata[filters.sensor_name]) {
+			chartTitle = sensorMetadata[filters.sensor_name].chartTitle || "";
+			unit = sensorMetadata[filters.sensor_name].unit || "";
 		}
 
 		$("#chart-area").html(`<div id="chart-wrapper" style="min-width: 100%;"><p>Loading chart...</p></div>`);
@@ -414,7 +426,18 @@ function setup_refresh_handler() {
 					`);
 				}
 
-				const chartType = (filters.sensor_name === "ec") ? "line" : "bar";
+				const sensorChartTypeMap = {
+					"kaitet_greenhouse1": "bar",   // Temperature
+					"kaitet_greenhouse2": "bar",   // Temperature
+					"energy": "bar",                // Energy Consumption
+					"precipitation": "bar",         // Rainfall
+					"level": "line",                // Tank Level
+					"ec": "line",                   // EC Sensor
+					"main": "line",                 // Flow Rate
+					"ph": "line"                    // pH Sensor
+				};
+
+				const chartType = sensorChartTypeMap[filters.sensor_name] || "bar";
 
 				new frappe.Chart("#chart-wrapper", {
 					data: chartData,
@@ -435,16 +458,8 @@ function setup_refresh_handler() {
 						formatTooltipY: val => (val !== null && val !== undefined ? `${val} ${unit}` : "No data")
 					}
 				});
+
 			}
 		});
 	});
-}
-
-// Helper function for weekly labels
-function getWeekNumber(d) {
-	d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-	const dayNum = d.getUTCDay() || 7;
-	d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-	const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-	return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
