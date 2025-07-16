@@ -35,6 +35,61 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Crop Cycle",
+  "enabled": 1,
+  "modified": "2025-07-11 12:33:20.001052",
+  "module": "Upande Kaitet",
+  "name": "Calculate Zerobending and Production Dates",
+  "script": "frappe.ui.form.on('Crop Cycle', {\n    planting_date: function(frm) {\n        if (frm.doc.planting_date) {\n            // Get days to zero bending from Agriculture Settings\n            frappe.db.get_single_value('Agriculture Settings', 'days_to_zero_bending')\n                .then(days_to_zero_bending => {\n                    if (days_to_zero_bending) {\n                        let zerobending_date = frappe.datetime.add_days(frm.doc.planting_date, days_to_zero_bending);\n                        frm.set_value('zerobending_date', zerobending_date);\n                    }\n                });\n\n            // Get days to expected production from Agriculture Settings\n            frappe.db.get_single_value('Agriculture Settings', 'days_to_expected_production')\n                .then(days_to_expected_production => {\n                    if (days_to_expected_production) {\n                        let expected_production_date = frappe.datetime.add_days(frm.doc.planting_date, days_to_expected_production);\n                        frm.set_value('expected_production_date', expected_production_date);\n                    }\n                });\n        }\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Production Plan Form",
+  "enabled": 1,
+  "modified": "2025-07-11 14:39:38.678335",
+  "module": "Upande Kaitet",
+  "name": "Agriculture Production Plan Creation",
+  "script": "frappe.ui.form.on('Production Plan Form', {\n  // Trigger when greenhouse or section_no changes\n  greenhouse: function(frm) {\n    set_grower_and_tasks(frm);\n  },\n  section_no: function(frm) {\n    set_grower_and_tasks(frm);\n  },\n\n  // Also run when form loads\n  onload: function(frm) {\n    set_grower_and_tasks(frm);\n  }\n});\n\nasync function set_grower_and_tasks(frm) {\n  if (frm.doc.greenhouse && frm.doc.section_no) {\n    try {\n      // Fetch Warehouse (Greenhouse)\n      let warehouse = await frappe.db.get_doc('Warehouse', frm.doc.greenhouse);\n      let section_found = false;\n\n      warehouse.custom_sections.forEach(section => {\n        if (section.section_no == frm.doc.section_no) {\n          frm.set_value('grower_name', section.assigned_staff);\n          section_found = true;\n        }\n      });\n\n      if (!section_found) {\n        frappe.msgprint('No matching Section No found in selected Greenhouse.');\n        frm.set_value('grower_name', '');\n      }\n    } catch (err) {\n      console.error(err);\n      frappe.msgprint('Error fetching Warehouse info.');\n    }\n  }\n\n  // Rebuild Daily Tasks (Mon–Sat)\n  let days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];\n  frm.clear_table('daily_tasks');\n\n  days.forEach(day => {\n    let row = frm.add_child('daily_tasks');\n    row.day = day;\n    // Other columns: assigned tasks & supervisor's notes stay empty\n  });\n\n  frm.refresh_field('daily_tasks');\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Production Tracking Form",
+  "enabled": 1,
+  "modified": "2025-07-11 15:13:10.302369",
+  "module": "Upande Kaitet",
+  "name": "Updated Production Tracking Form for Manual Creation",
+  "script": "frappe.ui.form.on('Production Tracking Form', {\n  greenhouse: function(frm) {\n    set_grower_and_days(frm);\n  },\n  section_no: function(frm) {\n    set_grower_and_days(frm);\n  }\n});\n\nasync function set_grower_and_days(frm) {\n  if (frm.doc.greenhouse && frm.doc.section_no) {\n    try {\n      const warehouse = await frappe.db.get_doc(\"Warehouse\", frm.doc.greenhouse);\n      let section_found = false;\n\n      warehouse.custom_sections.forEach(section => {\n        if (section.section_no == frm.doc.section_no) {\n          frm.set_value(\"grower\", section.assigned_staff);\n          section_found = true;\n        }\n      });\n\n      if (!section_found) {\n        frappe.msgprint(\"No matching Section No found in selected Greenhouse.\");\n        frm.set_value(\"grower\", \"\");\n      }\n    } catch (err) {\n      console.error(err);\n      frappe.msgprint(\"Error fetching Warehouse info.\");\n    }\n  }\n\n  // ✅ Rebuild child table: Mon–Sat only\n  frm.clear_table(\"production_tracking_item\");\n\n  const days = [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\"];\n  days.forEach(day => {\n    frm.add_child(\"production_tracking_item\", {\n      day: day,\n      assigned_tasks: \"\",\n      task_completeness: null, // ✅ Make it explicitly empty\n      assigned_staff: \"\",\n      reasons_for_markdown: \"\"\n    });\n  });\n\n  frm.refresh_field(\"production_tracking_item\");\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Production Plan Form",
+  "enabled": 1,
+  "modified": "2025-07-13 20:41:56.095436",
+  "module": "Upande Kaitet",
+  "name": "Agriculture Tasks Filter",
+  "script": "frappe.ui.form.on('Production Plan Form', {\n  onload: function(frm) {\n    frm.fields_dict['daily_tasks'].grid.get_field('assigned_tasks').get_query = function(doc, cdt, cdn) {\n      return {\n        filters: {\n          project: 'PROJ-0001'\n        }\n      };\n    };\n  }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Production Plan Form",
+  "enabled": 1,
+  "modified": "2025-07-14 18:02:36.423968",
+  "module": "Upande Kaitet",
+  "name": "Create Tracking Form from Grower Production Plan",
+  "script": "frappe.ui.form.on('Production Plan Form', {\n  refresh(frm) {\n    if (!frm.is_new()) {\n      frm.add_custom_button('Create Production Tracking Form', () => {\n\n        // If grower_name is missing\n        if (!frm.doc.grower_name && frm.doc.section_no && frm.doc.greenhouse) {\n          frappe.call({\n            method: \"frappe.client.get\",\n            args: {\n              doctype: \"Warehouse\",\n              name: frm.doc.greenhouse\n            },\n            callback: function(r) {\n              const warehouse = r.message;\n              if (warehouse && warehouse.custom_sections) {\n                const match = warehouse.custom_sections.find(\n                  row => row.section_no === frm.doc.section_no\n                );\n                if (match) {\n                  // ✅ Use set_value → returns a promise!\n                  frm.set_value('grower_name', match.assigned_staff).then(() => {\n                    create_tracking_form(frm);\n                  });\n                  return; // prevent running fallback below\n                }\n              }\n\n              frappe.throw(`No grower found for section ${frm.doc.section_no} in ${frm.doc.greenhouse}`);\n            }\n          });\n        } else {\n          // ✅ Grower name already filled\n          create_tracking_form(frm);\n        }\n\n      }, 'Actions');\n    }\n  }\n});\n\nfunction create_tracking_form(frm) {\n  frappe.call({\n    method: \"frappe.client.insert\",\n    args: {\n      doc: {\n        doctype: \"Production Tracking Form\",\n        greenhouse: frm.doc.greenhouse,\n        section: frm.doc.section_no,\n        week_no: frm.doc.week_no,\n        supervisor: frm.doc.supervisor,\n        grower: frm.doc.grower_name,\n        production_tracking_item: frm.doc.daily_tasks.map(row => {\n          return {\n            day: row.day,\n            assigned_tasks: row.assigned_tasks,\n            supervisor_notes: row.supervisor_notes,\n            feedback: \"\"\n            // 🚫 Do NOT include task_completeness → stays empty\n          };\n        })\n      }\n    },\n    callback: function(r) {\n      if (r.message) {\n        frappe.set_route('Form', 'Production Tracking Form', r.message.name);\n      }\n    }\n  });\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Bed Sampling Form",
   "enabled": 1,
   "modified": "2025-07-04 10:03:24.723170",
