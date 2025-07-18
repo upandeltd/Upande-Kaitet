@@ -459,6 +459,7 @@ fixtures = [
 					"Grader QR Print format 2",
 					"Harvest Label 2",
 					"Box Label 2",
+					"Pick List - Kaitet",
 				],
 			]
 		],

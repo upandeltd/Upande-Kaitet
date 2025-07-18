@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:BOX-{order_pick_list}-{box_number}",
- "creation": "2025-07-09 10:00:40.822854",
+ "creation": "2025-07-17 09:15:18.853146",
  "custom": 1,
  "default_print_format": "Box Label 2",
  "doctype": "DocType",
@@ -63,8 +63,8 @@
   },
   {
    "fieldname": "qr_code",
-   "fieldtype": "Data",
-   "label": "QR Code"
+   "fieldtype": "Attach",
+   "label": "Qr Code"
   },
   {
    "fieldname": "column_break_ylwi",
@@ -109,7 +109,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-15 15:50:37.136921",
+ "modified": "2025-07-17 09:16:45.819497",
  "modified_by": "Administrator",
  "module": "Upande Kaitet",
  "name": "Box Label",
