@@ -503,7 +503,7 @@
   "doctype_event": "Before Submit",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-06-22 10:54:13.468214",
+  "modified": "2025-07-17 22:21:58.837718",
   "module": "Upande Kaitet",
   "name": "Create Field Reject Entry",
   "rate_limit_count": 5,
