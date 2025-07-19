@@ -85,8 +85,6 @@ def create_box_label(doc, method):
 					)
 					file.save()
 
-					new_label.qr_code = file.file_url
-
 				for fpl_item in box_1_items:
 					new_label.append(
 						"box_item",
@@ -96,6 +94,8 @@ def create_box_label(doc, method):
 							"qty": fpl_item["bunch_qty"],
 						},
 					)
+
+					new_label.qr_code = file.file_url
 
 				new_label.save()
 
