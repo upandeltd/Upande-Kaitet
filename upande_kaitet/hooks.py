@@ -347,6 +347,7 @@ fixtures = [
 					"Vehicle Location Update",
 					"Create Sales Invoice",
 					"Production Forecast Analysis Generation",
+					"Payroll Access Restriction",
 				],
 			]
 		],
