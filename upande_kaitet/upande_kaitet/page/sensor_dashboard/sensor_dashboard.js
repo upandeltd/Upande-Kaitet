@@ -7,7 +7,7 @@ frappe.pages['sensor-dashboard'].on_page_load = function (wrapper) {
 
 	$(page.body).html(`
 		<!-- Temperature Chart Section -->
-		<div id="tph-section" class="mb-4">
+		<div class="mb-4">
 			<div class="row d-flex flex-wrap align-items-end justify-content-center" style="gap: 10px;">
 				<div class="col-auto">
 					<label for="sensor-name">Sensor Name</label>
@@ -44,7 +44,7 @@ frappe.pages['sensor-dashboard'].on_page_load = function (wrapper) {
 				</div>
 			</div>
 
-			<div style="margin-top: 10px; width: 100%; border:1px solid grey;">
+			<div style="margin-top: 10px; width: 100%; border:1px solid gray;">
 				<div id="chart-area">
 					<div id="chart-wrapper" style="min-width: 100%;"></div>
 				</div>
@@ -58,7 +58,7 @@ frappe.pages['sensor-dashboard'].on_page_load = function (wrapper) {
 			setTimeout(() => {
 				$('#sensor-name').val('kaitet_greenhouse1');
 				$('#refresh-chart').trigger('click');
-			}, 300);
+			}, 200);
 		});
 	});
 };
@@ -87,10 +87,10 @@ function initAllCharts(callback) {
 		let options = [];
 		if (isDateSelected) options = ['hourly'];
 		else {
-			if (timespan === 'last_year') options = ['yearly', 'quarterly', 'monthly'];
+			if (timespan === 'last_year') options = ['yearly', 'quarterly', 'monthly','weekly'];
 			else if (timespan === 'last_quarter') options = ['monthly', 'weekly'];
 			else if (timespan === 'last_month') options = ['weekly', 'daily'];
-			else if (timespan === 'last_week') options = ['daily'];
+			else if (timespan === 'last_week') options = ['daily','hourly'];
 			else options = ['hourly'];
 		}
 
@@ -151,7 +151,7 @@ function initAllCharts(callback) {
 			setup_date_filter_handler();
 			setup_auto_refresh_on_filter_change();
 			setup_refresh_handler();
-			if (typeof cb === 'function') cb(); // Call callback if provided
+			if (typeof cb === 'function') cb();
 		});
 	}
 
@@ -219,10 +219,10 @@ function load_sensor_names(callback) {
 
 function setup_timespan_filter_handler() {
 	const interval_map = {
-		last_year: ["yearly","quarterly", "monthly"],
+		last_year: ["yearly","quarterly", "monthly",'weekly'],
 		last_quarter: ["monthly", "weekly"],
 		last_month: ["weekly", "daily"],
-		last_week: ["daily"],
+		last_week: ["daily",'hourly'],
 		last_24h: ["hourly"],
 	};
 
@@ -261,160 +261,61 @@ function setup_auto_refresh_on_filter_change() {
 }
 
 function setup_refresh_handler() {
-	$("#refresh-chart").on("click", function () {
-		const filters = {
-			sensor_name: $("#sensor-name").val(),
-			date_from: $("#date-from").val(),
-			timespan: $("#timespan").val(),
-			time_interval: $("#time-interval").val(),
-		};
+    $("#refresh-chart").on("click", function () {
+        const filters = {
+            sensor_name: $("#sensor-name").val() || "kaitet_greenhouse1",
+            date_from: $("#date-from").val(),
+            timespan: $("#timespan").val(),
+            time_interval: $("#time-interval").val()
+        };
 
-		filters.sensor_name = filters.sensor_name || "kaitet_greenhouse1";
-		if (!filters.sensor_name) {
-			frappe.msgprint("Please select a sensor before loading the chart.");
-			return;
+        if (!filters.sensor_name) {
+            frappe.msgprint("Please select a sensor before loading the chart.");
+            return;
+        }
+
+        const sensorMetadata = {
+            "kaitet_greenhouse1": { label: "Cold Room", chartTitle: "Cold Room Temperature", unit: "°C", chartType: "cspline" },
+            "kaitet_greenhouse2": { label: "GreenHouse", chartTitle: "GreenHouse Temperature", unit: "°C", chartType: "spline" },
+            "energy": { label: "Energy", chartTitle: "Energy Consumption", unit: "kWh", chartType: "column" },
+            "precipitation": { label: "Precipitation", chartTitle: "Rainfall", unit: "mm", chartType: "column" },
+            "level": { label: "Tank Level", chartTitle: "Tank Level", unit: "cm", chartType: "column" },
+            "ec": { label: "EC Sensor", chartTitle: "EC", unit: "µS/cm", chartType: "spline" },
+            "main": { label: "Flow Rate", chartTitle: "Water Flow Rate", unit: "L/min", chartType: "spline" },
+            "ph": { label: "PH Sensor", chartTitle: "pH Level", unit: "pH", chartType: "spline" }
+        };
+
+        const metadata = sensorMetadata[filters.sensor_name] || {};
+        const chartTitle = metadata.chartTitle || "Sensor Chart";
+        const unit = metadata.unit || "";
+        const chartType = metadata.chartType || "column";
+
+        $("#chart-area").html(`<div id="chart-wrapper" style="min-width: 100%;"><p>Loading chart...</p></div>`);
+        $("#custom-chart-title, #x-axis-date-label").remove();
+
+		//Chart height and responsive
+		function getResponsiveChartHeight() {
+			const width = document.getElementById("chart-wrapper")?.offsetWidth || 800;
+
+			if (width < 500) return 280;
+			if (width < 800) return 320;
+			return 350;
 		}
-
-		let chartTitle = "Sensor Charts";
-		let unit = "";
-
-		const sensorMetadata = {
-			"kaitet_greenhouse1": {
-				label: "Cold Room",
-				chartTitle: "Cold Room Temperature Chart (°C)",
-				unit: "°C"
-			},
-			"kaitet_greenhouse2": {
-				label: "GreenHouse",
-				chartTitle: "GreenHouse Temperature Chart (°C)",
-				unit: "°C"
-			},
-			"energy": {
-				label: "Energy",
-				chartTitle: "Energy Consumption Chart (kWh)",
-				unit: "kWh"
-			},
-			"precipitation": {
-				label: "Precipitation",
-				chartTitle: "Rainfall Chart (mm)",
-				unit: "mm"
-			},
-			"level": {
-				label: "Tank Level",
-				chartTitle: "Tank Level Chart (cm)",
-				unit: "cm"
-			},
-			"ec": {
-				label: "EC Sensor",
-				chartTitle: "EC Chart (µS/cm)",
-				unit: "µS/cm"
-			},
-			"main": {
-				label: "Flow Rate",
-				chartTitle: "Water Flow Rate Chart (L/min)",
-				unit: "L/min"
-			},
-			"ph": {
-				label: "PH Sensor",
-				chartTitle: "pH Level Chart (pH)",
-				unit: "pH"
-			}
-		};
-
-		if (filters.sensor_name && sensorMetadata[filters.sensor_name]) {
-			chartTitle = sensorMetadata[filters.sensor_name].chartTitle || "";
-			unit = sensorMetadata[filters.sensor_name].unit || "";
-		}
-
-		$("#chart-area").html(`<div id="chart-wrapper" style="min-width: 100%;"><p>Loading chart...</p></div>`);
-		$("#custom-chart-title, #x-axis-date-label").remove();
 
 		frappe.call({
 			method: "upande_kaitet.api.sensor_charts.get_sensor_chart_data",
 			args: filters,
 			callback: function (r) {
-				const labels = Array.isArray(r.message.labels) ? r.message.labels : [];
-				const values = Array.isArray(r.message.values) ? r.message.values : [];
-				const labelFormat = r.message.label_format;
-
+				let labels = Array.isArray(r.message.labels) ? r.message.labels : [];
+				let values = Array.isArray(r.message.values) ? r.message.values : [];
 				const hasRealData = labels.length && values.length && values.some(v => v !== null && v !== 0);
 
-				let chartData;
-
-				if (hasRealData) {
-					chartData = {
-						labels,
-						datasets: [{
-							name: chartTitle,
-							values,
-						}],
-					};
-				} else {
-					const interval = filters.time_interval || "hourly";
-					const selectedDate = filters.date_from;
-
-					let start, end;
-					const now = new Date();
-					end = new Date(now);
-					start = new Date(now);
-
-					if (selectedDate) {
-						start = new Date(`${selectedDate}T00:00:00`);
-						end = new Date(`${selectedDate}T23:59:59`);
-					} else {
-						switch (filters.timespan) {
-							case "last_year": start.setFullYear(start.getFullYear() - 1); break;
-							case "last_quarter": start.setMonth(start.getMonth() - 3); break;
-							case "last_month": start.setMonth(start.getMonth() - 1); break;
-							case "last_week": start.setDate(start.getDate() - 7); break;
-							default: start.setHours(start.getHours() - 24);
-						}
-					}
-
-					let emptyLabels = [], emptyValues = [], cursor = new Date(start);
-
-					while (cursor <= end) {
-						if (interval === "hourly") {
-							emptyLabels.push(cursor.toLocaleTimeString("en-KE", { hour: "2-digit", minute: "2-digit" }));
-							cursor.setHours(cursor.getHours() + 1);
-						} else if (interval === "daily") {
-							emptyLabels.push(cursor.toLocaleDateString("en-KE", { day: "numeric", month: "short" }));
-							cursor.setDate(cursor.getDate() + 1);
-						} else if (interval === "weekly") {
-							emptyLabels.push(`Week ${getWeekNumber(cursor)}`);
-							cursor.setDate(cursor.getDate() + 7);
-						} else if (interval === "monthly") {
-							emptyLabels.push(cursor.toLocaleDateString("en-KE", { month: "short", year: "numeric" }));
-							cursor.setMonth(cursor.getMonth() + 1);
-						}
-						emptyValues.push(null);
-					}
-
-					chartData = {
-						labels: emptyLabels.length ? emptyLabels : [""],
-						datasets: [{
-							name: "No Data Available",
-							values: emptyValues.length ? emptyValues : [null],
-						}],
-					};
-				}
-
-				// Time-only label adjustment
-				if (labelFormat === "time_only") {
-					chartData.labels = chartData.labels.map(l => {
-						const parts = l.split(" ");
-						return parts.length === 2 ? parts[1] : l;
-					});
-				}
-
-				// Chart Title
 				$("#chart-wrapper").before(`
 					<div id="custom-chart-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #2c3e50;">
-						${chartTitle}
+						${chartTitle} (${unit})
 					</div>
 				`);
 
-				// X-axis annotation
 				if (filters.date_from) {
 					const readableDate = new Date(filters.date_from).toLocaleDateString("en-KE", {
 						year: "numeric", month: "long", day: "numeric"
@@ -426,40 +327,84 @@ function setup_refresh_handler() {
 					`);
 				}
 
-				const sensorChartTypeMap = {
-					"kaitet_greenhouse1": "bar",   // Temperature
-					"kaitet_greenhouse2": "bar",   // Temperature
-					"energy": "bar",                // Energy Consumption
-					"precipitation": "bar",         // Rainfall
-					"level": "line",                // Tank Level
-					"ec": "line",                   // EC Sensor
-					"main": "line",                 // Flow Rate
-					"ph": "line"                    // pH Sensor
-				};
+				document.querySelector("#chart-wrapper").innerHTML = "";
 
-				const chartType = sensorChartTypeMap[filters.sensor_name] || "bar";
-
-				new frappe.Chart("#chart-wrapper", {
-					data: chartData,
-					type: chartType,
-					height: 350,
-					colors: ["#5e64ff"],
-					barOptions: { spaceRatio: 0.3 },
-					axisOptions: {
-						xAxisMode: "tick",
-						yAxisMode: "tick",
-						xIsSeries: true
-					},
-					tooltipOptions: {
-						formatTooltipX: d => {
-							const parts = d.split(" ");
-							return parts.length === 2 ? parts[1] : d;
-						},
-						formatTooltipY: val => (val !== null && val !== undefined ? `${val} ${unit}` : "No data")
-					}
+				const points = labels.map((label, i) => {
+					const yVal = values[i];
+					const isHot = filters.sensor_name === "kaitet_greenhouse1" && yVal > 7;
+					return {
+						x: label,
+						y: yVal,
+						name: label,
+						color: isHot ? "red" : "#5e64ff",
+						marker: isHot
+							? { visible: true, size: 6, fill: "red", outline: { color: "red" } }
+							: { visible: false },
+						attributes: { unit: unit }
+					};
 				});
 
+				const showSparseLabels = filters.timespan === "last_week" && filters.time_interval === "hourly";
+				const xAxisTicks = labels.map((label, index) => ({
+					value: label,
+					label: {
+						text: showSparseLabels ? (index % 4 === 0 ? label : "") : label,
+						style: { fontSize: '10px' },
+						rotation: -45
+					}
+				}));
+
+				// Min and max with 1 decimal precision
+				const validValues = values.filter(v => v !== null && !isNaN(v));
+				const minVal = validValues.length ? (Math.min(...validValues)).toFixed(1) : "-";
+				const maxVal = validValues.length ? (Math.max(...validValues)).toFixed(1) : "-";
+
+				JSC.chart("chart-wrapper", {
+					type: chartType,
+					height: getResponsiveChartHeight(),
+					series: [{
+						name: chartTitle,
+						points: points
+					}],
+					xAxis: {
+						label_text: `Time | Min: ${minVal} ${unit} | Max: ${maxVal} ${unit}`,
+						scale_type: "category",
+						crosshair_enabled: true,
+						defaultTick: {
+							enabled: true,
+							label: {
+								rotation: -45,
+								style: { fontSize: '10px' },
+								text: function (val, i) {
+									if (filters.timespan === 'last_week' && filters.time_interval === 'hourly') {
+										return i % 4 === 0 ? val : "";
+									}
+									return val;
+								}
+							},
+							gridLine_visible: !(filters.timespan === 'last_week' && filters.time_interval === 'hourly')
+						},
+						customTicks: xAxisTicks
+					},
+					yAxis: {
+						label_text: unit,
+						formatString: 'n1'
+					},
+					defaultSeries: {
+						tooltip: {
+							template: function (point) {
+								if (!point || !point.x) return "No data";
+								let [datePart, timePart] = point.x.split(" ");
+								let [year, month, day] = datePart.split("-");
+								let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+								let formattedDate = `${day} ${months[parseInt(month) - 1]} ${year}`;
+								return `Date: ${formattedDate}, ${timePart}<br>Value: ${Number(point.y).toFixed(1)} ${unit}`;
+							}
+						}
+					},
+					legend_visible: false
+				});
 			}
 		});
-	});
+    });
 }
