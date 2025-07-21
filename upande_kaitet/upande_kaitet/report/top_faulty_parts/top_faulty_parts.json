@@ -1,0 +1,40 @@
+{
+  "doctype": "Report",
+  "name": "Top Faulty Parts",
+  "report_name": "Top Faulty Parts",
+  "ref_doctype": "Issue",
+  "report_type": "Script Report",
+  "is_standard": "Yes",
+  "module": "Upande Kaitet",
+  "add_total_row": 0,
+  "filters": [
+    {
+      "fieldname": "from_date",
+      "label": "From Date",
+      "fieldtype": "Date",
+      "default": "2024-01-01",
+      "reqd": 0
+    },
+    {
+      "fieldname": "to_date",
+      "label": "To Date",
+      "fieldtype": "Date",
+      "default": "today",
+      "reqd": 0
+    },
+    {
+      "fieldname": "asset",
+      "label": "Asset",
+      "fieldtype": "Link",
+      "options": "Asset",
+      "reqd": 0
+    },
+    {
+      "fieldname": "checksheet_type",
+      "label": "Checksheet Type",
+      "fieldtype": "Link",
+      "options": "DocType",
+      "reqd": 0
+    }
+  ]
+}
