@@ -303,7 +303,7 @@ fixtures = [
 	#             "GPS Readings", "Delivery Type", "Loss Reason",
 	#             # "SO Warehouse Mapping",
 	# #             "SO Warehouse Mapping Item",
-	#               "Temperature Reading", "Consignee", "Item Subclass"
+	#               "Temperature Reading", "Consignee", "Item Subclass", "Asset Repair Material"
 	#         ]
 	#     ]]
 	# },
@@ -343,6 +343,7 @@ fixtures = [
 					"Create Invoice From Dispatch Form",
 					"Create Field Reject Entry",
 					"Check reason field",
+                    "Truck Inspection Checksheet",
                     "CFU AM CHECKLIST Assign",
 				],
 			]
