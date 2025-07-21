@@ -347,6 +347,7 @@ fixtures = [
 					"Vehicle Location Update",
 					"Create Sales Invoice",
 					"Production Forecast Analysis Generation",
+					"Payroll Access Restriction",
 				],
 			]
 		],
@@ -439,6 +440,7 @@ fixtures = [
 					"Agriculture Tasks Filter",
 					"Create Tracking Form from Grower Production Plan",
 					"Updated Production Tracking Form for Manual Creation",
+					"Get-Items-From-button(SI)",
 				],
 			]
 		],
