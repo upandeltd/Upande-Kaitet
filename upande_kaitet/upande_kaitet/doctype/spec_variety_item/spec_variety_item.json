@@ -1,0 +1,48 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-09 17:07:57.526254",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "variety",
+  "ratio_in_percentage",
+  "total_stems"
+ ],
+ "fields": [
+  {
+   "fieldname": "variety",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Variety",
+   "options": "Item"
+  },
+  {
+   "fieldname": "ratio_in_percentage",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Ratio (in %)"
+  },
+  {
+   "fieldname": "total_stems",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Stems"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-09 20:14:17.338129",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Spec Variety Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class Specification(Document):
+class ItemsGreenhouses(Document):
 	pass

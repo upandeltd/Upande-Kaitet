@@ -1,0 +1,279 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:SCAN-{#####}",
+ "creation": "2025-07-17 13:37:49.408461",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "farm",
+  "action",
+  "status",
+  "box_sticker",
+  "scanned_bunches",
+  "grader",
+  "graders_name",
+  "column_break_vpdh",
+  "scan_date_and_time",
+  "scan_data",
+  "opl_data",
+  "order_pick_list",
+  "checking_label",
+  "total_bunches",
+  "vehicle",
+  "section_break_xesq",
+  "scanned_items",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "farm",
+   "fieldtype": "Link",
+   "label": "Farm",
+   "options": "Farm",
+   "reqd": 1
+  },
+  {
+   "fieldname": "action",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Action",
+   "options": "\nReceiving\nTransfer to Kapkolia\nGrading\nGrading Check\nPacking\nDispatch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nPaused\nClosed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "box_sticker",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Box Sticker"
+  },
+  {
+   "depends_on": "eval:doc.action === 'Packing'",
+   "fieldname": "scanned_bunches",
+   "fieldtype": "Int",
+   "label": "Scanned Bunches",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.action === 'Grading'",
+   "fieldname": "grader",
+   "fieldtype": "Link",
+   "label": "Grader",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.action === 'Grading'",
+   "fetch_from": "grader.employee_name",
+   "fieldname": "graders_name",
+   "fieldtype": "Data",
+   "label": "Grader's Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vpdh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "scan_date_and_time",
+   "fieldtype": "Datetime",
+   "hidden": 1,
+   "label": "Scan Date and Time",
+   "read_only": 1
+  },
+  {
+   "fieldname": "scan_data",
+   "fieldtype": "Data",
+   "label": "Scan Data",
+   "length": 500
+  },
+  {
+   "fieldname": "opl_data",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Opl Data"
+  },
+  {
+   "fieldname": "order_pick_list",
+   "fieldtype": "Data",
+   "label": "Order Pick List",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "checking_label",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Checking Label",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_bunches",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Total Bunches",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_xesq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "scanned_items",
+   "fieldtype": "Table",
+   "hidden": 1,
+   "label": "Scanned Items",
+   "options": "Scanned Items",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Scan",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "depends_on": "eval:doc.action === 'Dispatch'",
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "label": "Vehicle",
+   "options": "Vehicle"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-07-17 17:25:06.197767",
+ "modified_by": "Administrator",
+ "module": "Upande Kaitet",
+ "name": "Scan",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Harvest Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Assistant Packhouse Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Burguret Packhouse Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Harvest User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Turacco Packhouse Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Pendekeza Packhouse Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Packing Supervisor",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Grader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
