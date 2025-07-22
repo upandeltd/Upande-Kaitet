@@ -10390,6 +10390,7 @@
     "submit": 0,
     "write": 1
    },
+   {
     "print": 1,
     "read": 1,
     "report": 1,
@@ -10728,7 +10729,6 @@
     "translatable": 0,
     "unique": 0,
     "width": null
-   },
    },
    {
     "allow_bulk_edit": 0,
