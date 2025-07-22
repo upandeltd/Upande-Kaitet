@@ -305,7 +305,7 @@ fixtures = [
 	#             "GPS Readings", "Delivery Type", "Loss Reason",
 	#             "SO Warehouse Mapping",
 	#             "SO Warehouse Mapping Item",
-	#             "Temperature Reading", "Consignee", "Item Subclass"
+	#             "Temperature Reading", "Consignee", "Item Subclass", "Market Segment",
 	#         ]
 	#     ]]
 	# },
@@ -347,6 +347,7 @@ fixtures = [
 					"Vehicle Location Update",
 					"Create Sales Invoice",
 					"Production Forecast Analysis Generation",
+					"Payroll Access Restriction",
 				],
 			]
 		],
@@ -439,6 +440,7 @@ fixtures = [
 					"Agriculture Tasks Filter",
 					"Create Tracking Form from Grower Production Plan",
 					"Updated Production Tracking Form for Manual Creation",
+					"Get-Items-From-button(SI)",
 				],
 			]
 		],
@@ -459,6 +461,7 @@ fixtures = [
 					"Grader QR Print format 2",
 					"Harvest Label 2",
 					"Box Label 2",
+					"Pick List - Kaitet",
 				],
 			]
 		],

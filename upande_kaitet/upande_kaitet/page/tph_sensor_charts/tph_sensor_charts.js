@@ -1,13 +1,13 @@
-frappe.pages['sensor-dashboard'].on_page_load = function (wrapper) {
+frappe.pages['tph-sensor-charts'].on_page_load = function (wrapper) {
 	const page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: "Sensor Dashboard",
+		title: "TPH Dashboards",
 		single_column: true,
 	});
 
 	$(page.body).html(`
 		<!-- Temperature Chart Section -->
-		<div class="mb-4">
+		<div id="tph-section" class="mb-4">
 			<div class="row d-flex flex-wrap align-items-end justify-content-center" style="gap: 10px;">
 				<div class="col-auto">
 					<label for="sensor-name">Sensor Name</label>
@@ -183,7 +183,7 @@ function initAllCharts(callback) {
 
 function load_sensor_names(callback) {
 	frappe.call({
-		method: "upande_kaitet.api.sensor_charts.get_all_sensor_names",
+		method: "upande_kaitet.api.tph_sensor_charts.get_all_sensor_names",
 		callback: function (r) {
 			const select = $("#sensor-name");
 			select.empty().append(`<option value="">Select Sensor</option>`);
@@ -303,7 +303,7 @@ function setup_refresh_handler() {
 		}
 
 		frappe.call({
-			method: "upande_kaitet.api.sensor_charts.get_sensor_chart_data",
+			method: "upande_kaitet.api.tph_sensor_charts.get_sensor_chart_data",
 			args: filters,
 			callback: function (r) {
 				let labels = Array.isArray(r.message.labels) ? r.message.labels : [];
