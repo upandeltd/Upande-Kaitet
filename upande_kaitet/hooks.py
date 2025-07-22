@@ -439,6 +439,8 @@ fixtures = [
 					"Agriculture Tasks Filter",
 					"Create Tracking Form from Grower Production Plan",
 					"Updated Production Tracking Form for Manual Creation",
+                    "Hide Extra Quotation Options",
+                    "Populate Company Field on Lead Doctype",
 				],
 			]
 		],

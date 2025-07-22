@@ -691,5 +691,27 @@
   "name": "Dynamic Spec Items Population",
   "script": "// frappe.ui.form.on('Sales Order', {\n//     setup: function(frm) {\n//         frm.clear_table(\"items\");\n//         frm.refresh_field(\"items\");\n//     },\n    \n//     onload: function(frm) {\n//         if (frm.doc.__islocal) {  // Only for new documents\n//             frm.clear_table(\"items\");\n//             frm.refresh_field(\"items\");\n//         }\n//     }\n// });\n\n\n\nfrappe.ui.form.on('SO Spec Item', {\n\n\tspecification: function(frm, cdt, cdn) {\n        let row = locals[cdt][cdn];\n        if (row.specification && row.quantity) {\n            create_items_from_specification(frm, row.specification, row.quantity, row.source_warehouse);\n        }\n    },\n    \n    quantity: function(frm, cdt, cdn) {\n        let row = locals[cdt][cdn];\n        if (row.specification && row.quantity) {\n            create_items_from_specification(frm, row.specification, row.quantity, row.source_warehouse);\n        }\n    }\n});\n\nasync function create_items_from_specification(frm, spec_name, bunches_qty, source_wh) {\n    \n    let map_doc;\n    let map_array = [];\n    let map_object;\n    \n    try {\n        map_doc = await frappe.db.get_doc(\"SO Warehouse Mapping\", \"Roses-MAP\");\n        map_array = map_doc.items;\n        \n        if (!map_array || map_array.length === 0) {\n            frappe.throw(\"No warehouse mapping items found in Roses-MAP\");\n            return;\n        }\n        \n        map_object = map_array.find(item => item.source_warehouse == source_wh);\n        \n        if (!map_object) {\n            frappe.throw(`No delivery warehouse mapping found for source warehouse: ${source_wh}`);\n            return;\n        }\n    } catch(e) {\n        frappe.throw(e.message);\n    }\n\n    \n    \n    \n    const target_warehouse = map_object.delivery_warehouse;\n    \n    frappe.call({\n        method: \"upande_kaitet.server_scripts.gen_spec_items_for_so.gen_spec_items_for_so\",\n        args: {\n            specification: spec_name,\n            bunches_quantity: bunches_qty,\n            target_wh: target_warehouse\n        },\n        callback: function(r) {\n            if (r.message) {\n                \n                \n                // Add new items\n                r.message.forEach(item => {\n                    let item_row = frm.add_child(\"items\");\n                    item_row.item_code = item.item_code;\n                    item_row.item_name = item.item_code;\n                    item_row.delivery_date = frm.doc.delivery_date;\n                    item_row.qty = item.qty;\n                    item_row.uom = \"Stems\";\n                    item_row.rate = item.rate;\n                    item_row.custom_source_warehouse = source_wh;\n                    item_row.warehouse = item.target_warehouse;\n                    item_row.custom_length = item.custom_length;\n                    item_row.description = item.description;\n                    \n                    // frm.fields_dict['items'].grid.trigger('custom_source_warehouse');\n                });\n                \n                frm.refresh_field(\"items\");\n            }\n        }\n    });\n}\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Opportunity",
+  "enabled": 1,
+  "modified": "2025-07-22 19:52:36.504763",
+  "module": "Upande Kaitet",
+  "name": "Hide Extra Quotation Options",
+  "script": "frappe.ui.form.on('Opportunity', {\n\trefresh(frm) {\n\t\tfrm.remove_custom_button('Request For Quotation', 'Create');\n\t\tfrm.remove_custom_button('Supplier Quotation', 'Create');\n\t}\n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Lead",
+  "enabled": 1,
+  "modified": "2025-07-22 20:06:59.943877",
+  "module": "Upande Kaitet",
+  "name": "Populate Company Field on Lead Doctype",
+  "script": "frappe.ui.form.on('Lead', {\n    phone: function (frm) {\n        // Set the whatsapp_no field when phone is changed\n        frm.set_value(\"whatsapp_no\", frm.doc.phone);\n    },\n\n    refresh: function (frm) {\n        // Set a default company name on refresh\n        frm.set_value(\"company\", \"Karen Roses\");\n    }\n});\n",
+  "view": "Form"
  }
 ]
