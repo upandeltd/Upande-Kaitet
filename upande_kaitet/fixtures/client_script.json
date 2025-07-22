@@ -663,7 +663,7 @@
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Harvest",
-  "enabled": 0,
+  "enabled": 1,
   "modified": "2025-07-05 21:43:41.221116",
   "module": "Upande Kaitet",
   "name": "Variety Select Dialog",
