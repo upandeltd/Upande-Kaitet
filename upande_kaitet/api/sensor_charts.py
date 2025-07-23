@@ -3,6 +3,16 @@ import frappe
 from frappe.utils import now_datetime
 
 @frappe.whitelist()
+def get_all_sensor_names():
+	sensor_names = frappe.db.sql("""
+		SELECT DISTINCT sensor_name
+		FROM `tabSensor Reading`
+		WHERE sensor_name IS NOT NULL AND sensor_name != ''
+		ORDER BY sensor_name
+	""", as_list=True)
+	return [row[0] for row in sensor_names]
+
+@frappe.whitelist()
 def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timespan=None, time_interval=None):
 	if not sensor_name:
 		return {"labels": [], "values": [], "unit": ""}
@@ -185,14 +195,3 @@ def get_sensor_chart_data(sensor_name=None, date_from=None, date_to=None, timesp
 		"min_value": min_value,
 		"max_value": max_value
 	}
-
-
-@frappe.whitelist()
-def get_all_sensor_names():
-	sensor_names = frappe.db.sql("""
-		SELECT DISTINCT sensor_name
-		FROM `tabSensor Reading`
-		WHERE sensor_name IS NOT NULL AND sensor_name != ''
-		ORDER BY sensor_name
-	""", as_list=True)
-	return [row[0] for row in sensor_names]
