@@ -17,6 +17,9 @@
     "parent": "Overall Discards and Rejects Report",
     "parentfield": "filters",
     "parenttype": "Report",
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -63,6 +66,24 @@
     "parent": "Overall Discards and Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
    },
    {
@@ -75,7 +96,19 @@
     "parent": "Overall Discards and Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Harvest User"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
    },
    {
     "parent": "Overall Discards and Rejects Report",
@@ -87,7 +120,160 @@
     "parent": "Overall Discards and Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Sales Representative"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Harvest by Item Group",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Harvest by Item Group",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Kapkolia",
+    "fieldname": "farm",
+    "fieldtype": "Select",
+    "label": "Farm",
+    "mandatory": 0,
+    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Harvest by Item Group",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "",
+  "modified": "2025-06-29 13:42:42.495093",
+  "module": "Stock",
+  "name": "Harvest by Item Group",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    sed.t_warehouse AS \"Block:Link/Warehouse:120\",\r\n    SUM(CASE WHEN i.item_group = 'David Austin' THEN sed.qty ELSE 0 END) AS \"David Austin:Int:110\",\r\n    SUM(CASE WHEN i.item_group <> 'David Austin' THEN sed.qty ELSE 0 END) AS \"Others:Int:90\",\r\n    SUM(sed.qty) AS \"Total Good Pick:Int:130\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Harvesting\")\r\nGROUP BY\r\n    se.posting_date, sed.t_warehouse\r\nORDER BY\r\n    se.posting_date, sed.t_warehouse;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Harvest by Item Group",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Production Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest User"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -224,7 +410,25 @@
     "parent": "Harvest and Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Harvest and Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Sales User"
+   },
+   {
+    "parent": "Harvest and Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Entry Creator"
+   },
+   {
+    "parent": "Harvest and Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -268,6 +472,24 @@
     "parent": "Receiving Stock Entries",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
    },
    {
@@ -292,13 +514,31 @@
     "parent": "Receiving Stock Entries",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Assistant Packhouse Manager"
    },
    {
     "parent": "Receiving Stock Entries",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Sales Representative"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -441,7 +681,19 @@
     "parent": "Stock Sheet_Ungraded",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "Stock Sheet_Ungraded",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Accounts User"
+   },
+   {
+    "parent": "Stock Sheet_Ungraded",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Purchase User"
    },
    {
     "parent": "Stock Sheet_Ungraded",
@@ -453,13 +705,31 @@
     "parent": "Stock Sheet_Ungraded",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Desk User"
+   },
+   {
+    "parent": "Stock Sheet_Ungraded",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Stock User"
    },
    {
     "parent": "Stock Sheet_Ungraded",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Stock Sheet_Ungraded",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Sales User"
+   },
+   {
+    "parent": "Stock Sheet_Ungraded",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
    },
    {
     "parent": "Stock Sheet_Ungraded",
@@ -509,19 +779,19 @@
     "parent": "Ungraded Stock Balance",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Ungraded Stock Balance",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Sales User"
    },
    {
     "parent": "Ungraded Stock Balance",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Stock Manager"
-   },
-   {
-    "parent": "Ungraded Stock Balance",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Sales Manager"
+    "role": "Stock Entry Creator"
    }
   ],
   "timeout": 0
@@ -590,6 +860,24 @@
     "parent": "Weekly Discards/Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Weekly Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Weekly Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Weekly Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
    },
    {
@@ -602,7 +890,19 @@
     "parent": "Weekly Discards/Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Harvest User"
+   },
+   {
+    "parent": "Weekly Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Weekly Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
    },
    {
     "parent": "Weekly Discards/Rejects Report",
@@ -614,7 +914,19 @@
     "parent": "Weekly Discards/Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "parent": "Weekly Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Sales Representative"
+   },
+   {
+    "parent": "Weekly Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Entry Creator"
    }
   ],
   "timeout": 0
@@ -658,7 +970,19 @@
     "parent": "Stock Sheet_Available for Sale",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Stock Sheet_Available for Sale",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Stock Manager"
+   },
+   {
+    "parent": "Stock Sheet_Available for Sale",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Desk User"
    },
    {
     "parent": "Stock Sheet_Available for Sale",
@@ -670,7 +994,19 @@
     "parent": "Stock Sheet_Available for Sale",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Stock Sheet_Available for Sale",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Sales User"
+   },
+   {
+    "parent": "Stock Sheet_Available for Sale",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
    },
    {
     "parent": "Stock Sheet_Available for Sale",
@@ -764,7 +1100,37 @@
     "parent": "Grading Stock Entries",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest Manager"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest User"
    }
   ],
   "timeout": 0
@@ -808,6 +1174,24 @@
     "parent": "Harvesting Stock Entries",
     "parentfield": "roles",
     "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Harvesting Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Harvesting Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Harvesting Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
    },
    {
@@ -840,7 +1224,7 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -852,7 +1236,7 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -864,7 +1248,7 @@
     "label": "Farm",
     "mandatory": 1,
     "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -886,85 +1270,85 @@
   "report_type": "Query Report",
   "roles": [
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock Manager"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing Manager"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Production Manager"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest Manager"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest User"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Packing Supervisor"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Pendekeza Packhouse Manager"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Assistant Packhouse Manager"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Turacco Packhouse Manager"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Sales Representative"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Sales User"
+    "role": "Sales Manager"
    },
    {
-    "parent": "Harvest Summary by Time of Day",
+    "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Tambuzi Trainer"
@@ -987,7 +1371,7 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -999,7 +1383,7 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1011,7 +1395,7 @@
     "label": "Farm",
     "mandatory": 0,
     "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1033,82 +1417,88 @@
   "report_type": "Query Report",
   "roles": [
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock Manager"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing Manager"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Production Manager"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest Manager"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest User"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Packing Supervisor"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Pendekeza Packhouse Manager"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Assistant Packhouse Manager"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Turacco Packhouse Manager"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Sales Representative"
    },
    {
-    "parent": "Harvest Totals by Variety",
+    "parent": "Harvest Received Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Tambuzi Trainer"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
    }
   ],
   "timeout": 0
@@ -1128,7 +1518,7 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Packhouse Discards or Rejects Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1140,7 +1530,7 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Packhouse Discards or Rejects Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1151,8 +1541,8 @@
     "fieldtype": "Select",
     "label": " Parent Warehouse",
     "mandatory": 1,
-    "options": "",
-    "parent": "Packhouse Discards or Rejects Report",
+    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1174,127 +1564,88 @@
   "report_type": "Query Report",
   "roles": [
    {
-    "parent": "Packhouse Discards or Rejects Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock Manager"
    },
    {
-    "parent": "Packhouse Discards or Rejects Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
    },
    {
-    "parent": "Packhouse Discards or Rejects Report",
+    "parent": "Harvest Summary by Time of Day",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Harvest Summary by Time of Day",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Production Manager"
    },
    {
-    "parent": "Packhouse Discards or Rejects Report",
+    "parent": "Harvest Summary by Time of Day",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest Manager"
+   },
+   {
+    "parent": "Harvest Summary by Time of Day",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest User"
+   },
+   {
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Packing Supervisor"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 1,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": "Today",
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 0,
-    "options": null,
-    "parent": "Sales Order Report",
-    "parentfield": "filters",
-    "parenttype": "Report",
-    "wildcard_filter": 0
    },
    {
-    "default": "Today",
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 0,
-    "options": null,
-    "parent": "Sales Order Report",
-    "parentfield": "filters",
-    "parenttype": "Report",
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": null,
-  "letter_head": "Karen Roses Invoice",
-  "modified": "2025-06-29 19:39:29.741097",
-  "module": "Selling",
-  "name": "Sales Order Report",
-  "prepared_report": 0,
-  "query": "SELECT\n    so.customer AS \"Customer:Link/Customer:210\",\n    so.custom_statescountry AS \"Country:Data:125\",\n    so.name AS \"Sales Order ID:Link/Sales Order:150\",\n    so.workflow_state AS \"SO Status:Data:95\",\n    so.transaction_date AS \"SO Created:Date:115\",\n    so.delivery_date AS \"SO Ship Date:Date:115\",\n    active_cpl.name AS \"CPL ID:Link/Consolidated Pack List:150\",\n    active_cpl.workflow_state AS \"CPL Status:Data:100\",\n    si_info.invoice_name AS \"SINV ID:Link/Sales Invoice:160\",\n    si_info.status AS \"SINV Status:Data:105\",\n    SUM(CASE WHEN i.item_group <> 'Herbs Qty' THEN soi.stock_qty ELSE 0 END) AS \"Stems_SO Flwrs:Int:140\",\n    SUM(CASE WHEN i.item_group = 'Herbs Qty' THEN soi.stock_qty ELSE 0 END) AS \"Stems_SO Herbs:Int:140\",\n    SUM(soi.stock_qty) AS \"Stems_SO Total:Int:130\",\n    COALESCE(cpl_stems.total_stems, 0) AS \"Stems_CPL:Int:100\",\n    COALESCE(si_info.total_stems, 0) AS \"Stems_SINV:Int:110\",\n    COALESCE(cpl_stems.total_stems, 0) - SUM(COALESCE(soi.stock_qty, 0)) AS \"Packing VAR:Int:110\",\n    so.base_total AS \"Amt_SO:Currency:130\",\n    COALESCE(si_info.amount_pre_tax, 0) AS \"Amt_SINV Pre.Tax:Currency:145\"\nFROM\n    `tabSales Order` so\nJOIN\n    `tabSales Order Item` soi ON so.name = soi.parent\nJOIN\n    `tabItem` i ON soi.item_code = i.name\nJOIN\n    (\n        SELECT\n            t1.sales_order_id,\n            t1.name,\n            t1.workflow_state,\n            t1.modified\n        FROM\n            (\n                SELECT DISTINCT\n                    dfi.sales_order_id,\n                    cpl.name,\n                    cpl.workflow_state,\n                    cpl.modified,\n                    ROW_NUMBER() OVER (\n                        PARTITION BY dfi.sales_order_id\n                        ORDER BY \n                            CASE WHEN cpl.workflow_state != 'Cancelled' THEN 0 ELSE 1 END,\n                            cpl.modified DESC\n                    ) AS row_num\n                FROM \n                    `tabConsolidated Pack List` cpl\n                JOIN\n                    `tabDispatch Form Item` dfi ON dfi.parent = cpl.name\n            ) t1\n        WHERE\n            t1.row_num = 1\n    ) active_cpl ON active_cpl.sales_order_id = so.name\nJOIN\n    (\n        SELECT\n            dfi.sales_order_id,\n            dfi.parent AS cpl_id,\n            SUM(dfi.custom_number_of_stems) AS total_stems\n        FROM\n            `tabDispatch Form Item` dfi\n        GROUP BY\n            dfi.sales_order_id, dfi.parent\n    ) cpl_stems ON cpl_stems.sales_order_id = so.name AND cpl_stems.cpl_id = active_cpl.name\nLEFT JOIN\n    (\n        SELECT\n            si.name AS invoice_name,\n            si.workflow_state AS status,\n            SUM(sii.stock_qty) AS total_stems,\n            si.custom_consolidated_packlist,\n            si.base_net_total AS amount_pre_tax\n        FROM\n            `tabSales Invoice` si\n        JOIN\n            `tabSales Invoice Item` sii ON si.name = sii.parent\n        GROUP BY\n            si.name, si.workflow_state, si.custom_consolidated_packlist\n    ) si_info ON si_info.custom_consolidated_packlist = active_cpl.name\nWHERE\n    so.docstatus = 1\n    AND so.transaction_date >= %(from_date)s\n    AND so.transaction_date <= %(to_date)s\nGROUP BY\n    so.customer, so.custom_statescountry, so.name, active_cpl.name, active_cpl.workflow_state,\n    si_info.invoice_name, si_info.status, cpl_stems.total_stems, si_info.total_stems, si_info.amount_pre_tax\nORDER BY\n    so.customer, so.custom_statescountry, so.name;",
-  "ref_doctype": "Sales Order",
-  "reference_report": null,
-  "report_name": "Sales Order Report",
-  "report_script": null,
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "parent": "Sales Order Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Stock User"
+    "role": "Pendekeza Packhouse Manager"
    },
    {
-    "parent": "Sales Order Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Accounts User"
+    "role": "Assistant Packhouse Manager"
    },
    {
-    "parent": "Sales Order Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Sales User"
+    "role": "Turacco Packhouse Manager"
    },
    {
-    "parent": "Sales Order Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Sales Manager"
-   },
-   {
-    "parent": "Sales Order Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Sales Representative"
    },
    {
-    "parent": "Sales Order Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Accounts Manager"
+    "role": "Sales User"
    },
    {
-    "parent": "Sales Order Report",
+    "parent": "Harvest Summary by Time of Day",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "AR Accountant"
-   },
-   {
-    "parent": "Sales Order Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Sales Master Manager"
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -1314,7 +1665,7 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1326,7 +1677,19 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Kapkolia",
+    "fieldname": "farm",
+    "fieldtype": "Select",
+    "label": "Farm",
+    "mandatory": 0,
+    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1348,70 +1711,82 @@
   "report_type": "Query Report",
   "roles": [
    {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Accounts User"
+    "role": "Manufacturing Manager"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Sales User"
+    "role": "Manufacturing User"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Sales Manager"
+    "role": "Production Manager"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Sales Representative"
+    "role": "Harvest Manager"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Tambuzi Trainer"
+    "role": "Harvest User"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Accounts Manager"
+    "role": "Packing Supervisor"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "AR Accountant"
-   },
-   {
-    "parent": "Sales per Variety Report (SO)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Burguret Packhouse Manager"
-   },
-   {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Pendekeza Packhouse Manager"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "parent": "Harvest Totals by Variety",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Turacco Packhouse Manager"
+   },
+   {
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
+   },
+   {
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -1431,7 +1806,7 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1443,7 +1818,7 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1455,7 +1830,7 @@
     "label": "Farm",
     "mandatory": 1,
     "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1477,60 +1852,63 @@
   "report_type": "Query Report",
   "roles": [
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock Manager"
    },
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
    },
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing Manager"
    },
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Manufacturing User"
    },
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Production Manager"
    },
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest Manager"
    },
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest User"
    },
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Packing Supervisor"
    },
    {
-    "parent": "Harvest Pick Report",
+    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Pendekeza Packhouse Manager"
    },
    {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "parent": "Harvest Pick Report",
     "parentfield": "roles",
     "parenttype": "Report",
@@ -1578,7 +1956,7 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Field Rejects Report",
+    "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1590,7 +1968,7 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Field Rejects Report",
+    "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1602,7 +1980,7 @@
     "label": "Farm",
     "mandatory": 1,
     "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "parent": "Field Rejects Report",
+    "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1624,34 +2002,67 @@
   "report_type": "Query Report",
   "roles": [
    {
-    "parent": "Field Rejects Report",
+    "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock Manager"
    },
    {
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
    },
    {
-    "parent": "Field Rejects Report",
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Production Manager"
    },
    {
-    "parent": "Field Rejects Report",
+    "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest Manager"
    },
    {
-    "parent": "Field Rejects Report",
+    "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest User"
+   },
+   {
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
    }
   ],
   "timeout": 0
@@ -1671,7 +2082,7 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Harvest by Item Group",
+    "parent": "Packhouse Discards or Rejects Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1683,7 +2094,7 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
-    "parent": "Harvest by Item Group",
+    "parent": "Packhouse Discards or Rejects Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1692,10 +2103,10 @@
     "default": "Kapkolia",
     "fieldname": "farm",
     "fieldtype": "Select",
-    "label": "Farm",
-    "mandatory": 0,
-    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
-    "parent": "Harvest by Item Group",
+    "label": " Parent Warehouse",
+    "mandatory": 1,
+    "options": "",
+    "parent": "Packhouse Discards or Rejects Report",
     "parentfield": "filters",
     "parenttype": "Report",
     "wildcard_filter": 0
@@ -1723,7 +2134,7 @@
     "role": "Stock Manager"
    },
    {
-    "parent": "Harvest by Item Group",
+    "parent": "Packhouse Discards or Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
@@ -2009,39 +2420,58 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock Manager"
-   },
-   {
-    "parent": "Packhouse Discards or Rejects Details",
+    "parent": "Sales per Variety Report (SO)",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
    },
    {
-    "parent": "Packhouse Discards or Rejects Details",
+    "parent": "Sales per Variety Report (SO)",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Manufacturing Manager"
+    "role": "Accounts User"
    },
    {
-    "parent": "Packhouse Discards or Rejects Details",
+    "parent": "Sales per Variety Report (SO)",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Manufacturing User"
+    "role": "Sales User"
    },
    {
-    "parent": "Packhouse Discards or Rejects Details",
+    "parent": "Sales per Variety Report (SO)",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Production Manager"
+    "role": "Sales Manager"
    },
    {
+    "parent": "Sales per Variety Report (SO)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
+   },
+   {
+    "parent": "Sales per Variety Report (SO)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
+   },
+   {
+    "parent": "Sales per Variety Report (SO)",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest Manager"
    },
    {
+    "parent": "Sales per Variety Report (SO)",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "parent": "Sales per Variety Report (SO)",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest User"
@@ -2053,12 +2483,18 @@
     "role": "Packing Supervisor"
    },
    {
+    "parent": "Sales per Variety Report (SO)",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Assistant Packhouse Manager"
    },
    {
+    "parent": "Sales per Variety Report (SO)",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
