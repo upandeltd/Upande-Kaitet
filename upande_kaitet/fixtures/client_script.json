@@ -761,6 +761,7 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+
   "dt": "Sales Invoice",
   "enabled": 1,
   "modified": "2025-07-21 10:54:29.986557",
@@ -768,5 +769,27 @@
   "name": "Get-Items-From-button(SI)",
   "script": "frappe.ui.form.on(\"Sales Invoice\", {\n    refresh(frm) {\n        if (frm.doc.docstatus === 0) {\n            frm.add_custom_button(__(\"Farm Pack List\"), function () {\n                erpnext.utils.map_current_doc({\n                    method: \"upande_kaitet.server_scripts.make_si_from_cpl_button.make_sales_invoice_from_pack_list\",\n                    source_doctype: \"Farm Pack List\",\n                    target: frm,\n                    setters: [\n                        {\n                            fieldtype: \"Link\",\n                            label: __(\"Customer\"),\n                            options: \"Customer\",\n                            fieldname: \"custom_customer\",\n                            default: frm.doc.customer,\n                        }\n                    ],\n                    get_query_filters: {\n                        docstatus: 1\n                        // exclude company or custom_sales_invoice for now\n                    }\n                });\n            }, __(\"Get Items From\"));\n        }\n    }\n});\n",
   "view": "Form"
- }
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Opportunity",
+  "enabled": 1,
+  "modified": "2025-07-22 19:52:36.504763",
+  "module": "Upande Kaitet",
+  "name": "Hide Extra Quotation Options",
+  "script": "frappe.ui.form.on('Opportunity', {\n\trefresh(frm) {\n\t\tfrm.remove_custom_button('Request For Quotation', 'Create');\n\t\tfrm.remove_custom_button('Supplier Quotation', 'Create');\n\t}\n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Lead",
+  "enabled": 1,
+  "modified": "2025-07-22 20:06:59.943877",
+  "module": "Upande Kaitet",
+  "name": "Populate Company Field on Lead Doctype",
+  "script": "frappe.ui.form.on('Lead', {\n    phone: function (frm) {\n        // Set the whatsapp_no field when phone is changed\n        frm.set_value(\"whatsapp_no\", frm.doc.phone);\n    },\n\n    refresh: function (frm) {\n        // Set a default company name on refresh\n        frm.set_value(\"company\", \"Karen Roses\");\n    }\n});\n",
+  "view": "Form"
+ }  
 ]
