@@ -17,9 +17,6 @@
     "parent": "Overall Discards and Rejects Report",
     "parentfield": "filters",
     "parenttype": "Report",
-    "parent": "Overall Discards and Rejects Report",
-    "parentfield": "filters",
-    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -1409,6 +1406,8 @@
   "module": "Stock",
   "name": "Harvest Totals by Variety",
   "prepared_report": 0,
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
   "query": "SELECT\r\n    i.item_group AS \"Item Group:Data:160\",\r\n    sed.item_code AS \"Item Code:Data:200\",\r\n    -- se.custom_farm AS \"Farm:Link/Farm:100\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END) AS \"Good Stems:Int:110\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Field Rejects' THEN sed.qty ELSE 0 END) AS \"Rejected:Int:100\",\r\n    SUM(sed.qty) AS \"Total:Int:100\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Field Rejects\", \"Harvesting\")\r\nGROUP BY\r\n    i.item_group, sed.item_code, se.custom_farm\r\nORDER BY\r\n    i.item_group, sed.item_code, se.custom_farm;",
   "ref_doctype": "Stock Entry",
   "reference_report": "",
@@ -1906,12 +1905,9 @@
     "role": "Pendekeza Packhouse Manager"
    },
    {
-    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "parent": "Harvest Pick Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Assistant Packhouse Manager"
    },
    {
@@ -2009,9 +2005,6 @@
    },
    {
     "parent": "Packhouse Discards or Rejects Details",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "parent": "Field Rejects Report",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
@@ -2416,14 +2409,10 @@
   "report_type": "Query Report",
   "roles": [
    {
-    "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Stock Manager"
-    "parent": "Sales per Variety Report (SO)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Stock User"
+    "role": "Stock Manager",
+    "parent": "Sales per Variety Report (SO)"
    },
    {
     "parent": "Sales per Variety Report (SO)",
@@ -2459,18 +2448,9 @@
     "parent": "Sales per Variety Report (SO)",
     "parentfield": "roles",
     "parenttype": "Report",
-    "parent": "Packhouse Discards or Rejects Details",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "role": "Harvest Manager"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "parent": "Packhouse Discards or Rejects Details",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "parent": "Sales per Variety Report (SO)",
     "parentfield": "roles",
     "parenttype": "Report",
@@ -2483,18 +2463,12 @@
     "role": "Packing Supervisor"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Assistant Packhouse Manager"
    },
    {
-    "parent": "Sales per Variety Report (SO)",
-    "parentfield": "roles",
-    "parenttype": "Report",
     "parent": "Packhouse Discards or Rejects Details",
     "parentfield": "roles",
     "parenttype": "Report",
