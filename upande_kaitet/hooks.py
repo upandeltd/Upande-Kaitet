@@ -348,6 +348,7 @@ fixtures = [
 					"Create Sales Invoice",
 					"Production Forecast Analysis Generation",
 					"Payroll Access Restriction",
+                    "Delivery Note Stock Removal",
 				],
 			]
 		],
@@ -441,8 +442,9 @@ fixtures = [
 					"Create Tracking Form from Grower Production Plan",
 					"Updated Production Tracking Form for Manual Creation"
 					"Get-Items-From-button(SI)",
-          "Hide Extra Quotation Options",
-          "Populate Company Field on Lead Doctype",
+					"Hide Extra Quotation Options",
+					"Populate Company Field on Lead Doctype",
+					"Removal of VAT for non-kenyan customers"
 				],
 			]
 		],

@@ -2,6 +2,17 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Quotation",
+  "enabled": 1,
+  "modified": "2025-07-24 16:38:14.309219",
+  "module": "Upande Kaitet",
+  "name": "Removal of VAT for non-kenyan customers",
+  "script": "frappe.ui.form.on('Quotation', {\n\trefresh(frm) {\n\t\tcheck_customer_territory_and_handle_tax(frm);\n\t},\n\n\tcustomer_name(frm) {\n\t\tcheck_customer_territory_and_handle_tax(frm);\n\t},\n\n\tcompany(frm) {\n\t\tsetTimeout(() => {\n\t\t\tcheck_customer_territory_and_handle_tax(frm);\n\t\t}, 300);\n\t}\n});\n\nfunction check_customer_territory_and_handle_tax(frm) {\n\tif (frm.doc.customer_name) {\n\t\tfrappe.db.get_doc('Customer', frm.doc.customer_name)\n\t\t\t.then(customer => {\n\t\t\t\tfrm.set_value('territory', customer.territory);\n\n\t\t\t\tif (customer.territory !== 'Kenya') {\n\t\t\t\t\t// Clear tax template field and delete tax rows\n\t\t\t\t\tfrm.set_value('taxes_and_charges', '');\n\t\t\t\t\tfrm.clear_table('taxes');\n\t\t\t\t\tfrm.refresh_fields(['taxes_and_charges', 'taxes']);\n\n\t\t\t\t// \tfrappe.msgprint('Taxes and Charges cleared because the customer is not from Kenya.');\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t// } else {\n\t\t\t\t// \tfrm.set_value('taxes_and_charges', 'Sales(VAT 16%'); // Update as needed\n\t\t\t\t// }\n\t\t\t})\n\t\t\t.catch(() => {\n\t\t\t\tfrappe.msgprint('Customer not found.');\n\t\t\t});\n\t}\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Bed Sampling Form",
   "enabled": 1,
   "modified": "2025-07-04 10:03:24.723170",
@@ -769,5 +780,5 @@
   "name": "Populate Company Field on Lead Doctype",
   "script": "frappe.ui.form.on('Lead', {\n    phone: function (frm) {\n        // Set the whatsapp_no field when phone is changed\n        frm.set_value(\"whatsapp_no\", frm.doc.phone);\n    },\n\n    refresh: function (frm) {\n        // Set a default company name on refresh\n        frm.set_value(\"company\", \"Karen Roses\");\n    }\n});\n",
   "view": "Form"
- }  
+ }
 ]
