@@ -195,7 +195,7 @@ function load_sensor_names(callback) {
 						seen.add(sensor);
 						let label = sensor.replace("kaitet_", "").replace("_", " ").toUpperCase();
 
-						if (sensor === "kaitet_greenhouse1") label = "Cold Room";
+						if (sensor === "kaitet_greenhouse1") label = "Kapkolia Cold Room 2";
 						if (sensor === "kaitet_greenhouse2") label = "GreenHouse";
 						if (sensor === "energy") label = "Energy";
 						if (sensor === "precipitation") label = "Precipitation";
@@ -275,7 +275,7 @@ function setup_refresh_handler() {
         }
 
         const sensorMetadata = {
-            "kaitet_greenhouse1": { label: "Cold Room", chartTitle: "Cold Room Temperature", unit: "°C", chartType: "cspline" },
+            "kaitet_greenhouse1": { label: "Kapkolia Cold Room 2", chartTitle: "Kapkolia Cold Room 2 Temperature", unit: "°C", chartType: "cspline" },
             "kaitet_greenhouse2": { label: "GreenHouse", chartTitle: "GreenHouse Temperature", unit: "°C", chartType: "spline" },
             "energy": { label: "Energy", chartTitle: "Energy Consumption", unit: "kWh", chartType: "column" },
             "precipitation": { label: "Precipitation", chartTitle: "Rainfall", unit: "mm", chartType: "column" },
@@ -290,6 +290,7 @@ function setup_refresh_handler() {
         const unit = metadata.unit || "";
         const chartType = metadata.chartType || "column";
 
+		$("#chart-area").empty();
         $("#chart-area").html(`<div id="chart-wrapper" style="min-width: 100%;"><p>Loading chart...</p></div>`);
         $("#custom-chart-title, #x-axis-date-label").remove();
 
@@ -310,6 +311,7 @@ function setup_refresh_handler() {
 				let values = Array.isArray(r.message.values) ? r.message.values : [];
 				const hasRealData = labels.length && values.length && values.some(v => v !== null && v !== 0);
 
+				$("#chart-wrapper").empty();
 				$("#chart-wrapper").before(`
 					<div id="custom-chart-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #2c3e50;">
 						${chartTitle} (${unit})

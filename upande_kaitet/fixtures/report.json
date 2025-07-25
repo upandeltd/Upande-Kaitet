@@ -48,6 +48,27 @@
     "role": "Stock User"
    },
    {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
    },
    {
@@ -61,6 +82,153 @@
    },
    {
     "role": "Sales Representative"
+   },
+   {
+    "parent": "Overall Discards and Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Harvest by Item Group",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Harvest by Item Group",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Kapkolia",
+    "fieldname": "farm",
+    "fieldtype": "Select",
+    "label": "Farm",
+    "mandatory": 0,
+    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Harvest by Item Group",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "",
+  "modified": "2025-06-29 13:42:42.495093",
+  "module": "Stock",
+  "name": "Harvest by Item Group",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    sed.t_warehouse AS \"Block:Link/Warehouse:120\",\r\n    SUM(CASE WHEN i.item_group = 'David Austin' THEN sed.qty ELSE 0 END) AS \"David Austin:Int:110\",\r\n    SUM(CASE WHEN i.item_group <> 'David Austin' THEN sed.qty ELSE 0 END) AS \"Others:Int:90\",\r\n    SUM(sed.qty) AS \"Total Good Pick:Int:130\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Harvesting\")\r\nGROUP BY\r\n    se.posting_date, sed.t_warehouse\r\nORDER BY\r\n    se.posting_date, sed.t_warehouse;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Harvest by Item Group",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Production Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest User"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
+   },
+   {
+    "parent": "Harvest by Item Group",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -161,7 +329,28 @@
     "role": "Stock User"
    },
    {
+    "parent": "Harvest and Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Harvest and Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Sales User"
+   },
+   {
+    "parent": "Harvest and Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Entry Creator"
+   },
+   {
+    "parent": "Harvest and Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -196,6 +385,27 @@
     "role": "Stock User"
    },
    {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
    },
    {
@@ -212,6 +422,12 @@
    },
    {
     "role": "Sales Representative"
+   },
+   {
+    "parent": "Receiving Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -438,6 +654,12 @@
    },
    {
     "role": "Sales Representative"
+   },
+   {
+    "parent": "Weekly Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Entry Creator"
    }
   ],
   "timeout": 0
@@ -551,7 +773,40 @@
     "role": "Stock User"
    },
    {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest Manager"
+   },
+   {
+    "parent": "Grading Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest User"
    }
   ],
   "timeout": 0
@@ -586,6 +841,27 @@
     "role": "Stock User"
    },
    {
+    "parent": "Harvesting Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Harvesting Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Harvesting Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Harvesting Stock Entries",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Production Manager"
    },
    {
@@ -612,6 +888,9 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Harvest Pick Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -621,6 +900,9 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Harvest Pick Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -630,6 +912,9 @@
     "label": "Farm",
     "mandatory": 1,
     "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Harvest Pick Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    }
   ],
@@ -708,6 +993,9 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Harvest Received Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -717,6 +1005,9 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Harvest Received Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -726,6 +1017,9 @@
     "label": "Farm",
     "mandatory": 0,
     "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Harvest Received Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    }
   ],
@@ -737,6 +1031,8 @@
   "module": "Stock",
   "name": "Harvest Totals by Variety",
   "prepared_report": 0,
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
   "query": "SELECT\r\n    i.item_group AS \"Item Group:Data:160\",\r\n    sed.item_code AS \"Item Code:Data:200\",\r\n    -- se.custom_farm AS \"Farm:Link/Farm:100\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END) AS \"Good Stems:Int:110\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Field Rejects' THEN sed.qty ELSE 0 END) AS \"Rejected:Int:100\",\r\n    SUM(sed.qty) AS \"Total:Int:100\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Field Rejects\", \"Harvesting\")\r\nGROUP BY\r\n    i.item_group, sed.item_code, se.custom_farm\r\nORDER BY\r\n    i.item_group, sed.item_code, se.custom_farm;",
   "ref_doctype": "Stock Entry",
   "reference_report": "",
@@ -782,6 +1078,12 @@
    },
    {
     "role": "Tambuzi Trainer"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
    }
   ],
   "timeout": 0
@@ -801,6 +1103,9 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Harvest Summary by Time of Day",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -810,6 +1115,9 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Harvest Summary by Time of Day",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -883,15 +1191,15 @@
   "javascript": null,
   "json": null,
   "letter_head": "Karen Roses Invoice",
-  "modified": "2025-06-29 19:39:29.741097",
-  "module": "Selling",
-  "name": "Sales Order Report",
+  "modified": "2025-06-29 19:37:38.731188",
+  "module": "Stock",
+  "name": "Packhouse Discards or Rejects Report",
   "prepared_report": 0,
-  "query": "SELECT\n    so.customer AS \"Customer:Link/Customer:210\",\n    so.custom_statescountry AS \"Country:Data:125\",\n    so.name AS \"Sales Order ID:Link/Sales Order:150\",\n    so.workflow_state AS \"SO Status:Data:95\",\n    so.transaction_date AS \"SO Created:Date:115\",\n    so.delivery_date AS \"SO Ship Date:Date:115\",\n    active_cpl.name AS \"CPL ID:Link/Consolidated Pack List:150\",\n    active_cpl.workflow_state AS \"CPL Status:Data:100\",\n    si_info.invoice_name AS \"SINV ID:Link/Sales Invoice:160\",\n    si_info.status AS \"SINV Status:Data:105\",\n    SUM(CASE WHEN i.item_group <> 'Herbs Qty' THEN soi.stock_qty ELSE 0 END) AS \"Stems_SO Flwrs:Int:140\",\n    SUM(CASE WHEN i.item_group = 'Herbs Qty' THEN soi.stock_qty ELSE 0 END) AS \"Stems_SO Herbs:Int:140\",\n    SUM(soi.stock_qty) AS \"Stems_SO Total:Int:130\",\n    COALESCE(cpl_stems.total_stems, 0) AS \"Stems_CPL:Int:100\",\n    COALESCE(si_info.total_stems, 0) AS \"Stems_SINV:Int:110\",\n    COALESCE(cpl_stems.total_stems, 0) - SUM(COALESCE(soi.stock_qty, 0)) AS \"Packing VAR:Int:110\",\n    so.base_total AS \"Amt_SO:Currency:130\",\n    COALESCE(si_info.amount_pre_tax, 0) AS \"Amt_SINV Pre.Tax:Currency:145\"\nFROM\n    `tabSales Order` so\nJOIN\n    `tabSales Order Item` soi ON so.name = soi.parent\nJOIN\n    `tabItem` i ON soi.item_code = i.name\nJOIN\n    (\n        SELECT\n            t1.sales_order_id,\n            t1.name,\n            t1.workflow_state,\n            t1.modified\n        FROM\n            (\n                SELECT DISTINCT\n                    dfi.sales_order_id,\n                    cpl.name,\n                    cpl.workflow_state,\n                    cpl.modified,\n                    ROW_NUMBER() OVER (\n                        PARTITION BY dfi.sales_order_id\n                        ORDER BY \n                            CASE WHEN cpl.workflow_state != 'Cancelled' THEN 0 ELSE 1 END,\n                            cpl.modified DESC\n                    ) AS row_num\n                FROM \n                    `tabConsolidated Pack List` cpl\n                JOIN\n                    `tabDispatch Form Item` dfi ON dfi.parent = cpl.name\n            ) t1\n        WHERE\n            t1.row_num = 1\n    ) active_cpl ON active_cpl.sales_order_id = so.name\nJOIN\n    (\n        SELECT\n            dfi.sales_order_id,\n            dfi.parent AS cpl_id,\n            SUM(dfi.custom_number_of_stems) AS total_stems\n        FROM\n            `tabDispatch Form Item` dfi\n        GROUP BY\n            dfi.sales_order_id, dfi.parent\n    ) cpl_stems ON cpl_stems.sales_order_id = so.name AND cpl_stems.cpl_id = active_cpl.name\nLEFT JOIN\n    (\n        SELECT\n            si.name AS invoice_name,\n            si.workflow_state AS status,\n            SUM(sii.stock_qty) AS total_stems,\n            si.custom_consolidated_packlist,\n            si.base_net_total AS amount_pre_tax\n        FROM\n            `tabSales Invoice` si\n        JOIN\n            `tabSales Invoice Item` sii ON si.name = sii.parent\n        GROUP BY\n            si.name, si.workflow_state, si.custom_consolidated_packlist\n    ) si_info ON si_info.custom_consolidated_packlist = active_cpl.name\nWHERE\n    so.docstatus = 1\n    AND so.transaction_date >= %(from_date)s\n    AND so.transaction_date <= %(to_date)s\nGROUP BY\n    so.customer, so.custom_statescountry, so.name, active_cpl.name, active_cpl.workflow_state,\n    si_info.invoice_name, si_info.status, cpl_stems.total_stems, si_info.total_stems, si_info.amount_pre_tax\nORDER BY\n    so.customer, so.custom_statescountry, so.name;",
-  "ref_doctype": "Sales Order",
+  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    sw.parent_warehouse AS \"Parent Warehouse:Select\",\r\n    i.item_group AS \"Item Group:Link/Item Group:130\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Ungraded' THEN sed.qty ELSE 0 END) AS \"Ungraded Discards:Int:160\",\r\n    SUM(CASE WHEN stock_entry_type = 'Discards-Graded' THEN sed.qty ELSE 0 END) AS \"Graded Discards:Int:140\",\r\n    SUM(CASE WHEN stock_entry_type = 'Graded Rejects' THEN sed.qty ELSE 0 END) AS \"Graded Rejects:Int:130\",\r\n    SUM(sed.qty) AS \"Total Loss:Int:95\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nLEFT JOIN\r\n    `tabWarehouse` sw ON sed.s_warehouse = sw.name\r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.stock_entry_type IN (\"Discards-Ungraded\", \"Discards-Graded\", \"Graded Rejects\")\r\n    AND sw.parent_warehouse = %(parent_warehouse)s\r\nGROUP BY\r\n    se.posting_date, sw.parent_warehouse, i.item_group, sed.item_code\r\nORDER BY\r\n    se.posting_date, sw.parent_warehouse, i.item_group, sed.item_code;",
+  "ref_doctype": "Stock Entry",
   "reference_report": null,
-  "report_name": "Sales Order Report",
-  "report_script": null,
+  "report_name": "Packhouse Discards or Rejects Report",
+  "report_script": "",
   "report_type": "Query Report",
   "roles": [
    {
@@ -936,6 +1244,9 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -945,6 +1256,21 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Kapkolia",
+    "fieldname": "farm",
+    "fieldtype": "Select",
+    "label": "Farm",
+    "mandatory": 0,
+    "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    }
   ],
@@ -995,6 +1321,18 @@
    },
    {
     "role": "Turacco Packhouse Manager"
+   },
+   {
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
+   },
+   {
+    "parent": "Harvest Totals by Variety",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
    }
   ],
   "timeout": 0
@@ -1014,6 +1352,9 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Field Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -1023,6 +1364,9 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Field Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -1032,6 +1376,9 @@
     "label": "Farm",
     "mandatory": 1,
     "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Field Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    }
   ],
@@ -1110,6 +1457,9 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -1119,6 +1469,9 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -1128,6 +1481,9 @@
     "label": "Farm",
     "mandatory": 1,
     "options": "Chepsito\nKapkolia\nKaptumbo\nKaren\nSimotwo\nTorongo",
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    }
   ],
@@ -1160,6 +1516,24 @@
    },
    {
     "role": "Harvest User"
+   },
+   {
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "parent": "Packhouse Discards or Rejects Details",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
    }
   ],
   "timeout": 0
@@ -1179,6 +1553,9 @@
     "label": "From Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Packhouse Discards or Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -1188,6 +1565,9 @@
     "label": "To Date",
     "mandatory": 0,
     "options": null,
+    "parent": "Packhouse Discards or Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
     "wildcard_filter": 0
    },
    {
@@ -1219,6 +1599,9 @@
     "role": "Stock Manager"
    },
    {
+    "parent": "Packhouse Discards or Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
     "role": "Stock User"
    },
    {
